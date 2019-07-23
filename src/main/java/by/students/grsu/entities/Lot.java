@@ -1,10 +1,8 @@
 package by.students.grsu.entities;
 
-import org.springframework.stereotype.Component;
-
 enum STATUS {ON_SELL,SOLD,WAITING}
 
-@Component
+
 public class Lot {
 //    сделать id цифрой и через статик задавать наименьший свободный или взять имя(проблема неуникальности имени)
     private String ID;

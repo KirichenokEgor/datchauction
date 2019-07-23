@@ -1,0 +1,2 @@
+0.packaging war in pom and clean package in configuration
+

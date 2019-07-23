@@ -1,14 +1,11 @@
 package by.students.grsu.entities;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
 //аукционы происходят каждые 2 часа: от 0:00 до 22:00
 //enum AUCTION_TIME {AUCTIONat0,AUCTIONat2,AUCTIONat4,AUCTIONat6,AUCTIONat8,AUCTIONat12,AUCTIONat14,AUCTIONat16,AUCTIONat18,AUCTIONat20,AUCTIONat22}
 
-@Component
 public class Auction {
     List lots;
     //start time, end time? mb only start time (fixed duration)? or using Enum?
