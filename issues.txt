@@ -1,2 +1,2 @@
 0.packaging war in pom and clean package in configuration
-
+1.used jstl lib for jsp -- in deps and jsp

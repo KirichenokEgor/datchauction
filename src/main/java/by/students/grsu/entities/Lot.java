@@ -15,14 +15,14 @@ public class Lot {
 
     final static int TIMES = 24;// 2 hours auction, every 5 minutes
 
-    Lot(String id, Double price, Double min_price, String description){
-        ID = id;
-        this.price = price;
-        this.min_price = min_price;
-        this.description = description;
-        step = (price - min_price)/TIMES;
-        status = STATUS.WAITING;
-    }
+//    Lot(String id, Double price, Double min_price, String description){
+//        ID = id;
+//        this.price = price;
+//        this.min_price = min_price;
+//        this.description = description;
+//        step = (price - min_price)/TIMES;
+//        status = STATUS.WAITING;
+//    }
 
     public String getID() {
         return ID;
