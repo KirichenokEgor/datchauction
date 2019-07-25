@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lot regestration</title>
+</head>
+
+<body>
+<h2>Enter lot information</h2>
+<form method="post" action="#" th:action="@{/saveLot}" th:object="${lot}">
+    <table>
+        <tr>
+            <td><label th:text="ID" /></td>
+            <td><input type="text" th:field="*{ID}" /></td>
+        </tr>
+        <tr>
+            <td><label th:text="Price" /></td>
+            <td><input type="number" th:field="*{price}" /></td>
+        </tr>
+        <tr>
+            <td><label th:text="Min_price" /></td>
+            <td><input type="number" th:field="*{min_price}" /></td>
+        </tr>
+        <tr>
+            <td><label th:text="Description" /></td>
+            <td><input type="text" th:field="*{description}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

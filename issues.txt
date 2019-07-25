@@ -1,2 +1,3 @@
 0.packaging war in pom and clean package in configuration
-1.used jstl lib for jsp -- in deps and jsp
+1.used jstl lib for jsp -- in deps and jsp / also used forms - in jsp only
+2.problem - only 1 lot is available for creation -- works good with thymeleaf

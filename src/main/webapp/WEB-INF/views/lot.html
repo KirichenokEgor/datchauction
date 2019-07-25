@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lot Info</title>
+</head>
+<body>
+
+<h2>Lot Information</h2>
+<table>
+    <tr>
+        <td>ID</td>
+        <td th:text="${ID}"></td>
+    </tr>
+    <tr>
+    <tr>
+        <td>Price</td>
+        <td th:text="${price}"></td>
+    </tr>
+    <tr>
+        <td>Min price</td>
+        <td th:text="${min_price}"></td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td th:text="${description}"></td>
+    </tr>
+</table>
+</body>
+</html>
