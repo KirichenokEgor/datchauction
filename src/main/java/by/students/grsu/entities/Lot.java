@@ -10,6 +10,7 @@ public class Lot {
     private Double min_price;
     private String description;
     private Double step;
+    private Auction auction;
     //поставить аукцион не здесь, а добавлять лоты в аукцион
     private STATUS status;
 
@@ -67,5 +68,17 @@ public class Lot {
 
     public Double getStep() {
         return step;
+    }
+
+    public Auction getAuction() {
+        return auction;
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
+    }
+
+    public void setStep(Double step) {
+        this.step = step;
     }
 }

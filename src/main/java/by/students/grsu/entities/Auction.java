@@ -8,10 +8,12 @@ import java.util.List;
 
 public class Auction {
     List lots;
+    Integer durationMin;
     //start time, end time? mb only start time (fixed duration)? or using Enum?
 
     Auction(){
         lots = new ArrayList<Lot>();
+        durationMin = 60;
     }
 
     Auction(ArrayList<Lot> lots){
@@ -29,5 +31,19 @@ public class Auction {
     }
 
 
+    public Integer getDurationMin() {
+        return durationMin;
+    }
 
+    public void setDurationMin(Integer durationMin) {
+        this.durationMin = durationMin;
+    }
+
+    public List getLots() {
+        return lots;
+    }
+
+    public void setLots(List lots) {
+        this.lots = lots;
+    }
 }

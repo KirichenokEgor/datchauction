@@ -1,3 +1,24 @@
 0.packaging war in pom and clean package in configuration
 1.used jstl lib for jsp -- in deps and jsp / also used forms - in jsp only
 2.problem - only 1 lot is available for creation -- works good with thymeleaf
+3.problem - footer not in the bottom of the page
+4.problem - can't reach stylesheet - because idea doesn't build css
+
+
+
+
+
+
+Components:
+1.footer - KiriEg and KunAl from epam
+2.header - Datch Auction
+3.userMenu for Auction Dashboard
+4.adminMenu for Auction Dashboard
+
+
+
+tr - str
+td - col
+
+
+AFTER ALL delete style tags and plug-in styles.css

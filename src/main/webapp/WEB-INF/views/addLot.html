@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>Lot regestration</title>
 </head>
-
 <body>
-<h2>Enter lot information</h2>
+<!--<style th:insert="components :: styles"></style>-->
+<header th:insert="components :: header"></header>
+<h3>Enter lot information</h3>
 <form method="post" action="#" th:action="@{/saveLot}" th:object="${lot}">
     <table>
         <tr>
@@ -32,5 +33,7 @@
         </tr>
     </table>
 </form>
+<div th:insert="components :: backHome"></div>
+<footer th:insert="components :: footer"></footer>
 </body>
 </html>

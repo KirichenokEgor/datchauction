@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footer">
+    <p>© 2019 Kirichenok Egor and Kunec Alexey, EPAM Systems</p>
+</footer>
+<header th:fragment="header">
+    <h2>Datch Auction</h2>
+</header>
+<div th:fragment="userMenu" class="widget">
+    <h3 class="widget-title">Menu</h3>
+    <ul class="widget-list">
+        <li><a href="">Auction list</a></li>
+        <li><a href="">Active auctions</a></li>
+        <li><a href="">Lots</a></li>
+    </ul>
+</div>
+<div th:fragment="adminMenu" class="widget">
+    <h3 class="widget-title">Menu</h3>
+    <ul class="widget-list">
+        <li><a href="">Auction list</a></li>
+        <li><a href="">Active auctions</a></li>
+        <li><a href="">Lots</a></li>
+<!--       TO-DO add something-->
+    </ul>
+</div>
+<div th:fragment="backHome">
+    <a href="/app/home">Back to the home page</a>
+</div>
+</body>
+</html>

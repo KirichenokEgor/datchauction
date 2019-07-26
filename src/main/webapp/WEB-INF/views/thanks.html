@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanks</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<h3>Congretulations!</h3>
+<p th:text=${username}></p>
+<p>You have just purchased a lot!</p>
+<a href="/app/lotInfo">Lot Information</a>
+<br>
+<a>Thanks for visiting our Datch Auction site.</a>
+<div th:insert="components :: backHome"></div>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

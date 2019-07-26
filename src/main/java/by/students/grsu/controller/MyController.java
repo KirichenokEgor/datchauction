@@ -1,5 +1,6 @@
 package by.students.grsu.controller;
 
+import by.students.grsu.entities.Auction;
 import by.students.grsu.entities.Lot;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,21 +44,47 @@ public class MyController {
 //        return "list";
 //    }
     @RequestMapping(value = "/addLot", method = RequestMethod.GET)
-    public ModelAndView lot() {
+    public ModelAndView addLot(@ModelAttribute("auction")Auction auc) {
         ModelAndView mv = new ModelAndView("addLot");
+        mv.addObject("auction", auc);
         mv.addObject("lot", new Lot());
         return mv;
-//        return new ModelAndView("addLot", "command", new Lot());
     }
 
     @RequestMapping(value = "/saveLot", method = RequestMethod.POST)
-    public String addItem(@ModelAttribute Lot lot,
+    public String lotInfo(@ModelAttribute("lot") Lot lot, @ModelAttribute("auction") Auction auc,
                              ModelMap model) {
+        if(lot.getAuction() != null) lot.setAuction(auc);
+//        lot.setStep();
         model.addAttribute("ID", lot.getID());
         model.addAttribute("price", lot.getPrice());
         model.addAttribute("min_price", lot.getMin_price());
         model.addAttribute("description", lot.getDescription());
+        model.addAttribute("auction", lot.getAuction());
 
+        return "lot";
+    }
+
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String home(ModelMap model) {
+        model.addAttribute("username", "THERE_SHOULD_BE_NAME");
+        return "index";
+    }
+
+    @RequestMapping(value = "/thanks", method = RequestMethod.GET)
+    public String thanks(ModelMap model, @ModelAttribute("lot") Lot lot) {
+        model.addAttribute("username", "THERE_SHOULD_BE_NAME");
+        model.addAttribute("lot", lot);
+        return "thanks";
+    }
+
+    @RequestMapping(value = "/lotInfo", method = RequestMethod.GET)
+    public String lotInfo(ModelMap model, @ModelAttribute("lot") Lot lot) {
+        model.addAttribute("ID", lot.getID());
+        model.addAttribute("price", lot.getPrice());
+        model.addAttribute("min_price", lot.getMin_price());
+        model.addAttribute("description", lot.getDescription());
+        model.addAttribute("auction", lot.getAuction());
         return "lot";
     }
 }
