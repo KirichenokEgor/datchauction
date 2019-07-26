@@ -6,7 +6,6 @@
 </head>
 <body>
 <style>
-* {box-sizing: border-box; margin: 0;}
 .widget {
   padding: 20px 30px;
   background: white;
@@ -41,12 +40,17 @@
 }
 .widget-list a:hover {color: #b99d61;}
 </style>
+<header th:insert="components :: header"></header>
+<hr>
 <table>
     <tr>
         <td>Logged as:</td>
         <td th:text="${username}">
     </tr>
 </table>
+<hr>
 <div th:insert="components :: userMenu" ></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
 </body>
 </html>

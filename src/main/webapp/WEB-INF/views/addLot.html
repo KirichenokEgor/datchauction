@@ -7,6 +7,7 @@
 <body>
 <!--<style th:insert="components :: styles"></style>-->
 <header th:insert="components :: header"></header>
+<hr>
 <h3>Enter lot information</h3>
 <form method="post" action="#" th:action="@{/saveLot}" th:object="${lot}">
     <table>
@@ -33,7 +34,9 @@
         </tr>
     </table>
 </form>
+<hr>
 <div th:insert="components :: backHome"></div>
+<hr>
 <footer th:insert="components :: footer"></footer>
 </body>
 </html>
