@@ -14,7 +14,15 @@ public class Lot {
     //поставить аукцион не здесь, а добавлять лоты в аукцион
     private STATUS status;
 
-    final static int TIMES = 24;// 2 hours auction, every 5 minutes
+    public Lot(){
+        ID = "hz";
+        price = 384.99;
+        min_price = 0.99;
+        description = "a piece of sh*t.";
+        status = STATUS.WAITING;
+    }
+
+//    final static int TIMES = 24;// 2 hours auction, every 5 minutes
 
 //    Lot(String id, Double price, Double min_price, String description){
 //        ID = id;

@@ -10,7 +10,7 @@
 <div th:fragment="userMenu" class="widget">
     <h3 class="widget-title">Menu</h3>
     <ul class="widget-list">
-        <li><a href="">Auction list</a></li>
+        <li><a href="/app/auctionList">Auction list</a></li>
         <li><a href="">Active auctions</a></li>
         <li><a href="">Lots</a></li>
     </ul>
@@ -18,7 +18,7 @@
 <div th:fragment="adminMenu" class="widget">
     <h3 class="widget-title">Menu</h3>
     <ul class="widget-list">
-        <li><a href="">Auction list</a></li>
+        <li><a href="/app/auctionList">Auction list</a></li>
         <li><a href="">Active auctions</a></li>
         <li><a href="">Lots</a></li>
 <!--       TO-DO add something-->
@@ -26,6 +26,48 @@
 </div>
 <div th:fragment="backHome">
     <a href="/app/home">Back to the home page</a>
+</div>
+<div th:fragment="aucList">
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="300px">ID</td>
+            <td width="100px">Start time</td>
+            <td width="50px"></td>
+            <td width="50px"></td>
+        </tr>
+        <tbody>
+        <tr th:each="auc: ${auctions}">
+            <td width="300px" th:text="${auc.getId()}"></td>
+            <td width="100px" th:text="${auc.getStart_time()}"></td>
+            <td width="50px"><input type="button" value="View" align="center"></td>
+            <td width="50px"><input type="button" value="Subscribe" align="center"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:fragment="lotList">
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="300px">ID</td>
+            <td width="100px">Price</td>
+            <td width="100px">Min price</td>
+            <td width="500px">Description</td>
+        </tr>
+        <tbody>
+        <tr th:each="lot: ${auction.getLots()}">
+            <td width="300px" th:text="${lot.getID()}"></td>
+            <td width="100px" th:text="${lot.getPrice()}"></td>
+            <td width="100px" th:text="${lot.getMin_price()}"></td>
+            <td width="500px" th:text="${lot.getDescription()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <table>
+        <tr>
+            <td width="50px"><input type="button" value="Subscribe" align="center"></td>
+            <td width="50px"><input type="button" value="Add lot" align="center"></td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MyController {
@@ -86,5 +87,27 @@ public class MyController {
         model.addAttribute("description", lot.getDescription());
         model.addAttribute("auction", lot.getAuction());
         return "lot";
+    }
+
+    @RequestMapping(value = "/auctionList", method = RequestMethod.GET)
+    public String watchAuctions(ModelMap model) {
+//        TO-DO fetch auctions from DB
+        List<Auction> auctions = new ArrayList<Auction>();
+        for(int i = 0; i < 10; i++) auctions.add(new Auction());
+        model.addAttribute("auctions", auctions);
+//        model.addAttribute();
+        return "auctionList";
+    }
+
+    @RequestMapping(value = "/lotList", method = RequestMethod.GET)
+    public String watchLots(ModelMap model/*, @ModelAttribute("auction") Auction auc*/) {
+        Auction auc = new Auction();
+        for(int i = 0; i < 10; i++) {
+            Lot lot = new Lot();
+            lot.setAuction(auc);
+            auc.addLot(lot);
+        }
+        model.addAttribute("auction", auc);
+        return "lotList";
     }
 }
