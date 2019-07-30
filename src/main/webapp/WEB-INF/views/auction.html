@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Auction Information</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<h3>Auction Information</h3>
+<table>
+    <tr>
+        <td>ID</td>
+        <td th:text="${id}"></td>
+    </tr>
+    <tr>
+        <td>Start_time</td>
+        <td th:text="${start_time}"></td>
+    </tr>
+    <tr>
+        <td>Duration(in minutes)</td>
+        <td th:text="${durationMin}"></td>
+    </tr>
+</table>
+<hr>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

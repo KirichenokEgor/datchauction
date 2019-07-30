@@ -9,7 +9,8 @@
 <header th:insert="components :: header"></header>
 <hr>
 <h3>Enter lot information</h3>
-<form method="post" action="#" th:action="@{/saveLot}" th:object="${lot}">
+<form method="post" action="#" th:action="@{/{id}/saveLot(id=${id})}" th:object="${lot}">
+<!--    <input type="hidden" th:field="${id}" />-->
     <table>
         <tr>
             <td><label th:text="ID" /></td>
@@ -17,11 +18,11 @@
         </tr>
         <tr>
             <td><label th:text="Price" /></td>
-            <td><input type="number" th:field="*{price}" /></td>
+            <td><input type="number" step="0.01" th:field="*{price}" /></td>
         </tr>
         <tr>
             <td><label th:text="Min_price" /></td>
-            <td><input type="number" th:field="*{min_price}" /></td>
+            <td><input type="number" step="0.01" th:field="*{min_price}" /></td>
         </tr>
         <tr>
             <td><label th:text="Description" /></td>

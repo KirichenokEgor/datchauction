@@ -39,8 +39,10 @@
         <tr th:each="auc: ${auctions}">
             <td width="300px" th:text="${auc.getId()}"></td>
             <td width="100px" th:text="${auc.getStart_time()}"></td>
-            <td width="50px"><input type="button" value="View" align="center"></td>
-            <td width="50px"><input type="button" value="Subscribe" align="center"></td>
+<!--            <td width="50px"><input type="button" value="View" align="center" onclick="location.href='/app/lotList/{auc.getId()}';"></td>-->
+<!--            <td width="50px"><input type="button" value="Subscribe" align="center"></td>-->
+            <td width="50px"><a th:href="@{/{id}/lotList(id=${auc.getId()})}" >View</a></td>
+            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auc.getId()})}" >Subscribe</a></td>
         </tr>
         </tbody>
     </table>
@@ -64,8 +66,8 @@
     </table>
     <table>
         <tr>
-            <td width="50px"><input type="button" value="Subscribe" align="center"></td>
-            <td width="50px"><input type="button" value="Add lot" align="center"></td>
+            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auction.getId()})}" >Subscribe</a></td>
+            <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getId()})}" >Add lot</a></td>
         </tr>
     </table>
 </div>

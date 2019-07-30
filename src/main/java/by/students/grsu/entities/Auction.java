@@ -31,6 +31,14 @@ public class Auction {
         this.start_time = start_time;
     }
 
+    public static Integer getMinFreeId() {
+        return minFreeId;
+    }
+
+    public static void setMinFreeId(Integer minFreeId) {
+        Auction.minFreeId = minFreeId;
+    }
+
     void iteration(){
         Lot lot;
         //тут либо делать проверку на статус лота, либо сразу убирать купленные

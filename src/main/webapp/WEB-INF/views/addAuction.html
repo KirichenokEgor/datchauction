@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Auction Regestration</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<h3>Enter auction information</h3>
+<form method="post" action="#" th:action="@{/saveAuction}" th:object="${auc}">
+    <!--    <input type="hidden" th:field="${id}" />-->
+    <table>
+<!--        <tr>-->
+<!--            <td><label th:text="ID" /></td>-->
+<!--            <td><input type="text" th:field="*{id}" /></td>-->
+<!--        </tr>-->
+        <tr>
+            <td><label th:text="Start_time" /></td>
+            <td><input type="time" th:field="*{start_time}" /></td>
+        </tr>
+        <tr>
+            <td><label th:text="Duration_in_minutes" /></td>
+            <td><input type="number" th:field="*{durationMin}" /></td>
+        </tr>
+<!--        <tr>-->
+<!--            <td><label th:text="Description" /></td>-->
+<!--            <td><input type="text" th:field="*{description}" /></td>-->
+<!--        </tr>-->
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<hr>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>
