@@ -3,7 +3,6 @@ package by.students.grsu.entities;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 //аукционы происходят каждые 2 часа: от 0:00 до 22:00
 //enum AUCTION_TIME {AUCTIONat0,AUCTIONat2,AUCTIONat4,AUCTIONat6,AUCTIONat8,AUCTIONat12,AUCTIONat14,AUCTIONat16,AUCTIONat18,AUCTIONat20,AUCTIONat22}
@@ -14,6 +13,7 @@ public class Auction {
     List lots;
     Integer durationMin;
     Time start_time;
+    private final static Integer step_duration = 5;
 
     //start time, end time? mb only start time (fixed duration)? or using Enum?
 
@@ -25,7 +25,7 @@ public class Auction {
     }
 
     Auction(ArrayList<Lot> lots, Integer durationMin, Time start_time){
-        this.lots = (ArrayList)lots.clone();
+        this.lots = (ArrayList) lots.clone();
         id = minFreeId++;
         this.durationMin = durationMin;
         this.start_time = start_time;
@@ -37,6 +37,10 @@ public class Auction {
 
     public static void setMinFreeId(Integer minFreeId) {
         Auction.minFreeId = minFreeId;
+    }
+
+    public static Integer getStep_duration() {
+        return step_duration;
     }
 
     void iteration(){

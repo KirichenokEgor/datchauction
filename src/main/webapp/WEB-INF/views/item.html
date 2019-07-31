@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lot Info</title>
+    <title>Item Info</title>
 </head>
 <body>
 <header th:insert="components :: header"></header>
@@ -14,20 +14,8 @@
         <td th:text="${ID}"></td>
     </tr>
     <tr>
-        <td>Price</td>
-        <td th:text="${price}"></td>
-    </tr>
-    <tr>
-        <td>Min price</td>
-        <td th:text="${min_price}"></td>
-    </tr>
-    <tr>
         <td>Description</td>
         <td th:text="${description}"></td>
-    </tr>
-    <tr>
-        <td>Auction</td>
-        <td th:text="${auction}"></td>
     </tr>
 </table>
 <hr>

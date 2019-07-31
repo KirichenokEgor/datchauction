@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Item regestration</title>
+</head>
+<body>
+<!--<style th:insert="components :: styles"></style>-->
+<header th:insert="components :: header"></header>
+<hr>
+<h3>Enter item information</h3>
+<form method="post" action="#" th:action="@{/saveItem(id=${id})}" th:object="${item}">
+<!--    <input type="hidden" th:field="${id}" />-->
+    <table>
+        <tr>
+            <td><label th:text="ID" /></td>
+            <td><input type="text" minlength="3" th:field="*{ID}" required></td>
+        </tr>
+        <tr>
+            <td><label th:text="Description" /></td>
+            <td><input type="text" th:field="*{description}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<hr>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

@@ -1,6 +1,6 @@
 0.packaging war in pom and clean package in configuration
 1.used jstl lib for jsp -- in deps and jsp / also used forms - in jsp only
-2.problem - only 1 lot is available for creation -- works good with thymeleaf
+2.problem - only 1 item is available for creation -- works good with thymeleaf
 3.problem - footer not in the bottom of the page
 4.problem - can't reach stylesheet - because idea doesn't build css
 

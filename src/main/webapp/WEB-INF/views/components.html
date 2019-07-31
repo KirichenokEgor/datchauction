@@ -10,17 +10,19 @@
 <div th:fragment="userMenu" class="widget">
     <h3 class="widget-title">Menu</h3>
     <ul class="widget-list">
-        <li><a href="/app/auctionList">Auction list</a></li>
-        <li><a href="">Active auctions</a></li>
-        <li><a href="">Lots</a></li>
+        <li><a th:href="@{/auctionList}">Auction list</a></li>
+        <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>
+        <li><a th:href="@{/allLotList}">Lots</a></li>
+        <li><a th:href="@{/freeItems}">Free items</a></li>
     </ul>
 </div>
 <div th:fragment="adminMenu" class="widget">
     <h3 class="widget-title">Menu</h3>
     <ul class="widget-list">
-        <li><a href="/app/auctionList">Auction list</a></li>
-        <li><a href="">Active auctions</a></li>
-        <li><a href="">Lots</a></li>
+        <li><a th:href="@{/auctionList}">Auction list</a></li>
+        <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>
+        <li><a th:href="@{/allLotList}">Lots</a></li>
+        <li><a th:href="@{/freeItems}">Free items</a></li>
 <!--       TO-DO add something-->
     </ul>
 </div>

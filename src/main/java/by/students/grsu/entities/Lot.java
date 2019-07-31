@@ -1,10 +1,13 @@
 package by.students.grsu.entities;
 
-enum STATUS {ON_SELL,SOLD,WAITING}
+import java.util.ArrayList;
+import java.util.List;
 
+enum LOT_STATUS {EXIST, ADDED_TO_AUCTION, ON_SELL, SOLD}
 
 public class Lot {
-//    сделать id цифрой и через статик задавать наименьший свободный или взять имя(проблема неуникальности имени)
+    //    сделать id цифрой и через статик задавать наименьший свободный или взять имя(проблема неуникальности имени)
+    private List<Item> items;
     private String ID;
     private Double price;
     private Double min_price;
@@ -12,26 +15,25 @@ public class Lot {
     private Double step;
     private Auction auction;
     //поставить аукцион не здесь, а добавлять лоты в аукцион
-    private STATUS status;
+    private LOT_STATUS status;
 
     public Lot(){
-        ID = "hz";
-        price = 384.99;
-        min_price = 0.99;
+        items = new ArrayList<Item>();
+        ID = "hhz";
+        price = 999.99;
+        min_price = 0.01;
         description = "a piece of sh*t.";
-        status = STATUS.WAITING;
+        status = LOT_STATUS.EXIST;
     }
 
-//    final static int TIMES = 24;// 2 hours auction, every 5 minutes
+    public void addItem(Item item){
+        items.add(item);
+        item.setStatus(ITEM_STATUS.WITHIN_LOT);
+    }
 
-//    Lot(String id, Double price, Double min_price, String description){
-//        ID = id;
-//        this.price = price;
-//        this.min_price = min_price;
-//        this.description = description;
-//        step = (price - min_price)/TIMES;
-//        status = STATUS.WAITING;
-//    }
+    public void countStep(){
+        step = (price - min_price) / auction.getDurationMin() * Auction.getStep_duration();
+    }
 
     public String getID() {
         return ID;
@@ -66,11 +68,11 @@ public class Lot {
         this.description = description;
     }
 
-    public STATUS getStatus() {
+    public LOT_STATUS getStatus() {
         return status;
     }
 
-    public void setStatus(STATUS status) {
+    public void setStatus(LOT_STATUS status) {
         this.status = status;
     }
 
@@ -84,9 +86,11 @@ public class Lot {
 
     public void setAuction(Auction auction) {
         this.auction = auction;
+        countStep();
+        status = LOT_STATUS.ADDED_TO_AUCTION;
     }
-
-    public void setStep(Double step) {
-        this.step = step;
-    }
+//
+//    public void setStep(Double step) {
+//        this.step = step;
+//    }
 }
