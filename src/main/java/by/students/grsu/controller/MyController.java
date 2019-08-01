@@ -32,15 +32,19 @@ public class MyController {
         System.out.println("Core: OK");
     }
     @GetMapping({"/login","/"})
-    public String login(Model model) {
-        if(!model.containsAttribute("loginMessage")) {
-            TempUser tu = new TempUser();
-            model.addAttribute("loginMessage", "");
-            model.addAttribute("tempUser", tu);
-        }
-        return "login";
+    public ModelAndView login() {
+//        if(!model.containsAttribute("loginMessage")) {
+//            TempUser tu = new TempUser();
+//            model.addAttribute("loginMessage", "");
+//            model.addAttribute("tempUser", tu);
+//        }
+        TempUser tu = new TempUser();
+        ModelAndView mv = new ModelAndView("login");
+        mv.addObject("loginMessage", "");
+        mv.addObject("tempUser", tu);
+        return mv;
     }
-    @GetMapping("/confirmLogin")
+    @PostMapping("/confirmLogin")
     public String confirmLogin(@ModelAttribute("tempUser") TempUser tu, Model model) {
         try {
             model.addAttribute("user", core.login(tu.getEmail(),tu.getPassword()));
@@ -95,39 +99,49 @@ public class MyController {
     public String itemInfo(@ModelAttribute("item") Item item,
                           ModelMap model) {
         //there should be adding item to the db
+        item.setId(item.getId() - 1);
+        Item.setMinFreeId(Item.getMinFreeId() - 1);
         freeItems.add(item);
-        //TO-DO add list of items as attribute
         model.addAttribute("ID", item.getId());
+        model.addAttribute("name", item.getName());
         model.addAttribute("description", item.getDescription());
         model.addAttribute("status", item.getStatus());
+        //как-то передать owner и добавить его в атрибуты
+        item.setOwner("THERE_SHOULD_BE_OWNER");
+
+        model.addAttribute("owner", item.getOwner());
 
         return "item";
     }
 
-    @RequestMapping(value = "/{id}/addLot", method = RequestMethod.GET)
-    public ModelAndView addLot(@PathVariable("id") Integer id) {
+    @RequestMapping(value = "/{a_id}/addLot", method = RequestMethod.GET)
+    public ModelAndView addLot(@PathVariable("a_id") Integer a_id) {
         ModelAndView mv = new ModelAndView("addLot");
 //        mv.addObject("auction", aucs.get(id-1));
-        mv.addObject("id", id);
+        mv.addObject("a_id", a_id);
         mv.addObject("lot", new Lot());
         return mv;
     }
 
-    @RequestMapping(value = "/{id}/saveLot", method = RequestMethod.POST)
-    public String lotInfo(@ModelAttribute("lot") Lot lot, @PathVariable("id") Integer id,
+    @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.POST)
+    public String lotInfo(@ModelAttribute("lot") Lot lot, @PathVariable("a_id") Integer a_id,
                           ModelMap model) {
-        Auction auc = aucs.get(id-1);
+        Auction auc = aucs.get(a_id-1);
         if(lot.getAuction() == null) lot.setAuction(auc);
         //there should be adding lot to the db : or better modifying existing auction in db
 
-
+        lot.setId(lot.getId() - 1);
+        Lot.setMinFreeId(Lot.getMinFreeId() - 1);
         auc.addLot(lot);
         //TO-DO add list of items as attribute
-        model.addAttribute("ID", lot.getID());
+        model.addAttribute("ID", lot.getId());
+        model.addAttribute("name", lot.getName());
         model.addAttribute("price", lot.getPrice());
         model.addAttribute("min_price", lot.getMin_price());
         model.addAttribute("description", lot.getDescription());
         model.addAttribute("auction", lot.getAuction().getId());
+
+        model.addAttribute("minID", Lot.getMinFreeId());
 
         return "lot";
     }
@@ -153,13 +167,13 @@ public class MyController {
         return "auction";
     }
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String home(ModelMap model) {
-        //should add user as attribute and check? is user logged in
-
-        model.addAttribute("user.username", "THERE_SHOULD_BE_NAME");
-        return "index";
-    }
+//    @RequestMapping(value = "/home", method = RequestMethod.GET)
+//    public String home(ModelMap model) {
+//        //should add user as attribute and check is user logged in
+//
+//        model.addAttribute("user.username", "THERE_SHOULD_BE_NAME");
+//        return "index";
+//    }
 
     @RequestMapping(value = "/thanks", method = RequestMethod.GET)
     public String thanks(ModelMap model, @ModelAttribute("lot") Lot lot) {
@@ -178,7 +192,8 @@ public class MyController {
     public String lotInfo(ModelMap model, @ModelAttribute("lot") Lot lot) {
 
         //TO-DO add list of items as attribute
-        model.addAttribute("ID", lot.getID());
+        model.addAttribute("ID", lot.getId());
+        model.addAttribute("name", lot.getName());
         model.addAttribute("price", lot.getPrice());
         model.addAttribute("min_price", lot.getMin_price());
         model.addAttribute("description", lot.getDescription());
@@ -201,5 +216,14 @@ public class MyController {
         Auction auc = aucs.get(id-1);
         model.addAttribute("auction", auc);
         return "lotList";
+    }
+
+    @RequestMapping(value = "/freeItems", method = RequestMethod.GET)
+    public String watchFreeItems(ModelMap model) {
+//        TO-DO fetch items from DB
+        if(freeItems.size() < 10) for(int i = 0; i < 10; i++) freeItems.add(new Item());
+        model.addAttribute("items", freeItems);
+//        model.addAttribute();
+        return "freeItemList";
     }
 }

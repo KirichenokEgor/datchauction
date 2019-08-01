@@ -52,14 +52,16 @@
 <div th:fragment="lotList">
     <table border="1" cellspacing="0">
         <tr>
-            <td width="300px">ID</td>
+            <td width="100px">ID</td>
+            <td width="300px">Name</td>
             <td width="100px">Price</td>
             <td width="100px">Min price</td>
             <td width="500px">Description</td>
         </tr>
         <tbody>
         <tr th:each="lot: ${auction.getLots()}">
-            <td width="300px" th:text="${lot.getID()}"></td>
+            <td width="100px" th:text="${lot.getId()}"></td>
+            <td width="300px" th:text="${lot.getName()}"></td>
             <td width="100px" th:text="${lot.getPrice()}"></td>
             <td width="100px" th:text="${lot.getMin_price()}"></td>
             <td width="500px" th:text="${lot.getDescription()}"></td>
@@ -70,6 +72,32 @@
         <tr>
             <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auction.getId()})}" >Subscribe</a></td>
             <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getId()})}" >Add lot</a></td>
+        </tr>
+    </table>
+</div>
+<div th:fragment="itemList">
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="100px">ID</td>
+            <td width="100px">Name</td>
+            <td width="500px">Description</td>
+            <td width="200px">Status</td>
+            <td width="200px">Owner</td>
+        </tr>
+        <tbody>
+        <tr th:each="item: ${items}">
+            <td width="100px" th:text="${item.getId()}"></td>
+            <td width="100px" th:text="${item.getName()}"></td>
+            <td width="500px" th:text="${item.getDescription()}"></td>
+            <td width="200px" th:text="${item.getStatus()}"></td>
+            <td width="200px" th:text="${item.getOwner()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <table>
+        <tr>
+            <td width="100px"><a th:href="@{/addItem}" >Add item</a></td>
+<!--            <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getId()})}" >Add to lot</a></td>-->
         </tr>
     </table>
 </div>

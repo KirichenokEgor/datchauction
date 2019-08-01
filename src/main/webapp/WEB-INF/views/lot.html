@@ -7,11 +7,15 @@
 <body>
 <header th:insert="components :: header"></header>
 <hr>
-<h3>Item Information</h3>
+<h3>Lot Information</h3>
 <table>
     <tr>
         <td>ID</td>
         <td th:text="${ID}"></td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td th:text="${name}"></td>
     </tr>
     <tr>
         <td>Price</td>
@@ -28,6 +32,10 @@
     <tr>
         <td>Auction</td>
         <td th:text="${auction}"></td>
+    </tr>
+    <tr>
+        <td>MinID</td>
+        <td th:text="${minID}"></td>
     </tr>
 </table>
 <hr>

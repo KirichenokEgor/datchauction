@@ -2,19 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Item regestration</title>
+    <title>Item registration</title>
 </head>
 <body>
-<!--<style th:insert="components :: styles"></style>-->
 <header th:insert="components :: header"></header>
 <hr>
 <h3>Enter item information</h3>
-<form method="post" action="#" th:action="@{/saveItem(id=${id})}" th:object="${item}">
-<!--    <input type="hidden" th:field="${id}" />-->
+<form method="post" action="#" th:action="@{/saveItem}" th:object="${item}">
     <table>
         <tr>
-            <td><label th:text="ID" /></td>
-            <td><input type="text" minlength="3" th:field="*{ID}" required></td>
+            <td><label th:text="Name" /></td>
+            <td><input type="text" minlength="3" th:field="*{name}" required></td>
         </tr>
         <tr>
             <td><label th:text="Description" /></td>

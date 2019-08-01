@@ -4,12 +4,30 @@
     <title>Login Page</title>
 </head>
 <body>
+<header th:insert="components :: header"></header>
+<hr>
+<h3>Login Page</h3>
 <div th:text = "${loginMessage}"></div><br>
-<form action="#" th:action="@{/confirmLogin}" th:object="${tempUser}">
-    Email <input type="text" th:field="*{email}" /><br>
-    Password <input type="password" th:field="*{password}" /><br>
-    <button type="submit" name="LoginButton" value="0">Login</button>
+<form action="#" th:action="@{/confirmLogin}" th:object="${tempUser}" method="post">
+    <table>
+        <tr>
+            <td><label th:text="Email" /></td>
+            <td><input type="email" minlength="6" th:field="*{email}" required></td>
+        </tr>
+        <tr>
+            <td><label th:text="Password" /></td>
+            <td><input type="password" minlength="4" th:field="*{password}" required></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Login"/>
+            </td>
+        </tr>
+    </table>
 </form>
- Have no account? <a href="registration.html">Create new</a><br>
+<hr>
+ Have no account? <a th:href="@{/registration}">Create new</a><br>
+<hr>
+<footer th:insert="components :: footer"></footer>
 </body>
 </html>

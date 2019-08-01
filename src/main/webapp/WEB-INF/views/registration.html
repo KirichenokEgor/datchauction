@@ -4,13 +4,36 @@
     <title>Registration new user</title>
 </head>
 <body>
+<header th:insert="components :: header"></header>
+<hr>
+<h3>Registration Page</h3>
 <div th:text = "${registrationMessage}"/><br>
 <form action="#" th:action="@{/confirmRegistration}" th:object="${tempUser}">
-    Username <input type="text" th:field="*{username}"/><br>
-    Email <input type="email" th:field="*{email}"/><br>
-    Password <input type="password" th:field="*{password}" /><br>
-    Confirm Password <input type="password" th:field="*{confirmPassword}"/><br>
-    <button type="submit">Confirm</button>
+    <table>
+        <tr>
+            <td><label th:text="Username" /></td>
+            <td><input type="text" minlength="4" th:field="*{username}" required></td>
+        </tr>
+        <tr>
+            <td><label th:text="Email" /></td>
+            <td><input type="email" minlength="6" th:field="*{email}" required></td>
+        </tr>
+        <tr>
+            <td><label th:text="Password" /></td>
+            <td><input type="password" minlength="4" th:field="*{password}" required></td>
+        </tr>
+        <tr>
+            <td><label th:text="Confirm_Password" /></td>
+            <td><input type="password" minlength="4" th:field="*{confirmPassword}" required></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Confirm and login"/>
+            </td>
+        </tr>
+    </table>
 </form>
+<hr>
+<footer th:insert="components :: footer"></footer>
 </body>
 </html>

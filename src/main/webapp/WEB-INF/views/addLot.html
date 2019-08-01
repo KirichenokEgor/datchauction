@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lot regestration</title>
+    <title>Lot registration</title>
 </head>
 <body>
 <header th:insert="components :: header"></header>
@@ -31,11 +31,11 @@
 <!--}, false);-->
 <!--</script>-->
 <!--<p id="error"></p>-->
-<form id="form" method="post" action="#" th:action="@{/{id}/saveLot(id=${id})}" th:object="${lot}">
+<form id="form" method="post" action="#" th:action="@{/{a_id}/saveLot(a_id=${a_id})}" th:object="${lot}">
     <table>
         <tr>
-            <td><label th:text="ID" /></td>
-            <td><input type="text" minlength="3" th:field="*{ID}" required></td>
+            <td><label th:text="Name" /></td>
+            <td><input type="text" minlength="3" th:field="*{name}" required></td>
         </tr>
         <tr>
             <td><label th:text="Price" /></td>

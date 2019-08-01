@@ -7,8 +7,10 @@ enum LOT_STATUS {EXIST, ADDED_TO_AUCTION, ON_SELL, SOLD}
 
 public class Lot {
     //    сделать id цифрой и через статик задавать наименьший свободный или взять имя(проблема неуникальности имени)
+    private static Integer minFreeId = 1;
     private List<Item> items;
-    private String ID;
+    private String name;
+    private Integer id;
     private Double price;
     private Double min_price;
     private String description;
@@ -18,12 +20,21 @@ public class Lot {
     private LOT_STATUS status;
 
     public Lot(){
+        id = minFreeId++;
         items = new ArrayList<Item>();
-        ID = "hhz";
+        name = "hhz";
         price = 999.99;
         min_price = 0.01;
         description = "a piece of sh*t.";
         status = LOT_STATUS.EXIST;
+    }
+
+    public static Integer getMinFreeId() {
+        return minFreeId;
+    }
+
+    public static void setMinFreeId(Integer minFreeId) {
+        Lot.minFreeId = minFreeId;
     }
 
     public void addItem(Item item){
@@ -33,15 +44,6 @@ public class Lot {
 
     public void countStep(){
         step = (price - min_price) / auction.getDurationMin() * Auction.getStep_duration();
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    //mb delete
-    public void setID(String ID) {
-        this.ID = ID;
     }
 
     public Double getPrice() {
@@ -88,6 +90,30 @@ public class Lot {
         this.auction = auction;
         countStep();
         status = LOT_STATUS.ADDED_TO_AUCTION;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 //
 //    public void setStep(Double step) {
