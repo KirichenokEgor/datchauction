@@ -5,35 +5,39 @@ enum ITEM_STATUS {FREE, WITHIN_LOT}
 
 public class Item {
 //    сделать id цифрой и через статик задавать наименьший свободный или взять имя(проблема неуникальности имени)
-    private String ID;
+    private static Integer minFreeId = 1;
+    private Integer id;
+    private String name;
     private String description;
     //private Auction auction;
-    ITEM_STATUS status;
+    private ITEM_STATUS status;
+    private String owner;
 
     public Item(){
-        ID = "hhz";
+        id = minFreeId++;
+        name = "hhz";
         description = "a piece of sh*t.";
         status = ITEM_STATUS.FREE;
     }
-
-//    final static int TIMES = 24;// 2 hours auction, every 5 minutes
-
-//    Lot(String id, Double price, Double min_price, String description){
-//        ID = id;
-//        this.price = price;
-//        this.min_price = min_price;
-//        this.description = description;
-//        step = (price - min_price)/TIMES;
-//        status = STATUS.WAITING;
-//    }
-
-    public String getID() {
-        return ID;
+    public Item(Integer id, String name, String description, String status, String owner){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        if(status.equals("WITHIN_LOT")) this.status = ITEM_STATUS.WITHIN_LOT;
+        else this.status = ITEM_STATUS.FREE;
+        this.owner = owner;
     }
 
-    //mb delete
-    public void setID(String ID) {
-        this.ID = ID;
+    public static Integer getMinFreeId() {
+        return minFreeId;
+    }
+
+    public static void setMinFreeId(Integer minFreeId) {
+        Item.minFreeId = minFreeId;
+    }
+
+    public void setOwner(String newOwner){
+        owner=newOwner;
     }
 
     public String getDescription() {
@@ -50,6 +54,26 @@ public class Item {
 
     public ITEM_STATUS getStatus() {
         return status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getOwner() {
+        return owner;
     }
 
 //    public Auction getAuction() {

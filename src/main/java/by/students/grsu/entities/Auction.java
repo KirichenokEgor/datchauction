@@ -4,15 +4,13 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-//аукционы происходят каждые 2 часа: от 0:00 до 22:00
-//enum AUCTION_TIME {AUCTIONat0,AUCTIONat2,AUCTIONat4,AUCTIONat6,AUCTIONat8,AUCTIONat12,AUCTIONat14,AUCTIONat16,AUCTIONat18,AUCTIONat20,AUCTIONat22}
 
 public class Auction {
-    static Integer minFreeId = 1;
-    Integer id;
-    List lots;
-    Integer durationMin;
-    Time start_time;
+    private static Integer minFreeId = 1;
+    private Integer id;
+    private List lots;
+    private Integer durationMin;
+    private Time start_time;
     private final static Integer step_duration = 5;
 
     //start time, end time? mb only start time (fixed duration)? or using Enum?

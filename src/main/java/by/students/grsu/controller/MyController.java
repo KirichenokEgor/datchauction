@@ -1,9 +1,8 @@
 package by.students.grsu.controller;
 
-import by.students.grsu.entities.Auction;
-import by.students.grsu.entities.Item;
-import by.students.grsu.entities.Lot;
+import by.students.grsu.entities.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +14,74 @@ import java.util.List;
 public class MyController {
     List<Auction> aucs = new ArrayList<Auction>();
     List<Item> freeItems = new ArrayList<Item>();
+
+    //alexey's code
+    private Core core;
+    public MyController(){
+        System.out.println(" ===============================================================================================\n"+
+                "|  ______             _          __             _                      _    _                   |\n"+
+                "| |_   _ `.          / |_       [  |           / \\                    / |_ (_)                  |\n"+
+                "|   | | `. \\ __   _ `| |-'.---.  | |--.       / _ \\    __   _   .---.`| |-'__   .--.   _ .--.   |\n"+
+                "|   | |  | |[  | | | | | / /'`\\] | .-. |     / ___ \\  [  | | | / /'`\\]| | [  |/ .'`\\ \\[ `.-. |  |\n"+
+                "|  _| |_.' / | \\_/ |,| |,| \\__.  | | | |   _/ /   \\ \\_ | \\_/ |,| \\__. | |, | || \\__. | | | | |  |\n"+
+                "| |______.'  '.__.'_/\\__/'.___.'[___]|__] |____| |____|'.__.'_/'.___.'\\__/[___]'.__.' [___||__] |\n"+
+                " ===============================================================================================");
+        System.out.println("Initializing...");
+        System.out.println("Controller: OK");
+        core = Core.Initialize();
+        System.out.println("Core: OK");
+    }
+    @GetMapping({"/login","/"})
+    public String login(Model model) {
+        if(!model.containsAttribute("loginMessage")) {
+            TempUser tu = new TempUser();
+            model.addAttribute("loginMessage", "");
+            model.addAttribute("tempUser", tu);
+        }
+        return "login";
+    }
+    @GetMapping("/confirmLogin")
+    public String confirmLogin(@ModelAttribute("tempUser") TempUser tu, Model model) {
+        try {
+            model.addAttribute("user", core.login(tu.getEmail(),tu.getPassword()));
+            return "index";
+        } catch (AuctionException e) {
+            if(e.getCode()==11 || e.getCode()==12){
+                model.addAttribute("loginMessage","Wrong email or password. Try again");
+            }else model.addAttribute("loginMessage","Internal error. Sorry about that. Try again later");
+        }
+        return "login";
+    }
+    @RequestMapping("/registration")
+    public String Registration(Model model){
+        if(!model.containsAttribute("tempUser")) {
+            TempUser tu = new TempUser();
+            model.addAttribute("tempUser", tu);
+        }
+        model.addAttribute("registrationMessage", "Please enter all fields correctly");
+        return "registration";
+    }
+    @RequestMapping("/confirmRegistration")
+    public String confirmRegistration(@ModelAttribute("tempUser")TempUser tu,Model model){
+        //TODO request registration
+        if(isRegistrationValid(tu)) {
+            try {
+                model.addAttribute("user",core.registration(tu.getEmail(),tu.getPassword(),tu.getUsername()));
+                return "index";
+            } catch (AuctionException e) {
+                if(e.getCode()==13)model.addAttribute("registrationMessage", "This email is already using!");
+                if(e.getCode()==14)model.addAttribute("registrationMessage", "This nickname is already using. Please create another one");
+            }
+        }
+        else model.addAttribute("registrationMessage", "Password and confirm not match.");
+        return "registration";
+    }
+    private boolean isRegistrationValid(TempUser tu){
+        if(!tu.getPassword().equals(tu.getConfirmPassword()))return false;
+        //TODO check nickname,email,passwordDifficult...
+        return true;
+    }
+    ///////////////////end alexey's code
 
 
     @RequestMapping(value = "/addItem", method = RequestMethod.GET)
@@ -30,7 +97,7 @@ public class MyController {
         //there should be adding item to the db
         freeItems.add(item);
         //TO-DO add list of items as attribute
-        model.addAttribute("ID", item.getID());
+        model.addAttribute("ID", item.getId());
         model.addAttribute("description", item.getDescription());
         model.addAttribute("status", item.getStatus());
 
@@ -88,7 +155,9 @@ public class MyController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String home(ModelMap model) {
-        model.addAttribute("username", "THERE_SHOULD_BE_NAME");
+        //should add user as attribute and check? is user logged in
+
+        model.addAttribute("user.username", "THERE_SHOULD_BE_NAME");
         return "index";
     }
 

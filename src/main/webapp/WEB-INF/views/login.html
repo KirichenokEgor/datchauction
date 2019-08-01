@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+<div th:text = "${loginMessage}"></div><br>
+<form action="#" th:action="@{/confirmLogin}" th:object="${tempUser}">
+    Email <input type="text" th:field="*{email}" /><br>
+    Password <input type="password" th:field="*{password}" /><br>
+    <button type="submit" name="LoginButton" value="0">Login</button>
+</form>
+ Have no account? <a href="registration.html">Create new</a><br>
+</body>
+</html>
