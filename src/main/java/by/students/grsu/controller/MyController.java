@@ -5,12 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
+import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
+@SessionAttributes("user")
 public class MyController {
     List<Auction> aucs = new ArrayList<Auction>();
     List<Item> freeItems = new ArrayList<Item>();
@@ -33,11 +39,6 @@ public class MyController {
     }
     @GetMapping({"/login","/"})
     public ModelAndView login() {
-//        if(!model.containsAttribute("loginMessage")) {
-//            TempUser tu = new TempUser();
-//            model.addAttribute("loginMessage", "");
-//            model.addAttribute("tempUser", tu);
-//        }
         TempUser tu = new TempUser();
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("loginMessage", "");
@@ -66,7 +67,7 @@ public class MyController {
         return "registration";
     }
     @RequestMapping("/confirmRegistration")
-    public String confirmRegistration(@ModelAttribute("tempUser")TempUser tu,Model model){
+    public String confirmRegistration(@ModelAttribute("tempUser")TempUser tu, Model model){
         //TODO request registration
         if(isRegistrationValid(tu)) {
             try {
@@ -89,33 +90,36 @@ public class MyController {
 
 
     @RequestMapping(value = "/addItem", method = RequestMethod.GET)
-    public ModelAndView addItem() {
+    public ModelAndView addItem(@ModelAttribute("user") User user) {
         ModelAndView mv = new ModelAndView("addItem");
         mv.addObject("item", new Item());
         return mv;
     }
 
     @RequestMapping(value = "/saveItem", method = RequestMethod.POST)
-    public String itemInfo(@ModelAttribute("item") Item item,
+    public String itemInfo(@ModelAttribute("item") Item item, @ModelAttribute("user") User user,
                           ModelMap model) {
         //there should be adding item to the db
-        item.setId(item.getId() - 1);
-        Item.setMinFreeId(Item.getMinFreeId() - 1);
-        freeItems.add(item);
+        try {
+            item = core.getIM().addItem(item.getName(),item.getDescription(), item.getStatusAsString(), user.getUsername());
+            //model.addAttribute("item", item);
+        }catch (SQLException e){
+            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
+        }catch (AuctionException e){
+            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+        }
+
         model.addAttribute("ID", item.getId());
         model.addAttribute("name", item.getName());
         model.addAttribute("description", item.getDescription());
         model.addAttribute("status", item.getStatus());
-        //как-то передать owner и добавить его в атрибуты
-        item.setOwner("THERE_SHOULD_BE_OWNER");
-
         model.addAttribute("owner", item.getOwner());
 
         return "item";
     }
 
     @RequestMapping(value = "/{a_id}/addLot", method = RequestMethod.GET)
-    public ModelAndView addLot(@PathVariable("a_id") Integer a_id) {
+    public ModelAndView addLot(@PathVariable("a_id") Integer a_id, @ModelAttribute("user") User user) {
         ModelAndView mv = new ModelAndView("addLot");
 //        mv.addObject("auction", aucs.get(id-1));
         mv.addObject("a_id", a_id);
@@ -124,7 +128,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.POST)
-    public String lotInfo(@ModelAttribute("lot") Lot lot, @PathVariable("a_id") Integer a_id,
+    public String lotInfo(@ModelAttribute("lot") Lot lot,  @ModelAttribute("user") User user, @PathVariable("a_id") Integer a_id,
                           ModelMap model) {
         Auction auc = aucs.get(a_id-1);
         if(lot.getAuction() == null) lot.setAuction(auc);
@@ -141,20 +145,18 @@ public class MyController {
         model.addAttribute("description", lot.getDescription());
         model.addAttribute("auction", lot.getAuction().getId());
 
-        model.addAttribute("minID", Lot.getMinFreeId());
-
         return "lot";
     }
 
     @RequestMapping(value = "/addAuction", method = RequestMethod.GET)
-    public ModelAndView addAuction() {
+    public ModelAndView addAuction(@ModelAttribute("user") User user) {
         ModelAndView mv = new ModelAndView("addAuction");
         mv.addObject("auc", new Auction());
         return mv;
     }
 
     @RequestMapping(value = "/saveAuction", method = RequestMethod.POST)
-    public String auctionInfo(@ModelAttribute("auc") Auction auc,
+    public String auctionInfo(@ModelAttribute("auc") Auction auc,  @ModelAttribute("user") User user,
                           ModelMap model) {
         auc.setId(auc.getId() - 1);
         Auction.setMinFreeId(Auction.getMinFreeId() - 1);
@@ -167,29 +169,27 @@ public class MyController {
         return "auction";
     }
 
-//    @RequestMapping(value = "/home", method = RequestMethod.GET)
-//    public String home(ModelMap model) {
-//        //should add user as attribute and check is user logged in
-//
-//        model.addAttribute("user.username", "THERE_SHOULD_BE_NAME");
-//        return "index";
-//    }
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String home(ModelMap model, @ModelAttribute("user") User user) {
+        //should add user as attribute and check is user logged in
+
+        model.addAttribute("user", user);
+        return "index";
+    }
 
     @RequestMapping(value = "/thanks", method = RequestMethod.GET)
-    public String thanks(ModelMap model, @ModelAttribute("lot") Lot lot) {
-        model.addAttribute("username", "THERE_SHOULD_BE_NAME");
+    public String thanks(ModelMap model, @ModelAttribute("lot") Lot lot, @ModelAttribute("user") User user) {
         model.addAttribute("lot", lot);
         return "thanks";
     }
 
     @RequestMapping(value = "/sorry", method = RequestMethod.GET)
-    public String sorry(ModelMap model) {
-        model.addAttribute("username", "THERE_SHOULD_BE_NAME");
+    public String sorry(ModelMap model, @ModelAttribute("user") User user) {
         return "sorry";
     }
 
     @RequestMapping(value = "/lotInfo", method = RequestMethod.GET)
-    public String lotInfo(ModelMap model, @ModelAttribute("lot") Lot lot) {
+    public String lotInfo(ModelMap model, @ModelAttribute("lot") Lot lot, @ModelAttribute("user") User user) {
 
         //TO-DO add list of items as attribute
         model.addAttribute("ID", lot.getId());
@@ -202,7 +202,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/auctionList", method = RequestMethod.GET)
-    public String watchAuctions(ModelMap model) {
+    public String watchAuctions(ModelMap model, @ModelAttribute("user") User user) {
 //        TO-DO fetch auctions from DB
 //        List<Auction> auctions = new ArrayList<Auction>();
         if(aucs.size() < 10) for(int i = 0; i < 10; i++) aucs.add(new Auction());
@@ -212,18 +212,38 @@ public class MyController {
     }
 
     @RequestMapping(value = "/{id}/lotList", method = RequestMethod.GET)
-    public String watchLots(ModelMap model, @PathVariable("id") Integer id/*, @ModelAttribute("auction") Auction auc*/) {
+    public String watchLots(ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("user") User user/*, @ModelAttribute("auction") Auction auc*/) {
         Auction auc = aucs.get(id-1);
         model.addAttribute("auction", auc);
         return "lotList";
     }
 
     @RequestMapping(value = "/freeItems", method = RequestMethod.GET)
-    public String watchFreeItems(ModelMap model) {
+    public String watchFreeItems(ModelMap model, @ModelAttribute("user") User user) {
 //        TO-DO fetch items from DB
-        if(freeItems.size() < 10) for(int i = 0; i < 10; i++) freeItems.add(new Item());
-        model.addAttribute("items", freeItems);
+        try {
+            //core.getIM().addItem("Item","descr", "FREE", "KiriEg");
+            List<Item> items = core.getIM().getItemsByOwner(user.getUsername());
+            model.addAttribute("items", items);
+        }catch (SQLException e){
+            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
+        }catch (AuctionException e){
+            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+        }
+
+
+//        if(freeItems.size() < 10) for(int i = 0; i < 10; i++) freeItems.add(new Item());
+//        model.addAttribute("items", freeItems);
 //        model.addAttribute();
         return "freeItemList";
+    }
+
+    @RequestMapping(value = "/finish", method = RequestMethod.GET)
+    public String goodbye(@ModelAttribute User user, HttpSession session, SessionStatus status) {
+        /**
+         * store User ...
+         */
+        status.setComplete();
+        return "redirect:/login";
     }
 }

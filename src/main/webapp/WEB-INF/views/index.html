@@ -42,12 +42,7 @@
 </style>
 <header th:insert="components :: header"></header>
 <hr>
-<table>
-    <tr>
-        <td>Logged as:</td>
-        <td th:text="${user.username}"></td>
-    </tr>
-</table>
+<div th:insert="components :: loggedAsAndLogout" ></div>
 <hr>
 <div th:insert="components :: userMenu" ></div>
 <hr>

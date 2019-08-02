@@ -5,7 +5,7 @@ enum ITEM_STATUS {FREE, WITHIN_LOT}
 
 public class Item {
 //    сделать id цифрой и через статик задавать наименьший свободный или взять имя(проблема неуникальности имени)
-    private static Integer minFreeId = 1;
+    private static Integer minFreeId = 1; // убрать мб к чертям, ибо id из базы выбирается
     private Integer id;
     private String name;
     private String description;
@@ -14,7 +14,7 @@ public class Item {
     private String owner;
 
     public Item(){
-        id = minFreeId++;
+        //id = minFreeId++;
         name = "hhz";
         description = "a piece of sh*t.";
         status = ITEM_STATUS.FREE;
@@ -26,6 +26,11 @@ public class Item {
         if(status.equals("WITHIN_LOT")) this.status = ITEM_STATUS.WITHIN_LOT;
         else this.status = ITEM_STATUS.FREE;
         this.owner = owner;
+    }
+
+    public String getStatusAsString(){
+        if(status == ITEM_STATUS.WITHIN_LOT) return "WITHIN_LOT";
+        else return "FREE";
     }
 
     public static Integer getMinFreeId() {

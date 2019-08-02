@@ -1,4 +1,7 @@
 package by.students.grsu.entities;
+
+import java.util.ArrayList;
+
 enum UserRole {
     Seller,
     Buyer,
@@ -46,5 +49,6 @@ public class User {
     public String userInfo(){
         return "Username: " + username + "\nEmail: "+email + "\nRole: "+role.toString();
     }
+
 
 }

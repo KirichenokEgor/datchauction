@@ -101,5 +101,17 @@
         </tr>
     </table>
 </div>
+<div th:fragment="logout">
+    <a th:href="@{/finish}">Log out</a>
+</div>
+<div th:fragment="loggedAsAndLogout">
+    <table>
+        <tr>
+            <td>Logged as:</td>
+            <td width="300px" th:text="${user.username}"></td>
+            <td><div th:insert="components :: logout" ></div></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

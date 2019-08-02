@@ -50,4 +50,8 @@ public class Core {
             throw new AuctionException("Internal error",0);
         }
     }
+
+    public ItemsManager getIM() {
+        return IM;
+    }
 }
