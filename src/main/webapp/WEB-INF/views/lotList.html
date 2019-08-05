@@ -9,6 +9,8 @@
 <hr>
 <div th:insert="components :: loggedAsAndLogout" ></div>
 <hr>
+<h3>Auction information</h3>
+<hr>
 <table>
     <tr>
         <td width="100px"><b>ID</b></td>
@@ -21,11 +23,11 @@
         <td width="150px" th:text="${auction.getDurationMin()}"></td>
     </tr>
 </table>
-
 <hr>
 <h3>Lot List</h3>
 <hr>
-<header th:insert="components :: lotList"></header>
+<div th:insert="components :: lotList"></div>
+<div th:insert="components :: lotListButtons"></div>
 <hr>
 <div th:insert="components :: backHome"></div>
 <hr>

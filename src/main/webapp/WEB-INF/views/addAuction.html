@@ -11,12 +11,7 @@
 <hr>
 <h3>Enter auction information</h3>
 <form method="post" action="#" th:action="@{/saveAuction}" th:object="${auc}">
-    <!--    <input type="hidden" th:field="${id}" />-->
     <table>
-<!--        <tr>-->
-<!--            <td><label th:text="ID" /></td>-->
-<!--            <td><input type="text" th:field="*{id}" /></td>-->
-<!--        </tr>-->
         <tr>
             <td><label th:text="Start_time" /></td>
             <td><input type="time" th:field="*{start_time}" required /></td>
@@ -25,10 +20,6 @@
             <td><label th:text="Duration_in_minutes" /></td>
             <td><input type="number" th:field="*{durationMin}" required /></td>
         </tr>
-<!--        <tr>-->
-<!--            <td><label th:text="Description" /></td>-->
-<!--            <td><input type="text" th:field="*{description}" /></td>-->
-<!--        </tr>-->
         <tr>
             <td colspan="2">
                 <input type="submit" value="Submit"/>
@@ -37,6 +28,7 @@
     </table>
 </form>
 <hr>
+<div th:insert="components :: backToList"></div>
 <div th:insert="components :: backHome"></div>
 <hr>
 <footer th:insert="components :: footer"></footer>

@@ -68,6 +68,8 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div th:fragment="lotListButtons">
     <table>
         <tr>
             <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auction.getId()})}" >Subscribe</a></td>
@@ -94,10 +96,12 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div th:fragment="itemListButtons">
     <table>
         <tr>
             <td width="100px"><a th:href="@{/addItem}" >Add item</a></td>
-<!--            <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getId()})}" >Add to lot</a></td>-->
+            <td width="100px"><a th:href="@{/deleteItem}" >Delete item</a></td>
         </tr>
     </table>
 </div>
@@ -112,6 +116,9 @@
             <td><div th:insert="components :: logout" ></div></td>
         </tr>
     </table>
+</div>
+<div th:fragment="backToList">
+    <a th:href="@{/{back}(back=${back})}">Back to list</a>
 </div>
 </body>
 </html>
