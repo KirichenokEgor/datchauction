@@ -16,14 +16,23 @@
 <!--            <td><input type="text" th:field="*{id}" /></td>-->
 <!--        </tr>-->
         <tr>
-            <td><label th:text="Start_time" /></td>
-            <td><input type="time" th:field="*{start_time}" required /></td>
+            <td><label th:text="Description" /></td>
+            <td><input type="text" th:field="*{description}" required /></td>
         </tr>
         <tr>
-            <td><label th:text="Duration_in_minutes" /></td>
-            <td><input type="number" th:field="*{durationMin}" required /></td>
+            <td><label th:text="Start time" /></td>
+            <td><input type="time" th:field="*{startTime}" required /></td>
         </tr>
-<!--        <tr>-->
+        <tr>
+            <td><label th:text="Max duration in minutes" /></td>
+            <td><input type="number" th:field="*{maxDuration}" required /></td>
+        </tr>
+        <tr>
+            <td><label th:text="Max lots" /></td>
+            <td><input type="number" th:field="*{maxLots}" required /></td>
+        </tr>
+
+        <!--        <tr>-->
 <!--            <td><label th:text="Description" /></td>-->
 <!--            <td><input type="text" th:field="*{description}" /></td>-->
 <!--        </tr>-->

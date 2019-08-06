@@ -8,6 +8,7 @@
 <header th:insert="components :: header"></header>
 <hr>
 <h3>Item List</h3>
+<div th:text = "${errMessage}"></div><br>
 <div th:insert="components :: itemList"></div>
 <hr>
 <div th:insert="components :: backHome"></div>

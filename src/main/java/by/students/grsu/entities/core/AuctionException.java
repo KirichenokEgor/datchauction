@@ -1,8 +1,8 @@
-package by.students.grsu.entities;
+package by.students.grsu.entities.core;
 
 public class AuctionException extends Exception {
     private int code;
-    public AuctionException(String message, int code){
+    public AuctionException(String message,int code){
         super();
         this.code=code;
     }
@@ -14,6 +14,9 @@ public class AuctionException extends Exception {
     // 21 - Item not found
     // 22 - This user has no items
     // 31 - Auction not found
+    // 32 - Max lots are reached
+    // 33 - Auction is not planned yet
+    // 41 - Buyer can't make or have items
     public int getCode() {
         return code;
     }
