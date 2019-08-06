@@ -35,16 +35,14 @@
             <td width="300px">ID</td>
             <td width="100px">Start time</td>
             <td width="50px"></td>
-<!--            <td width="50px"></td> -->
+            <td width="50px"></td>
         </tr>
         <tbody>
         <tr th:each="auc: ${auctions}">
             <td width="300px" th:text="${auc.getID()}"></td>
             <td width="100px" th:text="${auc.getBeginTime()}"></td>
-<!--            <td width="50px"><input type="button" value="View" align="center" onclick="location.href='/app/lotList/{auc.getId()}';"></td>-->
-<!--            <td width="50px"><input type="button" value="Subscribe" align="center"></td>-->
             <td width="50px"><a th:href="@{/{id}/lotList(id=${auc.getID()})}" >View</a></td>
-<!--            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auc.getId()})}" >Subscribe</a></td> -->
+            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auc.getID()})}" >Subscribe</a></td>
         </tr>
         </tbody>
     </table>
@@ -68,6 +66,8 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div th:fragment="lotListButtons">
     <table>
         <tr>
             <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auction.getID()})}" >Subscribe</a></td>
@@ -94,12 +94,29 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div th:fragment="itemListButtons">
     <table>
         <tr>
             <td width="100px"><a th:href="@{/addItem}" >Add item</a></td>
-<!--            <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getId()})}" >Add to lot</a></td>-->
+            <td width="100px"><a th:href="@{/deleteItem}" >Delete item</a></td>
         </tr>
     </table>
+</div>
+<div th:fragment="logout">
+    <a th:href="@{/finish}">Log out</a>
+</div>
+<div th:fragment="loggedAsAndLogout">
+    <table>
+        <tr>
+            <td>Logged as:</td>
+            <td width="300px" th:text="${user.username}"></td>
+            <td><div th:insert="components :: logout" ></div></td>
+        </tr>
+    </table>
+</div>
+<div th:fragment="backToList">
+    <a th:href="@{/{back}(back=${back})}">Back to list</a>
 </div>
 </body>
 </html>

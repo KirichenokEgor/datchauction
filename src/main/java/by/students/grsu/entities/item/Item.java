@@ -7,6 +7,16 @@ public class Item implements ItemInfo {
     private Boolean onLot;
     private String owner;
     //m.b. image
+
+    public Item(int ID, String name, String description, String status, String owner){
+        this.ID = ID;
+        this.name = name;
+        this.description = description;
+        if(status.equals("FREE"))onLot = false;
+        else onLot = true;
+        this.owner = owner;
+    }
+
     public Item(int ID,String name,String description,String owner){
         this.ID = ID;
         this.name = name;

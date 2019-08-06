@@ -7,6 +7,8 @@
 <body>
 <header th:insert="components :: header"></header>
 <hr>
+<div th:insert="components :: loggedAsAndLogout" ></div>
+<hr>
 <h3>Lot Information</h3>
 <table>
     <tr>
@@ -33,12 +35,9 @@
         <td>Auction</td>
         <td th:text="${auction}"></td>
     </tr> -->
-  <!--  <tr>
-        <td>MinID</td>
-        <td th:text="${minID}"></td>
-    </tr> -->
 </table>
 <hr>
+<div th:insert="components :: backToList"></div>
 <div th:insert="components :: backHome"></div>
 <hr>
 <footer th:insert="components :: footer"></footer>

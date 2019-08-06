@@ -7,7 +7,7 @@ public class Lot implements ActiveLot, LotInfo {
     private int ID;
     private String name;
     private double currentPrice;
-    private double priceStep;
+    private double priceStep;//todo auto calculate
     private double minPrice;
     private List<ItemInfo> items;
     private LotStatus status;

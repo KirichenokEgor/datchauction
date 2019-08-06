@@ -8,10 +8,13 @@
 <body>
     <header th:insert="components :: header"></header>
     <hr>
+    <div th:insert="components :: loggedAsAndLogout" ></div>
+    <hr>
     <h3>Auction List</h3>
     <hr>
     <header th:insert="components :: aucList"></header>
     <hr>
+    <a th:href="@{/addAuction}" >Add auction</a>
     <div th:insert="components :: backHome"></div>
     <hr>
     <footer th:insert="components :: footer"></footer>

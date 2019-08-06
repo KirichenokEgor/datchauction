@@ -8,12 +8,21 @@ public class TempAuction {
     private String description;
     private int maxLots;
 
+    public TempAuction() {
+        startTime = LocalTime.now();
+        maxDuration = 60;
+        maxLots = 10;
+    }
+
     public LocalTime getStartTime() {
         return startTime;
     }
 
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
+    }
+    public void setStartTime(String startTime) {
+        this.startTime = LocalTime.parse(startTime);
     }
 
     public int getMaxDuration() {

@@ -105,7 +105,7 @@ public class Core implements AuctionsCore {
     //</ONLY FOR TESTS>
     public Item addItem(String name, String description, User owner) throws SQLException, AuctionException {
         if(owner.getRole()== UserRole.Buyer)throw new AuctionException("Buyer can't make or have items",41);
-        return IM.addItem(name, description, owner.getUsername());
+        return IM.addItem(name, description,  owner.getUsername());
     }
     public ItemInfo getItemById(int ID) throws SQLException, AuctionException {
         return IM.getItemById(ID);
@@ -140,7 +140,7 @@ public class Core implements AuctionsCore {
     public void deleteAuction(int ID){
         try {
             AM.deleteAuction(ID);
-            auctions.remove(ID);
+            auctions.remove(ID);//index in list does not match with ID
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -152,6 +152,10 @@ public class Core implements AuctionsCore {
     @Override
     public List<Auction> getAuctionsForThread() {
         return auctions;
+    }
+
+    public void deleteItemById(int ID) throws SQLException, AuctionException {
+        IM.deleteItemById(ID);
     }
 
     /*=======   DEBUG   =======*/
