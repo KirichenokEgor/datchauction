@@ -1,4 +1,4 @@
-package by.students.grsu.entities;
+package by.students.grsu.entities.users;
 
 public class TempUser {
     private String username;

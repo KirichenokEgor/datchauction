@@ -1,4 +1,4 @@
-package by.students.grsu.entities.core;
+package by.students.grsu.entities.services;
 
 import by.students.grsu.entities.auction.Auction;
 

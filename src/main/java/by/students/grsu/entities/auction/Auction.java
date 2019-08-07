@@ -1,8 +1,7 @@
 package by.students.grsu.entities.auction;
 
-import by.students.grsu.entities.core.AuctionException;
+import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.item.Item;
-import by.students.grsu.entities.item.ItemInfo;
 import by.students.grsu.entities.lot.*;
 
 import java.time.LocalTime;
@@ -19,8 +18,8 @@ public class Auction implements ActiveAuction, AuctionInfo {
     private int tick;   // in seconds
     private LocalTime beginTime;
     private int maxDuration;    //in minutes
-    public Auction(int ID,String description,int maxLots,LocalTime beginTime, int maxDuration){
-        this.ID = ID;
+    public Auction(int id,String description,int maxLots,LocalTime beginTime, int maxDuration){
+        this.ID = id;
         this.description = description;
         status=AuctionStatus.Disabled;
         //lots = new ArrayList<Lot>();
@@ -38,17 +37,17 @@ public class Auction implements ActiveAuction, AuctionInfo {
         }
         return false;
     }
-    public void createLot(String name, double startPrice, double priceStep, double minPrice, List<ItemInfo> items) throws AuctionException {
+    public void createLot(String name, double startPrice, double priceStep, double minPrice, List<Item> items) throws AuctionException {
         if(status!=AuctionStatus.Planned)throw new AuctionException("Auction is not planed yet or active",33);
         if(maxLots==lots.size())throw new AuctionException("Max lots are reached",32);
-        lots.add(new Lot(name,startPrice, priceStep, minPrice, items));
+        lots.add(new Lot(name,startPrice, minPrice,items));
         tick+=15;
     }
     //<ONLY FOR TESTS>
     public LotInfo createLot(String name,double startPrice, double priceStep, double minPrice) throws AuctionException {
         //if(status!=AuctionStatus.Planned)throw new AuctionException("Auction is not planed yet or active",33);
-       // if(maxLots==lots.size())throw new AuctionException("Max lots are reached",32);
-        Lot newLot = new Lot(name,startPrice, priceStep, minPrice);
+        //if(maxLots==lots.size())throw new AuctionException("Max lots are reached",32);
+        Lot newLot = new Lot(name,startPrice, minPrice);
         lots.add(newLot);
         tick+=15;
         return newLot;
@@ -62,10 +61,6 @@ public class Auction implements ActiveAuction, AuctionInfo {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    public AuctionStatus getStatus() {
-        return status;
     }
 
     @Override
@@ -87,17 +82,9 @@ public class Auction implements ActiveAuction, AuctionInfo {
         return lots;
     }
 
-    public void setLots(List<Lot> lots) {
-        this.lots = lots;
-    }
-
     @Override
     public int getTick() {
         return tick;
-    }
-
-    public void setTick(int tick) {
-        this.tick = tick;
     }
 
     @Override
@@ -105,31 +92,41 @@ public class Auction implements ActiveAuction, AuctionInfo {
         return maxDuration;
     }
 
-    public void setMaxDuration(int maxDuration) {
-        this.maxDuration = maxDuration;
+    @Override
+    public void makeDone() {
+        for(Lot lot : lots)
+            if(lot.getStatus()==LotStatus.Registered)
+                lot.makeEnded();
+        status=AuctionStatus.Done;
     }
 
     @Override
-    public void setStatus(AuctionStatus status) {
-        this.status = status;
+    public void makeActive() {
+        for(Lot lot : lots)
+            lot.calculatePriceStep(maxDuration/tick);
+        status=AuctionStatus.Active;
     }
 
     /*=======   DEBUG   =======*/
 
     public String getLotsInfo(){
         String log = "";
-        int ID=1;
+        int id=1;
         if(lots.isEmpty()) {
             log += "\t<empty>\n";
             return log;
         }
         for(Lot lot : lots){
-            log+="\t\t"+(ID++)+": curpr: "+lot.getCurrentPrice()+" stts: "+lot.getStatus()+"\n";
+            log+="\t\t"+(id++)+": curpr: "+lot.getCurrentPrice()+" stts: "+lot.getStatus()+"\n";
         }
         return log;
     }
 
     public int getMaxLots() {
         return maxLots;
+    }
+
+    public AuctionStatus getStatus() {
+        return status;
     }
 }

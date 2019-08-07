@@ -9,7 +9,6 @@ public interface ActiveLot {
 
     double getPriceStep();
 
-    double getMinPrice();
+    void calculatePriceStep(int ticks);
 
-    void setStatus(LotStatus status);
 }

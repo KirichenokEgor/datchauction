@@ -1,8 +1,8 @@
-package by.students.grsu.entities.database;
+package by.students.grsu.entities.dao;
 
-import by.students.grsu.entities.auction.AuctionStatus;
-import by.students.grsu.entities.core.AuctionException;
+import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.auction.Auction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,12 +11,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuctionsManager {
+public class AuctionDao {
     private Statement st;
     //private int aCount = 0;
-    public AuctionsManager(Statement st) throws SQLException {
-        this.st = st;
-    }
+//    public AuctionDao(Statement st) {
+//        this.st = st;
+//    }
     public Auction getAuctionById(int ID) throws SQLException, AuctionException {
         ResultSet rs = st.executeQuery("SELECT * FROM auctions WHERE ID="+ID);
         if(rs.next())
@@ -84,5 +84,9 @@ public class AuctionsManager {
                     +" WHERE ID="+auction.getID());
         else throw new AuctionException("Auction not found",31);
         return auction;
+    }
+    @Autowired
+    public void setSt(Statement st) {
+        this.st = st;
     }
 }

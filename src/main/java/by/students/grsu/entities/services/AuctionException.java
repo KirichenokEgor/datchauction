@@ -1,4 +1,4 @@
-package by.students.grsu.entities.core;
+package by.students.grsu.entities.services;
 
 public class AuctionException extends Exception {
     private int code;

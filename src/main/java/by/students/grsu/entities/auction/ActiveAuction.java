@@ -14,5 +14,6 @@ public interface ActiveAuction {
 
     int getMaxDuration();
 
-    void setStatus(AuctionStatus status);
+    void makeDone();
+    void makeActive();
 }

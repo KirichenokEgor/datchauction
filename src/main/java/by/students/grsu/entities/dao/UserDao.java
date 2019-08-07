@@ -1,15 +1,20 @@
-package by.students.grsu.entities.database;
+package by.students.grsu.entities.dao;
 
-import by.students.grsu.entities.core.AuctionException;
+import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.users.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.sql.*;
 
-public class UsersManager {
+public class UserDao {
     private Statement st;
-    public UsersManager(Statement st) throws SQLException {
-        this.st = st;
+//    public UserDao(Statement st){
+//        this.st = st;
+//    }
+    @Autowired
+    public void setSt(Statement st) {
+       this.st = st;
     }
     public User login(String email,String password) throws AuctionException, SQLException {
         ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email=\'"+email+"\'");

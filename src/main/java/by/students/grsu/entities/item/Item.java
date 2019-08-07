@@ -4,16 +4,14 @@ public class Item implements ItemInfo {
     private int ID;
     private String name;
     private String description;
-    private Boolean onLot;
     private String owner;
-    //m.b. image
+    private int lotID;
 
-    public Item(int ID, String name, String description, String status, String owner){
+    public Item(int ID, String name, String description, String owner,int lotID){
         this.ID = ID;
         this.name = name;
         this.description = description;
-        if(status.equals("FREE"))onLot = false;
-        else onLot = true;
+        this.lotID=lotID;
         this.owner = owner;
     }
 
@@ -21,25 +19,17 @@ public class Item implements ItemInfo {
         this.ID = ID;
         this.name = name;
         this.description = description;
-        this.onLot = false;
+        lotID=0;
         this.owner = owner;
     }
-    public void changeOwner(String newOwner){
-        owner=newOwner;
-    }
-    public boolean engage(){
-        if(onLot==false)onLot=true;
-        else return false;
-        return true;
-    }
-    public boolean isEngaged(){
-        return onLot;
-    }
 
-    public String itemInfo(){
-        return ID + ": " + name + "("+description+")";
+    public boolean isOnLot(){
+        if(lotID==0)return false;
+        else return true;
     }
-
+    public void lotCreated(int lotID){
+        this.lotID=lotID;
+    }
 
     @Override
     public String getName() {
@@ -65,7 +55,7 @@ public class Item implements ItemInfo {
 
     @Override
     public String getStatus(){
-        if(onLot)return "on lot";
+        if(lotID!=0)return "on lot";
         else return "free";
     }
 }

@@ -17,8 +17,7 @@ public class AuctionThread extends Thread{
 
     @Override
     public void run() {
-        //System.out.println("\nNew auction started");
-        auction.setStatus(AuctionStatus.Active);
+        auction.makeActive();
         try {
         while(true){
             if(LocalTime.now().isAfter(endTime))break;
@@ -27,17 +26,12 @@ public class AuctionThread extends Thread{
             for(ActiveLot lot : auction.getLots()) {
                 if (lot.getStatus() == LotStatus.Registered) {
                     allSold = false;
-                    if(lot.getCurrentPrice()<=lot.getMinPrice()){
-                        lot.setStatus(LotStatus.End);
-                        continue;
-                    }
                     lot.setCurrentPrice(lot.getCurrentPrice()-lot.getPriceStep());
                 }
             }
             if(allSold)break;
         }
-        auction.setStatus(AuctionStatus.Done);
-        //System.out.println("\nAuction ended");
+        auction.makeDone();
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.exit(-1);
