@@ -1,19 +1,14 @@
-package by.students.grsu.entities;
+package by.students.grsu.entities.users;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
-enum UserRole {
-    Seller,
-    Buyer,
-    Admin
-}
 public class User {
     private UserRole role;
     private String username;
     private String email;
     //private String password;
 
-    public User(String username, String email, String role){
+    public User(String username,String email, String role){
         this.setUsername(username);
         this.setEmail(email);
         //this.password=password;
@@ -26,7 +21,7 @@ public class User {
         return role;
     }
 
-    private void setRole(UserRole role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 

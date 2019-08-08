@@ -1,14 +1,20 @@
-package by.students.grsu.entities;
+package by.students.grsu.entities.dao;
+
+import by.students.grsu.entities.services.AuctionException;
+import by.students.grsu.entities.users.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
-public class UsersManager {
+public class UserDao {
     private Statement st;
-    public UsersManager(Statement st) throws SQLException {
-        this.st = st;
+//    public UserDao(Statement st){
+//        this.st = st;
+//    }
+    @Autowired
+    public void setSt(Statement st) {
+       this.st = st;
     }
     public User login(String email,String password) throws AuctionException, SQLException {
         ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email=\'"+email+"\'");
@@ -17,7 +23,7 @@ public class UsersManager {
             return new User(rs.getString("username"),rs.getString("email"),rs.getString("role"));
         else throw new AuctionException("Wrong password",12);
     }
-    public User registerNew(String email,String password,String username) throws AuctionException, SQLException {
+    public User registerNew(String email, String password, String username) throws AuctionException, SQLException {
         ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email=\'"+email+"\'");
         if(rs.next())throw new AuctionException("This email already using", 13);
         rs = st.executeQuery("SELECT * FROM users WHERE username=\'"+username+"\'");
