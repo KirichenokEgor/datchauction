@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorry</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<div th:insert="components :: loggedAsAndLogout" ></div>
+<hr>
+<h3>Sorry!</h3>
+<p>Somebody has already purchased this lot!</p>
+<br>
+<p>Thanks for visiting our Datch Auction site.</p>
+<hr>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

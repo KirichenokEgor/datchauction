@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -22,6 +23,11 @@ import java.util.List;
 @SessionAttributes("user")
 public class ItemController {
     private ItemService itemService;
+
+    @PostConstruct
+    private void postConstructor(){
+        System.out.println("ItemService: OK");
+    }
 
     @Autowired
     public void setItemService(ItemService itemService) {
@@ -70,6 +76,8 @@ public class ItemController {
             mv.addObject("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
         }catch (AuctionException e){
             mv.addObject("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+        }catch (Exception e){
+            mv.addObject("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }
         //mv.addObject("items", )
 
@@ -97,6 +105,8 @@ public class ItemController {
         }catch (AuctionException e){
             model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
             return "deleteItem";
+        }catch (Exception e){
+            model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }
 
         model.addAttribute("back", "freeItems");
@@ -113,6 +123,8 @@ public class ItemController {
             model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
         }catch (AuctionException e){
             model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+        }catch (Exception e){
+            model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }
 
         return "freeItemList";

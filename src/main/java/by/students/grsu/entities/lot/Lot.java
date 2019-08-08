@@ -48,6 +48,31 @@ public class Lot implements ActiveLot, LotInfo {
         }
         this.auctionId=auctionId;
     }
+    public Lot(int id,String name,double startPrice,double minPrice, String status,int auctionId,List<Item> itemList) throws Exception {
+        this.ID=id;
+        this.name=name;
+        this.currentPrice=startPrice;
+        this.minPrice=minPrice;
+        switch (status) {
+            case "registered": {
+                this.status = LotStatus.Registered;
+                break;
+            }
+            case "sold": {
+                this.status = LotStatus.Sold;
+                break;
+            }
+            case "end": {
+                this.status = LotStatus.End;
+                break;
+            }
+            default: {
+                throw new Exception("Wrong status name");
+            }
+        }
+        this.auctionId=auctionId;
+        this.items=itemList;
+    }
     public Lot(String name, double startPrice, double minPrice, List<Item> items,int auctionId){
         ID=0;
         this.name=name;

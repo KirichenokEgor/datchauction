@@ -31,23 +31,14 @@ public class MyController {
 //    private AuctionService auctionService;
 //    private AuctionPlatform auctionPlatform;
 
-    public MyController(){
-        System.out.println(" ===============================================================================================\n"+
-                "|  ______             _          __             _                      _    _                   |\n"+
-                "| |_   _ `.          / |_       [  |           / \\                    / |_ (_)                  |\n"+
-                "|   | | `. \\ __   _ `| |-'.---.  | |--.       / _ \\    __   _   .---.`| |-'__   .--.   _ .--.   |\n"+
-                "|   | |  | |[  | | | | | / /'`\\] | .-. |     / ___ \\  [  | | | / /'`\\]| | [  |/ .'`\\ \\[ `.-. |  |\n"+
-                "|  _| |_.' / | \\_/ |,| |,| \\__.  | | | |   _/ /   \\ \\_ | \\_/ |,| \\__. | |, | || \\__. | | | | |  |\n"+
-                "| |______.'  '.__.'_/\\__/'.___.'[___]|__] |____| |____|'.__.'_/'.___.'\\__/[___]'.__.' [___||__] |\n"+
-                " ===============================================================================================");
-        System.out.println("Initializing...");
-        System.out.println("Controller: OK");
-    }
+//    public MyController(){
+//        //System.out.println("Controller: OK");
+//    }
 
 
-    private void postConstructor(){
-        System.out.println("Services: OK");
-    }
+//    private void postConstructor(){
+//        System.out.println("Services: OK");
+//    }
 
 //    @GetMapping({"/login","/"})
 //    public ModelAndView login(SessionStatus status) {

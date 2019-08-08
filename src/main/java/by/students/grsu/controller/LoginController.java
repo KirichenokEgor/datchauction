@@ -11,10 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 @SessionAttributes("user")
 public class LoginController {
     private UserService userService;
+
+    @PostConstruct
+    private void postConstructor(){
+        System.out.println("UserLoginService: OK");
+    }
 
     @Autowired
     public void setUserService(UserService userService) {

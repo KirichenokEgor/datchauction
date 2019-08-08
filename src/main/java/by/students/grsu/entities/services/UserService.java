@@ -7,10 +7,13 @@ import by.students.grsu.entities.users.UserRole;
 import java.sql.SQLException;
 
 public class UserService {
-    private UserDao UM;
+    private UserDao UserDao;
+    public UserService(UserDao userDao){
+        this.UserDao=userDao;
+    }
     public User login(String email, String password) throws AuctionException{
         try {
-            return UM.login(email,password);
+            return UserDao.login(email,password);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new AuctionException("Internal error",0);
@@ -18,7 +21,7 @@ public class UserService {
     }
     public User registration(String email, String password, String username) throws AuctionException{
         try {
-            return UM.registerNew(email, password, username);
+            return UserDao.registerNew(email, password, username);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new AuctionException("Internal error",0);

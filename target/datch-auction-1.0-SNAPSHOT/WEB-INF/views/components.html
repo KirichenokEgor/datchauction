@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footer">
+    <p>© 2019 Kirichenok Egor and Kunec Alexey, EPAM Systems</p>
+</footer>
+<header th:fragment="header">
+    <h2>Datch Auction</h2>
+</header>
+<div th:fragment="userMenu" class="widget">
+    <h3 class="widget-title">Menu</h3>
+    <ul class="widget-list">
+        <li><a th:href="@{/auctionList}">Auction list</a></li>
+        <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>
+        <li><a th:href="@{/allLotList}">Lots</a></li>
+        <li><a th:href="@{/freeItems}">Free items</a></li>
+    </ul>
+</div>
+<div th:fragment="adminMenu" class="widget">
+    <h3 class="widget-title">Menu</h3>
+    <ul class="widget-list">
+        <li><a th:href="@{/auctionList}">Auction list</a></li>
+        <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>
+        <li><a th:href="@{/allLotList}">Lots</a></li>
+        <li><a th:href="@{/freeItems}">Free items</a></li>
+<!--       TO-DO add something-->
+    </ul>
+</div>
+<div th:fragment="backHome">
+    <a th:href="@{/home}">Back to the home page</a>
+</div>
+<div th:fragment="aucList">
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="300px">ID</td>
+            <td width="100px">Start time</td>
+            <td width="50px"></td>
+            <td width="50px"></td>
+        </tr>
+        <tbody>
+        <tr th:each="auc: ${auctions}">
+            <td width="300px" th:text="${auc.getID()}"></td>
+            <td width="100px" th:text="${auc.getBeginTime()}"></td>
+            <td width="50px"><a th:href="@{/{id}/lotList(id=${auc.getID()})}" >View</a></td>
+            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auc.getID()})}" >Subscribe</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:fragment="lotList">
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="100px">ID</td>
+            <td width="300px">Name</td>
+            <td width="100px">Price</td>
+      <!--      <td width="100px">Min price</td>
+            <td width="500px">Description</td>  -->
+        </tr>
+        <tbody>
+        <tr th:each="lot: ${auction.getILots()}">
+            <td width="100px" th:text="${lot.getID()}"></td>
+            <td width="300px" th:text="${lot.getName()}"></td>
+            <td width="100px" th:text="${lot.getCurrentPrice()}"></td>
+        <!--    <td width="100px" th:text="${lot.getMin_price()}"></td>
+            <td width="500px" th:text="${lot.getDescription()}"></td> -->
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:fragment="lotListButtons">
+    <table>
+        <tr>
+            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auction.getID()})}" >Subscribe</a></td>
+            <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getID()})}" >Add lot</a></td>
+        </tr>
+    </table>
+</div>
+<div th:fragment="itemList">
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="100px">ID</td>
+            <td width="100px">Name</td>
+            <td width="500px">Description</td>
+            <td width="200px">Status</td>
+            <td width="200px">Owner</td>
+        </tr>
+        <tbody>
+        <tr th:each="item: ${items}">
+            <td width="100px" th:text="${item.getID()}"></td>
+            <td width="100px" th:text="${item.getName()}"></td>
+            <td width="500px" th:text="${item.getDescription()}"></td>
+            <td width="200px" th:text="${item.getStatus()}"></td>
+            <td width="200px" th:text="${item.getOwner()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:fragment="itemListButtons">
+    <table>
+        <tr>
+            <td width="100px"><a th:href="@{/addItem}" >Add item</a></td>
+            <td width="100px"><a th:href="@{/deleteItem}" >Delete item</a></td>
+        </tr>
+    </table>
+</div>
+<div th:fragment="logout">
+    <a th:href="@{/finish}">Log out</a>
+</div>
+<div th:fragment="loggedAsAndLogout">
+    <table>
+        <tr>
+            <td>Logged as:</td>
+            <td width="300px" th:text="${user.username}"></td>
+            <td><div th:insert="components :: logout" ></div></td>
+        </tr>
+    </table>
+</div>
+<div th:fragment="backToList">
+    <a th:href="@{/{back}(back=${back})}">Back to list</a>
+</div>
+</body>
+</html>

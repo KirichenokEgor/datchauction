@@ -13,17 +13,39 @@ public class Auction implements ActiveAuction, AuctionInfo {
     private String description;
     private AuctionStatus status;
     private List<Lot> lots;
-    //private List<User> followers;
+    private int currentLots;
     private int maxLots;
     private int tick;   // in seconds
     private LocalTime beginTime;
     private int maxDuration;    //in minutes
-    public Auction(int id,String description,int maxLots,LocalTime beginTime, int maxDuration){
+    public Auction(int id,String description,int maxLots,LocalTime beginTime, int maxDuration, String status, int currentLots){
         this.ID = id;
         this.description = description;
-        status=AuctionStatus.Disabled;
-        //lots = new ArrayList<Lot>();
-     //   followers = new ArrayList<User>();
+        switch (status){
+            case "disabled":{this.status=AuctionStatus.Disabled; break;}
+            case "planned":{this.status=AuctionStatus.Planned; break;}
+            case "done":{this.status=AuctionStatus.Done;  break;}
+            case "active":{this.status=AuctionStatus.Active; break;}
+        }
+        //Disabled, Planned, Active, Done
+        this.maxLots = maxLots;
+        this.tick = 0;
+        this.beginTime = beginTime;
+        this.maxDuration=maxDuration;
+        this.currentLots=currentLots;
+    }
+    public Auction(int id,String description,int maxLots,LocalTime beginTime, int maxDuration, String status,List<Lot> lotList){
+        this.ID = id;
+        this.description = description;
+        switch (status){
+            case "disabled":{this.status=AuctionStatus.Disabled; break;}
+            case "planned":{this.status=AuctionStatus.Planned; break;}
+            case "done":{this.status=AuctionStatus.Done;  break;}
+            case "active":{this.status=AuctionStatus.Active; break;}
+        }
+        //Disabled, Planned, Active, Done
+        this.lots = lotList;
+        this.currentLots = lotList.size();
         this.maxLots = maxLots;
         this.tick = 0;
         this.beginTime = beginTime;
@@ -37,22 +59,14 @@ public class Auction implements ActiveAuction, AuctionInfo {
         }
         return false;
     }
-    public void createLot(String name, double startPrice, double priceStep, double minPrice, List<Item> items) throws AuctionException {
-        if(status!=AuctionStatus.Planned)throw new AuctionException("Auction is not planed yet or active",33);
-        if(maxLots==lots.size())throw new AuctionException("Max lots are reached",32);
-        lots.add(new Lot(name,startPrice, minPrice,items));
-        tick+=15;
+    public boolean hasFreeLots(){
+        if(currentLots<maxLots)return true;
+        else return false;
     }
-    //<ONLY FOR TESTS>
-    public LotInfo createLot(String name,double startPrice, double priceStep, double minPrice) throws AuctionException {
-        //if(status!=AuctionStatus.Planned)throw new AuctionException("Auction is not planed yet or active",33);
-        //if(maxLots==lots.size())throw new AuctionException("Max lots are reached",32);
-        Lot newLot = new Lot(name,startPrice, minPrice);
-        lots.add(newLot);
-        tick+=15;
-        return newLot;
+    public boolean hasAnyLots(){
+        if(currentLots>0)return true;
+        else return false;
     }
-    //</ONLY FOR TESTS>
     @Override
     public int getID() {
         return ID;
@@ -72,8 +86,8 @@ public class Auction implements ActiveAuction, AuctionInfo {
     public List<LotInfo> getILots() {
         List<LotInfo> infolist = new ArrayList<LotInfo>();
         if(lots!=null)
-        for(int i=0;i<lots.size();i++)
-            infolist.add(lots.get(i));
+            for(int i=0;i<lots.size();i++)
+                infolist.add(lots.get(i));
         return infolist;
     }
 
@@ -105,21 +119,6 @@ public class Auction implements ActiveAuction, AuctionInfo {
         for(Lot lot : lots)
             lot.calculatePriceStep(maxDuration/tick);
         status=AuctionStatus.Active;
-    }
-
-    /*=======   DEBUG   =======*/
-
-    public String getLotsInfo(){
-        String log = "";
-        int id=1;
-        if(lots.isEmpty()) {
-            log += "\t<empty>\n";
-            return log;
-        }
-        for(Lot lot : lots){
-            log+="\t\t"+(id++)+": curpr: "+lot.getCurrentPrice()+" stts: "+lot.getStatus()+"\n";
-        }
-        return log;
     }
 
     public int getMaxLots() {

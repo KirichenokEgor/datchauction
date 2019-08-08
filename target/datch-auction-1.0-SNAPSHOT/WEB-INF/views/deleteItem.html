@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Item</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<div th:insert="components :: loggedAsAndLogout" ></div>
+<hr>
+<h3>Choose item to delete</h3>
+<hr>
+<div th:text = "${errMessage}"></div><br>
+<div th:insert="components :: itemList"></div>
+<form method="post" action="#" th:action="@{/deleteItemPart2}" th:object="${num}">
+    <table>
+        <tr>
+            <td><label th:text="ID_of_item_to_delete" /></td>
+            <td><input type="number" minlength="1" min="1" max="2000000000" th:field="*{value}" required></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<hr>
+<div th:insert="components :: backToList"></div>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

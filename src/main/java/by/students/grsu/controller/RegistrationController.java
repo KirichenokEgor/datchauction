@@ -10,10 +10,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 @SessionAttributes("user")
 public class RegistrationController {
     private UserService userService;
+
+    @PostConstruct
+    private void postConstructor(){
+        System.out.println("UserRegistrationService: OK");
+    }
 
     @Autowired
     public void setUserService(UserService userService) {

@@ -13,10 +13,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 @SessionAttributes("user")
 public class LotController {
     private LotService lotService;
+
+    @PostConstruct
+    private void postConstructor(){
+        System.out.println("LotService: OK");
+    }
 
     @Autowired
     public void setLotService(LotService lotService) {
@@ -36,15 +43,19 @@ public class LotController {
     @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.POST)
     public String lotInfo(@ModelAttribute("lot") TempLot tempLot,  @ModelAttribute("user") User user, @PathVariable("a_id") Integer a_id,
                           ModelMap model){
+        int[] items = {1,2,3};//TODO choose items
         //LotInfo newLot=null;
         try {
-            LotInfo newLot = lotService.createLot(a_id, tempLot.getName(), tempLot.getPrice(), tempLot.getMin_price());
+            LotInfo newLot = lotService.createLot(a_id, tempLot.getName(), tempLot.getPrice(), tempLot.getMin_price(), items);
 
             model.addAttribute("ID", newLot.getID());
             model.addAttribute("name", newLot.getName());
             model.addAttribute("price", newLot.getCurrentPrice());
         }catch(AuctionException e){
             model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
             System.out.println(e.getMessage());
         }
 

@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -42,63 +43,112 @@ public class MvcWebConfig implements WebMvcConfigurer {
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
+//    @Bean
+//    public AuctionService auctionService(){
+//        return new AuctionService();
+//    }
+//    @Bean
+//    public ItemService itemService(){
+//        return new ItemService();
+//    }
+//    @Bean
+//    public LotService lotService(){
+//        return new LotService();
+//    }
+//    @Bean
+//    public UserService userService(){
+//        return new UserService();
+//    }
+//    @Bean
+//    public AuctionPlatform auctionPlatform(){
+//        return new AuctionPlatform();
+//    }
+//    @Bean
+//    public AuctionDao auctionDao(){
+//        return new AuctionDao();
+//    }
+//    @Bean
+//    public ItemDao itemDao(){
+//        return new ItemDao();
+//    }
+//    @Bean
+//    public LotDao lotDao(){
+//        return new LotDao();
+//    }
+//    @Bean
+//    public UserDao userDao(){
+//        return new UserDao();
+//    }
+//    @Bean
+//    public Statement st() throws AuctionException {
+//        Statement st = null;
+//        //"localhost","datchDBManager","ineedyourbase"
+//        String address = "localhost";
+//        String username = "datchDBManager";
+//        String password = "ineedyourbase";
+//        try{
+//            DriverManager.registerDriver(new Driver());
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://"+address,username,password);
+//            st = connection.createStatement();
+//            st.execute("use datchauction");}
+//        catch (SQLException e){
+//            System.out.println(e.getMessage());
+//            throw new AuctionException("Internal error",0);
+//        }
+//        return st;
+//    }
     @Bean
-    public Core core(){
-        return Core.Initialize();
+    public AuctionService auctionService(AuctionDao auctionDao){
+    return new AuctionService(auctionDao);
+}
+    @Bean
+    public ItemService itemService(ItemDao itemDao){
+        return new ItemService(itemDao);
     }
     @Bean
-    public AuctionService auctionService(){
-        return new AuctionService();
+    public LotService lotService(LotDao lotDao,AuctionService auctionService,ItemService itemService){
+        return new LotService(lotDao,auctionService,itemService);
     }
     @Bean
-    public ItemService itemService(){
-        return new ItemService();
+    public AuctionConfiguration auctionConfiguration(){
+        return new AuctionConfiguration();
     }
     @Bean
-    public LotService lotService(){
-        return new LotService();
-    }
-    @Bean
-    public UserService userService(){
-        return new UserService();
+    public UserService userService(UserDao userDao){
+        return new UserService(userDao);
     }
     @Bean
     public AuctionPlatform auctionPlatform(){
         return new AuctionPlatform();
     }
     @Bean
-    public AuctionDao auctionDao(){
-        return new AuctionDao();
-    }
-    @Bean
-    public ItemDao itemDao(){
-        return new ItemDao();
-    }
-    @Bean
-    public LotDao lotDao(){
-        return new LotDao();
-    }
-    @Bean
-    public UserDao userDao(){
-        return new UserDao();
-    }
-    @Bean
-    public Statement st() throws AuctionException {
-        Statement st = null;
-        //"localhost","datchDBManager","ineedyourbase"
-        String address = "localhost";
-        String username = "datchDBManager";
-        String password = "ineedyourbase";
-        try{
+    public Statement statement(AuctionConfiguration configuration) throws Exception {
+        try {
             DriverManager.registerDriver(new Driver());
-            Connection connection = DriverManager.getConnection("jdbc:mysql://"+address,username,password);
-            st = connection.createStatement();
-            st.execute("use datchauction");}
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-            throw new AuctionException("Internal error",0);
+            Statement statement =
+                    DriverManager.getConnection("jdbc:mysql://"+configuration.getDaoLocation(),configuration.getDaoUser(),configuration.getDaoPassword()).createStatement();
+            statement.execute("use datchauction");
+            return statement;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return st;
+        throw new Exception("Connection with database failed");
+    }
+    @Bean
+    public AuctionDao auctionDao(Statement statement,LotDao lotDao){
+        return new AuctionDao(statement,lotDao);
+    }
+    @Bean
+    public ItemDao itemDao(Statement statement){
+        return new ItemDao(statement);
+    }
+    @Bean
+    public LotDao lotDao(Statement statement,ItemDao itemDao){
+        return new LotDao(statement,itemDao);
+    }
+    @Bean
+    public UserDao userDao(Statement statement){
+        return new UserDao(statement);
     }
 
 
