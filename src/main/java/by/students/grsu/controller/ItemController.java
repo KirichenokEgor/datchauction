@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -79,26 +80,26 @@ public class ItemController {
         }catch (Exception e){
             mv.addObject("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }
-        //mv.addObject("items", )
 
-        mv.addObject("num", new IntegerWrapper());
+        //mv.addObject("num", new IntegerWrapper());
         mv.addObject("back", "freeItems");
         return mv;
     }
 
-    @RequestMapping(value = "/deleteItemPart2", method = RequestMethod.POST)
-    public String itemInfo(@ModelAttribute("num") IntegerWrapper num, @ModelAttribute("user") User user,
-                           ModelMap model) {
-        //TODO check if user is owner of this item
+    @RequestMapping(value = "/deleteItemPart2", method = RequestMethod.GET)
+    public String itemInfo(@ModelAttribute("user") User user,
+                           ModelMap model, ServletRequest request) {
+        int num = Integer.parseInt(request.getParameter("item"));
+
         try {
-            ItemInfo item = itemService.getItemById(num.getValue());
+            ItemInfo item = itemService.getItemById(num);
             if(!item.getOwner().equals(user.getUsername())){
                 model.addAttribute("errMessage", "Sorry, you can't delete this item, because it's not yours.");
                 List<Item> items = itemService.getItemsByOwner(user);
                 model.addAttribute("items", items);
                 return "deleteItem";
             }
-            itemService.deleteItemById(num.getValue());
+            itemService.deleteItemById(num);
         }catch (SQLException e){
             model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
             return "deleteItem";
@@ -107,9 +108,10 @@ public class ItemController {
             return "deleteItem";
         }catch (Exception e){
             model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
+            return "deleteItem";
         }
 
-        model.addAttribute("back", "freeItems");
+        //model.addAttribute("back", "freeItems");
 
         return "redirect:/freeItems";
     }
@@ -117,12 +119,12 @@ public class ItemController {
     @RequestMapping(value = "/freeItems", method = RequestMethod.GET)
     public String watchFreeItems(ModelMap model, @ModelAttribute("user") User user) {
         try {
-            List<Item> items = itemService.getItemsByOwner(user);
+            List<Item> items = itemService.getFreeItemsByOwner(user);
             model.addAttribute("items", items);
-        }catch (SQLException e){
-            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-        }catch (AuctionException e){
-            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+//        }catch (SQLException e){
+//            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
+//        }catch (AuctionException e){
+//            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
         }catch (Exception e){
             model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }

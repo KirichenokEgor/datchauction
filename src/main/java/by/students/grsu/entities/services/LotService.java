@@ -36,4 +36,39 @@ public class LotService {
         }
         return lots;
     }
+
+    public Lot getLotById(int id){
+        Lot lot = null;
+        try {
+            lot = lotDao.getLotById(id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return lot;
+    }
+
+    public void deleteLotsByAuction(int auctionId){
+        try {
+            lotDao.deleteLotsByAuction(auctionId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteLot(int id){
+        try {
+            lotDao.deleteLot(id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public List<Lot> getAllLots(){
+        try {
+            return lotDao.getAllLots();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

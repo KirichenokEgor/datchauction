@@ -13,12 +13,13 @@
 <hr>
 <div th:text = "${errMessage}"></div><br>
 <div th:insert="components :: itemList"></div>
-<form method="post" action="#" th:action="@{/deleteItemPart2}" th:object="${num}">
+<form action="#" th:action="@{/deleteItemPart2}">
     <table>
-        <tr>
-            <td><label th:text="ID_of_item_to_delete" /></td>
-            <td><input type="number" minlength="1" min="1" max="2000000000" th:field="*{value}" required></td>
-        </tr>
+        <select name="item" required>
+            <option th:each="item: ${items}">
+                <a th:text="${item.getID()}"></a>
+            </option>
+        </select>
         <tr>
             <td colspan="2">
                 <input type="submit" value="Submit"/>

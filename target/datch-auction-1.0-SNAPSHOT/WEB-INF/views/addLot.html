@@ -33,24 +33,54 @@
 <!--}, false);-->
 <!--</script>-->
 <!--<p id="error"></p>-->
-<form id="form" method="post" action="#" th:action="@{/{a_id}/saveLot(a_id=${a_id})}" th:object="${lot}">
+<!--<form id="form" method="post" action="#" th:action="@{/{a_id}/saveLot(a_id=${a_id})}" th:object="${lot}">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td><label th:text="Name" /></td>-->
+<!--            <td><input type="text" minlength="3" th:field="*{name}" required></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td><label th:text="Price" /></td>-->
+<!--            <td><input id="price" type="number" step="0.01" min="0.01" max="2000000000" th:field="*{price}" required></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td><label th:text="Min_price" /></td>-->
+<!--            <td><input id="min_price" type="number" step="0.01" min="0.01" max="2000000000" th:field="*{min_price}" required></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td><label th:text="Description" /></td>-->
+<!--            <td><input type="text" th:field="*{description}" /></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td colspan="2">-->
+<!--                <input type="submit" value="Submit"/>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</form>-->
+<form id="form" action="#" th:action="@{/{a_id}/saveLot(a_id=${a_id})}">
     <table>
         <tr>
             <td><label th:text="Name" /></td>
-            <td><input type="text" minlength="3" th:field="*{name}" required></td>
+            <td><input name="name" type="text" minlength="3" required></td>
         </tr>
         <tr>
             <td><label th:text="Price" /></td>
-            <td><input id="price" type="number" step="0.01" min="0.01" max="2000000000" th:field="*{price}" required></td>
+            <td><input name="price" id="price" type="number" step="0.01" min="0.01" max="2000000000" required></td>
         </tr>
         <tr>
             <td><label th:text="Min_price" /></td>
-            <td><input id="min_price" type="number" step="0.01" min="0.01" max="2000000000" th:field="*{min_price}" required></td>
+            <td><input name="min_price" id="min_price" type="number" step="0.01" min="0.01" max="2000000000" required></td>
         </tr>
         <tr>
             <td><label th:text="Description" /></td>
-            <td><input type="text" th:field="*{description}" /></td>
+            <td><input name="description" type="text" /></td>
         </tr>
+            <select name="items" multiple required>
+                <option th:each="item: ${items}">
+                    <a th:text="${item.getID()}"></a>
+                </option>
+            </select>
         <tr>
             <td colspan="2">
                 <input type="submit" value="Submit"/>
@@ -58,6 +88,8 @@
         </tr>
     </table>
 </form>
+<hr>
+<div th:insert="components :: itemList"></div>
 <hr>
 <div th:insert="components :: backToList"></div>
 <div th:insert="components :: backHome"></div>

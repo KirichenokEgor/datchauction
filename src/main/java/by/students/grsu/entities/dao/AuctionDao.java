@@ -43,16 +43,16 @@ public class AuctionDao {
     }
     public List<Auction> getAuctions() throws SQLException {
         ResultSet rs = statement.executeQuery("SELECT * FROM auctions ORDER BY ID");
-        List<Auction> auctionMap = new ArrayList<Auction>();
+        List<Auction> auctions = new ArrayList<Auction>();
         while (rs.next()){
             Auction auction = new Auction(rs.getInt("ID"),rs.getString("description"),
                     rs.getInt("maxLots"), rs.getTime("beginTime").toLocalTime(),
                     rs.getInt("maxDuration"),rs.getString("status"),
                     rs.getInt("currentLots"));
             if(rs.getBoolean("autoPlanned"))auction.makePlaned();
-            auctionMap.add(auction);
+            auctions.add(auction);
         }
-        return auctionMap;
+        return auctions;
     }
     public void makeAutoPlanned(int ID) throws SQLException, AuctionException {
         if(statement.executeQuery("SELECT * FROM auctions WHERE ID="+ID).next()){

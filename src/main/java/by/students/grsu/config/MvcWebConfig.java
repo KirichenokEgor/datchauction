@@ -7,6 +7,7 @@ import by.students.grsu.entities.dao.UserDao;
 import by.students.grsu.entities.services.*;
 import com.mysql.cj.jdbc.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -122,6 +123,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
         return new AuctionPlatform();
     }
     @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)///////////////////////////////////////////////////////////////
     public Statement statement(AuctionConfiguration configuration) throws Exception {
         try {
             DriverManager.registerDriver(new Driver());

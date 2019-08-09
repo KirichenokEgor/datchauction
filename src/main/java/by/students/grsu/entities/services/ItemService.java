@@ -48,9 +48,12 @@ public class ItemService {
     public List<Item> getFreeItemsByOwner(User owner){
         try {
             List<Item> itemList = getItemsByOwner(owner);
-            for(int i = 0;i<itemList.size();i++)
-                if(itemList.get(i).isOnLot())continue;
-                else itemList.remove(i);
+            for(int i = 0; i < itemList.size(); i++)
+                if(!itemList.get(i).isOnLot())continue;
+                else {
+                    itemList.remove(i);
+                    i--;
+                }
             return itemList;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -60,6 +63,21 @@ public class ItemService {
     public void createLotWithItems(int[] itemsIds, int lotId) throws Exception {
         for (int id : itemsIds)
             itemDao.setItemOnLot(id, lotId);
+    }
+    public List<Item> getItemsByLot(int id) {
+        try {
+            return itemDao.getItemsByLot(id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public void freeItemsByLot(int lotId){
+        try {
+            itemDao.freeItemsByLot(lotId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
 

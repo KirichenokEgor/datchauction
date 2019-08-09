@@ -20,7 +20,8 @@ public class LotDao {
             int id;
             if(rs.next()){
                 id = rs.getInt("id");
-                st.execute("INSERT INTO lots VALUES("+id+", \'"+name+"\', "+startPrice+", "+minPrice+", \'"+status.toLowerCase()+"\', "+auctionId+")");
+                st.execute("UPDATE lots SET name=\'" + name + "\',startPrice=" + startPrice + ",minPrice=" + minPrice + ",status=\'" + status.toLowerCase() + "\',auctionId=" + auctionId + " WHERE id="+id);
+                //st.execute("INSERT INTO lots VALUES("+id+", \'"+name+"\', "+startPrice+", "+minPrice+", \'"+status.toLowerCase()+"\', "+auctionId+")");
             }
             else{
                 rs = st.executeQuery("SELECT MAX(id) FROM lots");
@@ -105,20 +106,34 @@ public class LotDao {
             //    else throw new Exception("Lots not found");
                 return lotList;
         } catch (SQLException e) {
-            throw new Exception(e.getMessage() + "Ldao");
+            throw new Exception(e.getMessage());
         }
     }
-    public Lot getLotWithItems(int auctionId) throws Exception {
+    public Lot getLotWithItems(int lotId) throws Exception {
         try {
-            ResultSet rs = st.executeQuery("SELECT * FROM lots WHERE auctionId="+auctionId);
+            ResultSet rs = st.executeQuery("SELECT * FROM lots WHERE id="+lotId);
             if(rs.next())
-                return new Lot(rs.getInt("ID"),rs.getString("name"),
+                return new Lot(rs.getInt("id"),rs.getString("name"),
                         rs.getDouble("startPrice"),rs.getDouble("minPrice"),
-                        rs.getString("status"),rs.getInt("auctionId"),itemDao.getItemsByLot(auctionId));
+                        rs.getString("status"),rs.getInt("auctionId"), itemDao.getItemsByLot(lotId));
             else throw new Exception("Lot not found");
         } catch (SQLException e) {
             throw new Exception(e.getMessage());
         }
+    }
+    public List<Lot> getAllLots() throws Exception {
+        ResultSet rs = st.executeQuery("SELECT * FROM lots ORDER BY ID");
+        List<Lot> lots = new ArrayList<Lot>();
+        int id;
+        while (rs.next()){
+            id = rs.getInt("ID");
+            Lot lot = new Lot(id,rs.getString("name"),
+                    rs.getDouble("startPrice"), rs.getDouble("minPrice"),
+                    rs.getString("status"),rs.getInt("auctionId"),
+                    itemDao.getItemsByLot(id));
+            lots.add(lot);
+        }
+        return lots;
     }
 }
 

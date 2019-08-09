@@ -4,6 +4,7 @@ import by.students.grsu.entities.auction.AuctionInfo;
 import by.students.grsu.entities.auction.TempAuction;
 import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.services.AuctionService;
+import by.students.grsu.entities.services.ItemService;
 import by.students.grsu.entities.services.LotService;
 import by.students.grsu.entities.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletRequest;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,8 @@ import java.util.List;
 @SessionAttributes("user")
 public class AuctionController {
     private AuctionService auctionService;
-//    private LotService lotService;
+    private LotService lotService;
+    private ItemService itemService;
 
     @PostConstruct
     private void postConstructor(){
@@ -42,10 +45,15 @@ public class AuctionController {
         this.auctionService = auctionService;
     }
 
-//    @Autowired
-//    public void setLotService(LotService lotService) {
-//        this.lotService = lotService;
-//    }
+    @Autowired
+    public void setLotService(LotService lotService) {
+        this.lotService = lotService;
+    }
+
+    @Autowired
+    public void setItemService(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @RequestMapping(value = "/addAuction", method = RequestMethod.GET)
     public ModelAndView addAuction(@ModelAttribute("user") User user) {
@@ -87,18 +95,23 @@ public class AuctionController {
         ModelAndView mv = new ModelAndView("deleteAuction");
         List<AuctionInfo> auctions = auctionService.getAllAuctions();
         mv.addObject("auctions", auctions);
-
-        mv.addObject("num", new IntegerWrapper());
         mv.addObject("back", "auctionList");
         return mv;
     }
 
-    @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.POST)
-    public String auctionInfo(@ModelAttribute("num") IntegerWrapper num, @ModelAttribute("user") User user,
-                              ModelMap model) {
+    @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.GET)
+    public String auctionInfo(@ModelAttribute("user") User user,
+                              ModelMap model, ServletRequest request) {
         //TODO check if user is admin
 //        try {
-        auctionService.deleteAuction(num.getValue());
+        int num = Integer.parseInt(request.getParameter("auc"));
+        auctionService.deleteAuction(num);
+        List<Lot> lots = lotService.getLotsByAuctionId(num);
+        for(Lot lot : lots){
+            itemService.freeItemsByLot(lot.getID());
+        }
+        lotService.deleteLotsByAuction(num);
+
 //        }catch (SQLException e){
 //            model.addAttribute("errMessage", "SQLError. Sorry. " + e.getMessage());
 //            return "deleteAuction";

@@ -10,6 +10,7 @@
 <div th:insert="components :: loggedAsAndLogout" ></div>
 <hr>
 <h3>Lot Information</h3>
+<div th:text = "${errMessage}"></div><br>
 <table>
     <tr>
         <td>ID</td>
@@ -24,6 +25,8 @@
         <td th:text="${price}"></td>
     </tr>
 </table>
+<hr>
+<div th:insert="components :: itemList"></div>
 <hr>
 <div th:insert="components :: backToList"></div>
 <div th:insert="components :: backHome"></div>

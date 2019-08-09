@@ -76,4 +76,16 @@ public class ItemDao {
         }
 
     }
+    public void freeItemsByLot(int lotId) throws Exception {
+        try {
+            //ResultSet rs = statement.executeQuery("SELECT * FROM items WHERE id=" + itemId);
+            //if(rs.next())
+            statement.execute("UPDATE items SET lotID=0 WHERE lotID=" + lotId);
+            //else throw new Exception("Item not found");
+        }
+        catch (SQLException e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
 }

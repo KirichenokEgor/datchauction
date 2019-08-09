@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Lot</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<div th:insert="components :: loggedAsAndLogout" ></div>
+<hr>
+<h3>Choose lot to delete</h3>
+<hr>
+<div th:text = "${errMessage}"></div><br>
+<div th:insert="components :: lotList"></div>
+<form action="#" th:action="@{/{a_id}/deleteLotPart2(a_id=${a_id})}">
+    <table>
+        <select name="lot" required>
+            <option th:each="lot: ${auction.getILots()}">
+                <a th:text="${lot.getID()}"></a>
+            </option>
+        </select>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<hr>
+<div th:insert="components :: backToList"></div>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

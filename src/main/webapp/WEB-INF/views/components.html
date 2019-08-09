@@ -53,6 +53,7 @@
             <td width="100px">ID</td>
             <td width="300px">Name</td>
             <td width="100px">Price</td>
+            <td width="50px"></td>
       <!--      <td width="100px">Min price</td>
             <td width="500px">Description</td>  -->
         </tr>
@@ -61,6 +62,7 @@
             <td width="100px" th:text="${lot.getID()}"></td>
             <td width="300px" th:text="${lot.getName()}"></td>
             <td width="100px" th:text="${lot.getCurrentPrice()}"></td>
+            <td width="50px"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getID()}, l_id=${lot.getID()})}" >View</a></td>
         <!--    <td width="100px" th:text="${lot.getMin_price()}"></td>
             <td width="500px" th:text="${lot.getDescription()}"></td> -->
         </tr>
@@ -72,6 +74,7 @@
         <tr>
             <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auction.getID()})}" >Subscribe</a></td>
             <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getID()})}" >Add lot</a></td>
+            <td width="100px"><a th:href="@{/{id}/deleteLot(id=${auction.getID()})}" >Delete lot</a></td>
         </tr>
     </table>
 </div>
@@ -117,6 +120,31 @@
 </div>
 <div th:fragment="backToList">
     <a th:href="@{/{back}(back=${back})}">Back to list</a>
+</div>
+<div th:fragment="allLotList">
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="100px">ID</td>
+            <td width="300px">Name</td>
+            <td width="100px">Price</td>
+            <td width="50px"></td>
+            <td width="130px"></td>
+            <!--      <td width="100px">Min price</td>
+                  <td width="500px">Description</td>  -->
+        </tr>
+        <tbody>
+        <tr th:each="lot: ${lots}">
+            <td width="100px" th:text="${lot.getID()}"></td>
+            <td width="300px" th:text="${lot.getName()}"></td>
+            <td width="100px" th:text="${lot.getCurrentPrice()}"></td>
+<!--            TODO buttons-->
+<!--            <td width="50px"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getID()}, l_id=${lot.getID()})}" >View</a></td>-->
+<!--            <td width="130px"><a th:href="@{/{a_id}/lotList(a_id=${auction.getID()})}" >To the auction</a></td>-->
+            <!--    <td width="100px" th:text="${lot.getMin_price()}"></td>
+                <td width="500px" th:text="${lot.getDescription()}"></td> -->
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
