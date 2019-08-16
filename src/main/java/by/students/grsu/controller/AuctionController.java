@@ -136,4 +136,25 @@ public class AuctionController {
 
         return "lotList";
     }
+
+    @RequestMapping(value = "/{id}/join", method = RequestMethod.GET)
+    public String joinAuction(@ModelAttribute("user") User user, @PathVariable("id") Integer id,
+                              ModelMap model) {
+        //TODO add user to auction members
+//        AuctionInfo auc = auctionService.getAuctionInfo(id);
+//        model.addAttribute("auction", auc);
+        return "redirect:/{id}/activeAuction";
+    }
+
+    @RequestMapping(value = "/{id}/activeAuction", method = RequestMethod.GET)
+    public String watchActiveAuction(@ModelAttribute("user") User user, @PathVariable("id") Integer id,
+                              ModelMap model) {
+        AuctionInfo auc = auctionService.getAuctionWithLots(id);
+        model.addAttribute("auction", auc);
+        //for test
+        model.addAttribute("items", itemService.getItemsByLot(5));
+        //end for test
+        model.addAttribute("back", "activeAuctionList");
+        return "activeAuction";
+    }
 }

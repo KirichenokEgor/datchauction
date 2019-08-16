@@ -71,12 +71,13 @@ public class ItemController {
     public ModelAndView deleteItem(@ModelAttribute("user") User user) {
         ModelAndView mv = new ModelAndView("deleteItem");
         try {
-            List<Item> items = itemService.getItemsByOwner(user);
+            //List<Item> items = itemService.getItemsByOwner(user);
+            List<Item> items = itemService.getFreeItemsByOwner(user);
             mv.addObject("items", items);
-        }catch (SQLException e){
-            mv.addObject("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-        }catch (AuctionException e){
-            mv.addObject("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+//        }catch (SQLException e){
+//            mv.addObject("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
+//        }catch (AuctionException e){
+//            mv.addObject("errMessage", "Internal error " + e.getCode() + ". Sorry.");
         }catch (Exception e){
             mv.addObject("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }

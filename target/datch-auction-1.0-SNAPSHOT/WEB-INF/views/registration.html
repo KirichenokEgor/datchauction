@@ -2,10 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Registration new user</title>
+    <style>
+   .headr {
+        position: fixed; /* Относительное позиционирование */
+        top: 0px; /* Положение от верхнего края */
+        left: 8px; /* Положение от левого края */
+        width: 100%;
+        background: #f0f0f0; /* Цвет фона */
+        }
+   .footr {
+        position: fixed; /* Относительное позиционирование */
+        bottom: 0px; /* Положение от верхнего края */
+        left: 8px; /* Положение от левого края */
+        width: 100%;
+        background: #f0f0f0; /* Цвет фона */
+        }
+    </style>
 </head>
 <body>
-<header th:insert="components :: header"></header>
-<hr>
+<header class="headr" th:insert="components :: header"></header>
 <h3>Registration Page</h3>
 <div th:text = "${registrationMessage}"/><br>
 <form action="#" th:action="@{/confirmRegistration}" th:object="${tempUser}">
@@ -33,7 +48,6 @@
         </tr>
     </table>
 </form>
-<hr>
-<footer th:insert="components :: footer"></footer>
+<footer class="footr" th:insert="components :: footer"></footer>
 </body>
 </html>

@@ -61,7 +61,8 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
             for(Lot lot : lots)
                 if (lot.getStatus() == LotStatus.Registered){
                     //System.out.println(lot.getID() + ": " + lot.getPriceStep());
-                    lot.setCurrentPrice(lot.getCurrentPrice() - lot.getPriceStep());
+                    //lot.setCurrentPrice(lot.getCurrentPrice() - lot.getPriceStep());
+                    lot.makePriceStep();
                   //  System.out.println(lot.getCurrentPrice());
                     auctionEnd=false;
                 }

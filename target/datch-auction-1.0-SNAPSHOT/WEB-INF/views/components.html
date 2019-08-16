@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+<div th:fragment="improvedHeader" class="headr">
+    <div th:insert="components :: header" ></div>
+    <div th:insert="components :: loggedAsAndLogout" ></div>
+    <hr>
+</div>
+<div th:fragment="improvedFooter" class="footr">
+    <hr>
+    <div th:insert="components :: backToList" ></div>
+    <div th:insert="components :: backHome" ></div>
+    <div th:insert="components :: footer" ></div>
+</div>
 <footer th:fragment="footer">
+    <hr>
     <p>© 2019 Kirichenok Egor and Kunec Alexey, EPAM Systems</p>
 </footer>
 <header th:fragment="header">
     <h2>Datch Auction</h2>
+    <hr>
 </header>
 <div th:fragment="userMenu" class="widget">
     <h3 class="widget-title">Menu</h3>
@@ -188,7 +201,7 @@
     </table>
 </div>
 <div th:fragment="backToList">
-    <a th:href="@{/{back}(back=${back})}">Back to list</a>
+    <a th:if="${back}" th:href="@{/{back}(back=${back})}">Back to list</a>
 </div>
 <div th:fragment="allLotList">
     <table border="1" cellspacing="0">

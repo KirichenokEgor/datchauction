@@ -3,12 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Active Auction</title>
+    <style>
+   .layer1 {
+    position: static; /* Относительное позиционирование */
+    //background: #f0f0f0; /* Цвет фона */
+    //height: 50px; /* Высота блока */
+   }
+   .layer2right {
+    position: fixed; /* Абсолютное позиционирование */
+    top: inherit; /* Положение от верхнего края */
+    right: 15px; /* Положение от правого края */
+    //line-height: 1px;
+   }
+   .layer2left {
+    position: absolute; /* Абсолютное позиционирование */
+    //top: inherit; /* Положение от верхнего края */
+    //left: 15px; /* Положение от левого края */
+    //line-height: 1px;
+   }
+   .headr {
+        position: fixed; /* Относительное позиционирование */
+        top: 0px; /* Положение от верхнего края */
+        left: 8px; /* Положение от левого края */
+        width: 100%;
+        background: #f0f0f0; /* Цвет фона */
+        }
+   .footr {
+        position: fixed; /* Относительное позиционирование */
+        bottom: 0px; /* Положение от верхнего края */
+        left: 8px; /* Положение от левого края */
+        width: 100%;
+        background: #f0f0f0; /* Цвет фона */
+        }
+    </style>
 </head>
 <body>
-<header th:insert="components :: header"></header>
-<hr>
-<div th:insert="components :: loggedAsAndLogout" ></div>
-<hr>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <h3>Auction Information</h3>
 <table>
     <tr>
@@ -23,15 +59,25 @@
     </tr>
 </table>
 <hr>
-<h3>Lot List</h3>
-<hr>
-<div th:insert="components :: activeAucLotList"></div>
-<hr>
+<div class="layer1">
+    <div id="lotTable" class="layer2left">
+        <h3>Lot List</h3>
+        <div th:insert="components :: activeAucLotList"></div>
+    </div>
+    <div id="itemTable" class="layer2right">
+        <h3>Items</h3>
+        <div th:insert="components :: itemList"></div>
+    </div>
+</div>
+<div th:insert="components :: improvedHeader" ></div>
 
-<hr>
-<div th:insert="components :: backToList"></div>
-<div th:insert="components :: backHome"></div>
-<hr>
-<footer th:insert="components :: footer"></footer>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div th:insert="components :: improvedFooter" ></div>
 </body>
 </html>

@@ -3,12 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Lot</title>
+    <style>
+   .headr {
+        position: fixed; /* Относительное позиционирование */
+        top: 0px; /* Положение от верхнего края */
+        left: 8px; /* Положение от левого края */
+        width: 100%;
+        background: #f0f0f0; /* Цвет фона */
+        }
+   .footr {
+        position: fixed; /* Относительное позиционирование */
+        bottom: 0px; /* Положение от верхнего края */
+        left: 8px; /* Положение от левого края */
+        width: 100%;
+        background: #f0f0f0; /* Цвет фона */
+        }
+    </style>
 </head>
 <body>
-<header th:insert="components :: header"></header>
-<hr>
-<div th:insert="components :: loggedAsAndLogout" ></div>
-<hr>
+<div th:insert="components :: improvedHeader" ></div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <h3>Choose lot to delete</h3>
 <hr>
 <div th:text = "${errMessage}"></div><br>
@@ -27,10 +46,13 @@
         </tr>
     </table>
 </form>
-<hr>
-<div th:insert="components :: backToList"></div>
-<div th:insert="components :: backHome"></div>
-<hr>
-<footer th:insert="components :: footer"></footer>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div th:insert="components :: improvedFooter" ></div>
 </body>
 </html>
