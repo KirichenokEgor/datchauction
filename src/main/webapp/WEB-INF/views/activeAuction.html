@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Active Auction</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<div th:insert="components :: loggedAsAndLogout" ></div>
+<hr>
+<h3>Auction Information</h3>
+<table>
+    <tr>
+        <td width="100px"><b>ID</b></td>
+        <td width="200px"><b>Start_time</b></td>
+        <td width="150px"><b>Duration_in_minutes</b></td>
+    </tr>
+    <tr>
+        <td width="100px" th:text="${auction.getID()}"></td>
+        <td width="200px" th:text="${auction.getBeginTime()}"></td>
+        <td width="150px" th:text="${auction.getMaxDuration()}"></td>
+    </tr>
+</table>
+<hr>
+<h3>Lot List</h3>
+<hr>
+<div th:insert="components :: activeAucLotList"></div>
+<hr>
+
+<hr>
+<div th:insert="components :: backToList"></div>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

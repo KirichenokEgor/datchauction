@@ -1,9 +1,6 @@
 package by.students.grsu.config;
 
-import by.students.grsu.entities.dao.AuctionDao;
-import by.students.grsu.entities.dao.ItemDao;
-import by.students.grsu.entities.dao.LotDao;
-import by.students.grsu.entities.dao.UserDao;
+import by.students.grsu.entities.dao.*;
 import by.students.grsu.entities.services.*;
 import com.mysql.cj.jdbc.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,9 +96,9 @@ public class MvcWebConfig implements WebMvcConfigurer {
 //        return st;
 //    }
     @Bean
-    public AuctionService auctionService(AuctionDao auctionDao){
-    return new AuctionService(auctionDao);
-}
+    public AuctionService auctionService(AuctionDao auctionDao, ItemService itemService/*, LotService lotService*/){
+        return new AuctionService(auctionDao, itemService/*, lotService*/);
+    }
     @Bean
     public ItemService itemService(ItemDao itemDao){
         return new ItemService(itemDao);
@@ -118,10 +115,14 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public UserService userService(UserDao userDao){
         return new UserService(userDao);
     }
-    @Bean
-    public AuctionPlatform auctionPlatform(){
-        return new AuctionPlatform();
-    }
+//    @Bean
+//    public SoldLotService soldLotService(SoldLotDao soldLotDao){
+//        return new SoldLotService(soldLotDao);
+//    }
+//    @Bean
+//    public AuctionPlatform auctionPlatform(AuctionService auctionService, ){
+//        return new AuctionPlatform();
+//    }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)///////////////////////////////////////////////////////////////
     public Statement statement(AuctionConfiguration configuration) throws Exception {

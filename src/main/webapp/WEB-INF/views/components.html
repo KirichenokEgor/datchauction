@@ -29,11 +29,32 @@
 <div th:fragment="backHome">
     <a th:href="@{/home}">Back to the home page</a>
 </div>
+<!--<div th:fragment="aucList">-->
+<!--    <table border="1" cellspacing="0">-->
+<!--        <tr>-->
+<!--            <td width="300px">ID</td>-->
+<!--            <td width="100px">Start time</td>-->
+<!--            <td width="100px">Duration</td>-->
+<!--            <td width="50px"></td>-->
+<!--            <td width="50px"></td>-->
+<!--        </tr>-->
+<!--        <tbody>-->
+<!--        <tr th:each="auc: ${auctions}">-->
+<!--            <td width="300px" th:text="${auc.getID()}"></td>-->
+<!--            <td width="100px" th:text="${auc.getBeginTime()}"></td>-->
+<!--            <td width="100px" th:text="${auc.getMaxDuration()}"></td>-->
+<!--            <td width="50px"><a th:href="@{/{id}/lotList(id=${auc.getID()})}" >View</a></td>-->
+<!--            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auc.getID()})}" >Subscribe</a></td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
 <div th:fragment="aucList">
     <table border="1" cellspacing="0">
         <tr>
             <td width="300px">ID</td>
             <td width="100px">Start time</td>
+            <td width="100px">Duration</td>
             <td width="50px"></td>
             <td width="50px"></td>
         </tr>
@@ -41,8 +62,29 @@
         <tr th:each="auc: ${auctions}">
             <td width="300px" th:text="${auc.getID()}"></td>
             <td width="100px" th:text="${auc.getBeginTime()}"></td>
-            <td width="50px"><a th:href="@{/{id}/lotList(id=${auc.getID()})}" >View</a></td>
-            <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auc.getID()})}" >Subscribe</a></td>
+            <td width="100px" th:text="${auc.getMaxDuration()}"></td>
+<!--            <tbody th:if="${auc.getStringStatus() == 'planned'}">-->
+<!--                <td width="50px" ><a th:href="@{/{id}/lotList(id=${auc.getID()})}" >View</a></td>-->
+<!--                <td width="50px"><a th:href="@{/{id}/subscribe(id=${auc.getID()})}" >Subscribe</a></td>-->
+<!--            </tbody>-->
+<!--            <tbody th:if="${auc.getStringStatus() == 'active'}">-->
+<!--                <td width="50px" ><a th:href="@{/{id}/lotList(id=${auc.getID()})}" >===></a></td>-->
+<!--                <td width="50px"><a th:href="@{/{id}/join(id=${auc.getID()})}" >Join</a></td>-->
+<!--            </tbody>-->
+<!--            <tbody th:unless="${auc.getStringStatus() == 'active' || auc.getStringStatus() == 'planned'}">-->
+<!--                <td width="50px" ><a>n/a</a></td>-->
+<!--                <td width="50px"><a>n/a</a></td>-->
+<!--            </tbody>-->
+            <td width="50px">
+                <a th:if="${auc.getStringStatus() == 'Planned'}" th:href="@{/{id}/lotList(id=${auc.getID()})}" >View</a>
+                <a th:if="${auc.getStringStatus() == 'Active'}" >===></a>
+                <a th:unless="${auc.getStringStatus() == 'Active' || auc.getStringStatus() == 'Planned'}" ></a>
+            </td>
+            <td width="50px">
+                <a th:if="${auc.getStringStatus() == 'Planned'}" th:href="@{/{id}/subscribe(id=${auc.getID()})}" >Subscribe</a>
+                <a th:if="${auc.getStringStatus() == 'Active'}" th:href="@{/{id}/join(id=${auc.getID()})}" >Join</a>
+                <a th:unless="${auc.getStringStatus() == 'Active' || auc.getStringStatus() == 'Planned'}" ></a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -65,6 +107,33 @@
             <td width="50px"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getID()}, l_id=${lot.getID()})}" >View</a></td>
         <!--    <td width="100px" th:text="${lot.getMin_price()}"></td>
             <td width="500px" th:text="${lot.getDescription()}"></td> -->
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:fragment="activeAucLotList">
+    <script>
+        function viewItems(ind=0){
+
+        }
+    </script>
+    <table border="1" cellspacing="0">
+        <tr>
+            <td width="100px">ID</td>
+            <td width="300px">Name</td>
+            <td width="100px">Price</td>
+            <td width="130px"></td>
+            <!--      <td width="100px">Min price</td>
+                  <td width="500px">Description</td>  -->
+        </tr>
+        <tbody>
+        <tr th:each="lot: ${auction.getILots()}">
+            <td width="100px" th:text="${lot.getID()}"></td>
+            <td width="300px" th:text="${lot.getName()}"></td>
+            <td width="100px" th:text="${lot.getCurrentPrice()}"></td>
+            <td width="130px"><input type="button" value="View items" th:onclick="viewItems(${lot.getID()})"></td>
+            <!--    <td width="100px" th:text="${lot.getMin_price()}"></td>
+                <td width="500px" th:text="${lot.getDescription()}"></td> -->
         </tr>
         </tbody>
     </table>
@@ -138,8 +207,8 @@
             <td width="300px" th:text="${lot.getName()}"></td>
             <td width="100px" th:text="${lot.getCurrentPrice()}"></td>
 <!--            TODO buttons-->
-<!--            <td width="50px"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getID()}, l_id=${lot.getID()})}" >View</a></td>-->
-<!--            <td width="130px"><a th:href="@{/{a_id}/lotList(a_id=${auction.getID()})}" >To the auction</a></td>-->
+            <td width="50px"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a></td>
+            <td width="130px"><a th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a></td>
             <!--    <td width="100px" th:text="${lot.getMin_price()}"></td>
                 <td width="500px" th:text="${lot.getDescription()}"></td> -->
         </tr>

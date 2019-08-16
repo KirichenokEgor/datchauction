@@ -1,19 +1,24 @@
 package by.students.grsu.entities.services;
 
-import by.students.grsu.entities.auction.Auction;
-import by.students.grsu.entities.auction.AuctionInfo;
-import by.students.grsu.entities.auction.AuctionStatus;
+import by.students.grsu.entities.auction.*;
 import by.students.grsu.entities.dao.AuctionDao;
+import by.students.grsu.entities.lot.Lot;
 
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
-public class AuctionService {
+public class AuctionService implements AuctionFollower {
     private AuctionDao auctionDao;
-    public AuctionService(AuctionDao auctionDao){
+    private ItemService itemService;
+    //private LotService lotService;
+    private AuctionPlatformObserver auctionPlatformObserver;
+    public AuctionService(AuctionDao auctionDao, ItemService itemService/*, LotService lotService*/){
         this.auctionDao = auctionDao;
+        this.itemService = itemService;
+        //this.lotService = lotService;
     }
     public int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException {
         Auction newAuction = auctionDao.addAuction(description, maxLots, beginTime, maxDuration);
@@ -30,28 +35,29 @@ public class AuctionService {
     }
     public void setAuctionPlanned(int id){
         try {
-            auctionDao.setStatus(id,AuctionStatus.Planned.toString());
+            auctionDao.setStatus(id, AuctionStatus.Planned.toString());
+            auctionPlatformObserver.auctionsChanged();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
     public void setAuctionDisabled(int id){
         try {
-            auctionDao.setStatus(id,AuctionStatus.Disabled.toString());
+            auctionDao.setStatus(id, AuctionStatus.Disabled.toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
     public void setAuctionActive(int id){
         try {
-            auctionDao.setStatus(id,AuctionStatus.Active.toString());
+            auctionDao.setStatus(id, AuctionStatus.Active.toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
     public void setAuctionDone(int id){
         try {
-            auctionDao.setStatus(id,AuctionStatus.Done.toString());
+            auctionDao.setStatus(id, AuctionStatus.Done.toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -124,12 +130,35 @@ public class AuctionService {
         }
     }
 
+    @Override
+    public void auctionEnded(int id) {
+        try {
+            auctionDao.setStatus(id, AuctionStatus.Done.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void auctionStarted(ActiveAuction activeAuction){
+        try {
+            auctionDao.setStatus(activeAuction.getAuctionId(), AuctionStatus.Active.toString());
+            activeAuction.joinAuctionFollower(this);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
     public Auction getAuctionWithLots(int id){
         try {
             return auctionDao.getAuctionWithLots(id);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
+    }
+    public void setPlatformObserver(AuctionPlatformObserver platformObserver){
+        auctionPlatformObserver = platformObserver;
+    }
+
+    public Queue<AuctionStartTime> getAuctionsQueue() throws Exception {
+        return auctionDao.getAuctionsQueue();
     }
 }

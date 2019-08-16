@@ -48,18 +48,18 @@ public class ItemController {
                            ModelMap model) {
         //there should be adding item to the db
         try {
-            ItemInfo newItem = itemService.addItem(item.getName(),item.getDescription(), user);
+            ItemInfo newItem = itemService.getItemById(itemService.addItem(item.getName(),item.getDescription(), user));
             model.addAttribute("ID", newItem.getID());
             model.addAttribute("name", newItem.getName());
             model.addAttribute("description", newItem.getDescription());
             model.addAttribute("status", newItem.getStatus());
             model.addAttribute("owner", newItem.getOwner());
             //model.addAttribute("item", item);
-        }catch (SQLException e){
-            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-            System.out.println(e.getMessage());
-        }catch (AuctionException e){
-            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+//        }catch (SQLException e){
+//            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
+//            System.out.println(e.getMessage());
+        }catch (Exception e){
+            model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
             System.out.println(e.getMessage());
         }
         model.addAttribute("back", "freeItems");

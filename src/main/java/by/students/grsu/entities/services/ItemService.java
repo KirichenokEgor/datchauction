@@ -3,6 +3,7 @@ package by.students.grsu.entities.services;
 import by.students.grsu.entities.dao.ItemDao;
 import by.students.grsu.entities.item.Item;
 import by.students.grsu.entities.item.ItemInfo;
+import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.users.User;
 import by.students.grsu.entities.users.UserRole;
 
@@ -15,7 +16,7 @@ public class ItemService {
     public ItemService(ItemDao itemDao){
         this.itemDao=itemDao;
     }
-    public Item addItem(String name, String description, User owner) throws SQLException, AuctionException {
+    public int addItem(String name, String description, User owner) throws Exception {
         if(owner.getRole()== UserRole.Buyer)throw new AuctionException("Buyer can't make or have items",41);
         return itemDao.addItem(name, description,  owner.getUsername());
     }
@@ -77,6 +78,13 @@ public class ItemService {
             itemDao.freeItemsByLot(lotId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    public void deleteItemsByLotId(int lotId){
+        try {
+            itemDao.deleteItemsByLotId(lotId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

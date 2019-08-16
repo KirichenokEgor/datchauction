@@ -1,14 +1,14 @@
 package by.students.grsu.entities.auction;
 
-import by.students.grsu.entities.services.AuctionException;
-import by.students.grsu.entities.item.Item;
-import by.students.grsu.entities.lot.*;
+import by.students.grsu.entities.lot.Lot;
+import by.students.grsu.entities.lot.LotInfo;
+import by.students.grsu.entities.lot.LotStatus;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Auction implements ActiveAuction, AuctionInfo {
+public class Auction implements AuctionInfo {
     private int ID;
     private String description;
     private AuctionStatus status;
@@ -22,10 +22,10 @@ public class Auction implements ActiveAuction, AuctionInfo {
         this.ID = id;
         this.description = description;
         switch (status){
-            case "disabled":{this.status=AuctionStatus.Disabled; break;}
-            case "planned":{this.status=AuctionStatus.Planned; break;}
-            case "done":{this.status=AuctionStatus.Done;  break;}
-            case "active":{this.status=AuctionStatus.Active; break;}
+            case "disabled":{this.status= AuctionStatus.Disabled; break;}
+            case "planned":{this.status= AuctionStatus.Planned; break;}
+            case "done":{this.status= AuctionStatus.Done;  break;}
+            case "active":{this.status= AuctionStatus.Active; break;}
         }
         //Disabled, Planned, Active, Done
         this.maxLots = maxLots;
@@ -37,27 +37,22 @@ public class Auction implements ActiveAuction, AuctionInfo {
     public Auction(int id,String description,int maxLots,LocalTime beginTime, int maxDuration, String status,List<Lot> lotList){
         this.ID = id;
         this.description = description;
-        switch (status){
-            case "disabled":{this.status=AuctionStatus.Disabled; break;}
-            case "planned":{this.status=AuctionStatus.Planned; break;}
-            case "done":{this.status=AuctionStatus.Done;  break;}
-            case "active":{this.status=AuctionStatus.Active; break;}
-        }
         //Disabled, Planned, Active, Done
         this.lots = lotList;
         this.currentLots = lotList.size();
         this.maxLots = maxLots;
-        this.tick = 0;
+        this.tick = currentLots*5;
         this.beginTime = beginTime;
         this.maxDuration=maxDuration;
-    }
-    public boolean makePlaned(){
-        if(status!=AuctionStatus.Planned) {
-            lots = new ArrayList<Lot>();
-            status = AuctionStatus.Planned;
-            return true;
+        switch (status){
+            case "disabled":{this.status= AuctionStatus.Disabled; break;}
+            case "planned":{this.status= AuctionStatus.Planned; break;}
+            case "done":{this.status= AuctionStatus.Done;  break;}
+            case "active":{
+                this.status= AuctionStatus.Active;
+                makeActive();
+                break;}
         }
-        return false;
     }
     public boolean hasFreeLots(){
         if(currentLots<maxLots)return true;
@@ -67,22 +62,22 @@ public class Auction implements ActiveAuction, AuctionInfo {
         if(currentLots>0)return true;
         else return false;
     }
-    @Override
+
     public int getID() {
         return ID;
     }
 
-    @Override
+
     public String getDescription() {
         return description;
     }
 
-    @Override
+
     public LocalTime getBeginTime() {
         return beginTime;
     }
 
-    @Override
+
     public List<LotInfo> getILots() {
         List<LotInfo> infolist = new ArrayList<LotInfo>();
         if(lots!=null)
@@ -92,33 +87,36 @@ public class Auction implements ActiveAuction, AuctionInfo {
     }
 
     @Override
+    public String getStringStatus() {
+        return status.toString();
+    }
+
+
     public List<Lot> getLots() {
         return lots;
     }
 
-    @Override
+
     public int getTick() {
         return tick;
     }
 
-    @Override
     public int getMaxDuration() {
         return maxDuration;
     }
 
-    @Override
+
     public void makeDone() {
         for(Lot lot : lots)
-            if(lot.getStatus()==LotStatus.Registered)
+            if(lot.getStatus()== LotStatus.Registered)
                 lot.makeEnded();
-        status=AuctionStatus.Done;
+        status= AuctionStatus.Done;
     }
 
-    @Override
     public void makeActive() {
         for(Lot lot : lots)
-            lot.calculatePriceStep(maxDuration/tick);
-        status=AuctionStatus.Active;
+            lot.calculatePriceStep(maxDuration*60/tick);
+        status= AuctionStatus.Active;
     }
 
     public int getMaxLots() {

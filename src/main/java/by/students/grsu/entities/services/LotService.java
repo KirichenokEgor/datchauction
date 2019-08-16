@@ -1,5 +1,6 @@
 package by.students.grsu.entities.services;
 
+import by.students.grsu.entities.auction.ActiveAuction;
 import by.students.grsu.entities.dao.LotDao;
 import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.lot.LotInfo;
@@ -7,7 +8,7 @@ import by.students.grsu.entities.lot.LotStatus;
 
 import java.util.List;
 
-public class LotService {
+public class LotService implements LotFollower,DealsFollower{
     private LotDao lotDao;
     private AuctionService auctionService;
     private ItemService itemService;
@@ -55,13 +56,13 @@ public class LotService {
         }
     }
 
-    public void deleteLot(int id){
-        try {
-            lotDao.deleteLot(id);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+//    public void deleteLot(int id){
+//        try {
+//            lotDao.deleteLot(id);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
     public List<Lot> getAllLots(){
         try {
@@ -70,5 +71,69 @@ public class LotService {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public List<Lot> getLotsBySearch(String substr){
+        try {
+            return lotDao.getLotsBySearch(substr);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    private void freeEndedLots(){
+        List<Integer> lotsIndexes = lotDao.deleteEndedLots();
+        for(int index : lotsIndexes)
+            itemService.freeItemsByLot(index);
+    }
+    public void deleteLot(int lotId)/* throws Exception */{
+        try {
+            auctionService.deleteLot(lotDao.getLotById(lotId).getAuctionId());//decrement current lots
+            lotDao.deleteLot(lotId);
+            itemService.freeItemsByLot(lotId);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public List<Lot> getRegisteredLots() throws Exception {
+        return lotDao.getRegisteredLots();
+    }
+    @Override
+    public void lotSold(int lotId) {
+        try {
+            lotDao.setStatusByLotId(lotId,"sold");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void auctionEnded(int auctionId) {
+        try {
+            lotDao.setEndByAuctionId(auctionId);
+            freeEndedLots();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void tickHappened() {
+
+    }
+
+    public void auctionStarted(ActiveAuction auction){
+        auction.joinLotFollower(this);
+    }
+
+    @Override
+    public void dealComplete(int lotId) {
+        try {
+            lotDao.deleteLot(lotId);
+            itemService.deleteItemsByLotId(lotId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

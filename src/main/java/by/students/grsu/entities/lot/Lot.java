@@ -5,7 +5,7 @@ import by.students.grsu.entities.item.ItemInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lot implements ActiveLot, LotInfo {
+public class Lot implements LotInfo {
     private int ID;
     private String name;
     private double currentPrice;
@@ -103,17 +103,14 @@ public class Lot implements ActiveLot, LotInfo {
         return currentPrice;
     }
 
-    @Override
     public void setCurrentPrice(double currentPrice) {
         this.currentPrice = currentPrice;
     }
 
-    @Override
     public double getPriceStep() {
         return priceStep;
     }
 
-    @Override
     public void calculatePriceStep(int ticks) {
         priceStep = (currentPrice-minPrice)/ticks;
     }
@@ -125,6 +122,13 @@ public class Lot implements ActiveLot, LotInfo {
             list.add(item);
         return list;
     }
+    public void setSold(){
+        this.status = LotStatus.Sold;
+    }
+
+    public void makePriceStep(){
+        this.currentPrice-=priceStep;
+    }
 
     public void makeEnded(){
         status=LotStatus.End;
@@ -135,5 +139,9 @@ public class Lot implements ActiveLot, LotInfo {
 
     public String getName() {
         return name;
+    }
+
+    public int getAuctionId() {
+        return auctionId;
     }
 }

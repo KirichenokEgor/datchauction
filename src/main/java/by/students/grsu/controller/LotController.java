@@ -182,4 +182,13 @@ public class LotController {
         model.addAttribute("lots", lots);
         return "allLotList";
     }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String searchLots(ModelMap model, @ModelAttribute("user") User user, ServletRequest request) {
+        String searchStr = request.getParameter("s");
+        List<Lot> lots = lotService.getLotsBySearch(searchStr);
+        model.addAttribute("lots", lots);
+        model.addAttribute("searchStr", searchStr);
+        return "search";
+    }
 }

@@ -89,6 +89,15 @@ public class AuctionController {
         return "auctionList";
     }
 
+    @RequestMapping(value = "/activeAuctionList", method = RequestMethod.GET)
+    public String watchActiveAuctions(ModelMap model, @ModelAttribute("user") User user) {
+        //в зависимости от прав юзера юзать разные методы, чтобы достать аукционы
+
+        List<AuctionInfo> auctions = auctionService.getActiveAuctions();
+        model.addAttribute("auctions", auctions);
+        return "activeAuctionList";
+    }
+
     @RequestMapping(value = "/deleteAuction", method = RequestMethod.GET)
     public ModelAndView deleteAuction(@ModelAttribute("user") User user) {
         //TODO check if user is admin
@@ -99,28 +108,21 @@ public class AuctionController {
         return mv;
     }
 
+    private void deleteAuction(int id){
+        auctionService.deleteAuction(id);
+        List<Lot> lots = lotService.getLotsByAuctionId(id);
+        for(Lot lot : lots){
+            itemService.freeItemsByLot(lot.getID());
+        }
+        lotService.deleteLotsByAuction(id);
+    }
+
     @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.GET)
     public String auctionInfo(@ModelAttribute("user") User user,
                               ModelMap model, ServletRequest request) {
         //TODO check if user is admin
-//        try {
         int num = Integer.parseInt(request.getParameter("auc"));
-        auctionService.deleteAuction(num);
-        List<Lot> lots = lotService.getLotsByAuctionId(num);
-        for(Lot lot : lots){
-            itemService.freeItemsByLot(lot.getID());
-        }
-        lotService.deleteLotsByAuction(num);
-
-//        }catch (SQLException e){
-//            model.addAttribute("errMessage", "SQLError. Sorry. " + e.getMessage());
-//            return "deleteAuction";
-//        }catch(AuctionException e){
-//            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
-//        }
-
-        //model.addAttribute("back", "freeItems");
-
+        deleteAuction(num);
         return "redirect:/auctionList";
     }
 

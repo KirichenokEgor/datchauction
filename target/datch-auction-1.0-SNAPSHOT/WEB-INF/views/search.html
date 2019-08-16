@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lot list</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<div th:insert="components :: loggedAsAndLogout" ></div>
+<hr>
+<h3>Found lots</h3>
+<hr>
+<form action="#" th:action="@{/search}">
+    <p><input type="search" name="s" minlength="3" placeholder="Search" th:value="${searchStr}">
+        <input type="submit" value="Search"></p>
+</form>
+<hr>
+<div th:insert="components :: allLotList"></div>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

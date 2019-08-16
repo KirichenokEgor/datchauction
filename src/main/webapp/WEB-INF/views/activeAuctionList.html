@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Active Auctions</title>
+</head>
+<body>
+<header th:insert="components :: header"></header>
+<hr>
+<div th:insert="components :: loggedAsAndLogout" ></div>
+<hr>
+<h3>Active Auction List</h3>
+<hr>
+<div th:text = "${errMessage}"></div><br>
+<header th:insert="components :: aucList"></header>
+<hr>
+<table>
+    <tr>
+        <td width="100px"><a th:href="@{/addAuction}" >Add auction</a></td>
+        <td width="100px"><a th:href="@{/deleteAuction}" >Delete auction</a></td>
+    </tr>
+</table>
+<div th:insert="components :: backHome"></div>
+<hr>
+<footer th:insert="components :: footer"></footer>
+</body>
+</html>

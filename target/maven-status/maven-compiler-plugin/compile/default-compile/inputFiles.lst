@@ -1,4 +1,4 @@
-C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\MainThread.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\SoldLotService.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\config\MvcWebApplicationInitializer.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\dao\UserDao.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\auction\AuctionStatus.java
@@ -7,11 +7,16 @@ C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\Au
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\item\TempItem.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\controller\LoginController.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\controller\RegistrationController.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\dao\SoldLotDao.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\lot\TempLot.java
-C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\auction\AuctionThread.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\dao\AuctionDao.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\lot\SoldLot.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\auction\ActiveAuctionInterface.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\auction\AuctionFollower.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\LotFollower.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\UserService.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\auction\AuctionInfo.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\auction\AuctionStartTime.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\ItemService.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\lot\Lot.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\item\Item.java
@@ -19,9 +24,9 @@ C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\config\MvcWebConfig.
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\controller\LotController.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\auction\Auction.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\AuctionException.java
-C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\lot\ActiveLot.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\SoldLotFollower.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\dao\LotDao.java
-C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\AuctionsCore.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\users\Follower.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\controller\ItemController.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\users\UserRole.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\users\User.java
@@ -32,6 +37,8 @@ C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\Lo
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\dao\ItemDao.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\AuctionService.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\users\TempUser.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\AuctionPlatformObserver.java
+C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\services\DealsFollower.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\controller\AuctionController.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\lot\LotInfo.java
 C:\KiriEg_files\datchauction\src\main\java\by\students\grsu\entities\lot\LotStatus.java
