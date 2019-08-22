@@ -6,7 +6,6 @@ import by.students.grsu.entities.services.AuctionPlatformObserver;
 import by.students.grsu.entities.services.LotFollower;
 import by.students.grsu.entities.services.SoldLotFollower;
 import by.students.grsu.entities.users.Follower;
-import by.students.grsu.entities.users.User;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -30,14 +29,12 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
     public void run(){
         //DEBUG
         System.out.println("Auction " + auction.getID() + " started");
-
         while(true){
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
                 System.out.println("Interrupted while waiting observers");
             }
-            //System.out.println("waiting...");
             if(auctionFollower==null)continue;
             if(lotFollower==null)continue;
             if(soldLotFollower==null)continue;
@@ -63,7 +60,7 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
                     //System.out.println(lot.getID() + ": " + lot.getPriceStep());
                     //lot.setCurrentPrice(lot.getCurrentPrice() - lot.getPriceStep());
                     lot.makePriceStep();
-                  //  System.out.println(lot.getCurrentPrice());
+                    //  System.out.println(lot.getCurrentPrice());
                     auctionEnd=false;
                 }
             if(auctionEnd)break;
@@ -79,10 +76,12 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
 
 
     @Override
-    public void buyLot(int id, User user) throws Exception {
+    public void buyLot(int lotId, String user) throws Exception {
         for(Lot lot : auction.getLots())
-            if(lot.getID()==id){lot.setSold();
-                lotSold(id,user,lot.getCurrentPrice());
+            if(lot.getID()==lotId){
+                if(lot.getStatus()==LotStatus.Sold)throw new Exception("Lot already sold!");
+                lot.setSold();
+                lotSold(lotId,user,lot.getCurrentPrice());
                 break;
             }
     }
@@ -113,13 +112,13 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
 
     private void tickHappened(){
         for(Follower follower : userFollowers)
-            follower.tickHappened();
+            follower.tickHappened(auction.getID());
     }
-    private void lotSold(int id,User user,double price){
-        soldLotFollower.lotSold(user.getUsername(),id,price);
+    private void lotSold(int id,String user,double price){
+        soldLotFollower.lotSold(user,id,price);
         lotFollower.lotSold(id);
         for(Follower follower : userFollowers)
-            follower.lotSold();
+            follower.lotSold(auction.getID());
     }
     private void auctionEnded(){
         System.out.println("Auction " + auction.getID() + " ended");
@@ -127,7 +126,10 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
         lotFollower.auctionEnded(auction.getID());
         auctionPlatformObserver.auctionEnded(this);
         for(Follower follower : userFollowers)
-            follower.auctionEnded();
-        //TODO inform users
+            follower.auctionEnded(auction.getID());
+    }
+    @Override
+    public Auction getAuction(){
+        return auction;
     }
 }

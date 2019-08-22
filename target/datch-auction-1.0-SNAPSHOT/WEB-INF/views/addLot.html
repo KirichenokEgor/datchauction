@@ -31,9 +31,6 @@
 <h3>Enter lot information</h3>
 
 <p id="error" style="color: red"></p>
-<!--<script>-->
-<!--    error.innerText = "Fuck yourself!";-->
-<!--</script>-->
 <form id="form" action="#" th:action="@{/{a_id}/saveLot(a_id=${a_id})}">
     <table>
         <tr>
@@ -72,34 +69,15 @@ var error = document.getElementById("error");
 
 form.onsubmit = function(e){
     if(Number.parseInt(min_price.value) > Number.parseInt(price.value)){
-		//location.href='/app/lotList/{auc.getId()}';
-		// event.preventDefault();
 		error.innerText = "min price should be smaller than price";
+		min_price.focus();
 		event.preventDefault();
 	}
-	else{
-	    error.innerText = "good input";
-	    //"submit".preventDefault();
-	    event.preventDefault();
-	}
+	//else{
+	    //error.innerText = "good input";
+	    //event.preventDefault();
+	//}
 }
-
-<!--form.addEventListener("submit", function(event) {-->
-<!--    event.preventDefault();-->
-<!--    if(min_price.value > price.value){-->
-<!--		//location.href='/app/lotList/{auc.getId()}';-->
-<!--		// event.preventDefault();-->
-<!--		error.innerText = "min price should be smaller than price";-->
-<!--		//min_price.value = 0.01;-->
-<!--		//"submit".preventDefault();-->
-<!--		event.preventDefault();-->
-<!--	}-->
-<!--	else{-->
-<!--	    error.innerText = "good input";-->
-<!--	    //"submit".preventDefault();-->
-<!--	    event.preventDefault();-->
-<!--	}-->
-<!--}, false);-->
 </script>
 <hr>
 <div th:insert="components :: itemList"></div>

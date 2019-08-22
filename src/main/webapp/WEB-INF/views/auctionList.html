@@ -33,7 +33,7 @@
     <div th:text = "${errMessage}"></div><br>
     <header th:insert="components :: aucList"></header>
     <hr>
-    <table>
+    <table sec:authorize="hasRole('ADMIN')">
         <tr>
             <td width="100px"><a th:href="@{/addAuction}" >Add auction</a></td>
             <td width="100px"><a th:href="@{/deleteAuction}" >Delete auction</a></td>
@@ -47,5 +47,6 @@
     <br>
     <br>
     <div th:insert="components :: improvedFooter" ></div>
+    <script th:src="@{/scripts/auctionsSorter.js}"></script>
 </body>
 </html>

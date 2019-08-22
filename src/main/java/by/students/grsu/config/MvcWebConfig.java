@@ -2,6 +2,8 @@ package by.students.grsu.config;
 
 import by.students.grsu.entities.dao.*;
 import by.students.grsu.entities.services.*;
+import by.students.grsu.websocket.UserSessionService;
+import by.students.grsu.websocket.WebSocketHandler;
 import com.mysql.cj.jdbc.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -11,13 +13,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,8 +30,12 @@ import java.sql.Statement;
 @ComponentScan("by.students.grsu.controller")
 public class MvcWebConfig implements WebMvcConfigurer {
 
-    @Autowired
     private ApplicationContext applicationContext;
+
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     /*
      * STEP 1 - Create SpringResourceTemplateResolver
@@ -41,6 +48,12 @@ public class MvcWebConfig implements WebMvcConfigurer {
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/scripts/**","/css/**")
+                .addResourceLocations("/WEB-INF/scripts/","/WEB-INF/css/");
+    }
+
 //    @Bean
 //    public AuctionService auctionService(){
 //        return new AuctionService();
@@ -115,14 +128,18 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public UserService userService(UserDao userDao){
         return new UserService(userDao);
     }
-//    @Bean
-//    public SoldLotService soldLotService(SoldLotDao soldLotDao){
-//        return new SoldLotService(soldLotDao);
-//    }
-//    @Bean
-//    public AuctionPlatform auctionPlatform(AuctionService auctionService, ){
-//        return new AuctionPlatform();
-//    }
+    @Bean
+    public SoldLotService soldLotService(SoldLotDao soldLotDao, LotService lotService){
+        return new SoldLotService(soldLotDao,lotService);
+    }
+    @Bean
+    public AuctionPlatform auctionPlatform(AuctionService auctionService, SoldLotService soldLotService, LotService lotService, WebSocketHandler handler){
+        return new AuctionPlatform(auctionService,soldLotService,lotService,handler);
+    }
+    @Bean
+    public UserSessionService getUserSessionService(){
+        return new UserSessionService();
+    }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)///////////////////////////////////////////////////////////////
     public Statement statement(AuctionConfiguration configuration) throws Exception {
@@ -130,7 +147,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
             DriverManager.registerDriver(new Driver());
             Statement statement =
                     DriverManager.getConnection("jdbc:mysql://"+configuration.getDaoLocation(),configuration.getDaoUser(),configuration.getDaoPassword()).createStatement();
-            statement.execute("use datchauction");
+            //statement.execute("use datchauction");
             return statement;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -153,14 +170,15 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public UserDao userDao(Statement statement){
         return new UserDao(statement);
     }
-
-
+    @Bean
+    public SoldLotDao soldLotDao(Statement statement){return new SoldLotDao(statement);}
     /*
      * STEP 2 - Create SpringTemplateEngine
      * */
     @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.addDialect(new SpringSecurityDialect());
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
@@ -175,5 +193,4 @@ public class MvcWebConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
-
 }

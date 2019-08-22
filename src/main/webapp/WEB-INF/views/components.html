@@ -26,19 +26,19 @@
         <li><a th:href="@{/auctionList}">Auction list</a></li>
         <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>
         <li><a th:href="@{/allLotList}">Lots</a></li>
-        <li><a th:href="@{/freeItems}">Free items</a></li>
+        <li><a sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/freeItems}">Free items</a></li>
     </ul>
 </div>
-<div th:fragment="adminMenu" class="widget">
-    <h3 class="widget-title">Menu</h3>
-    <ul class="widget-list">
-        <li><a th:href="@{/auctionList}">Auction list</a></li>
-        <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>
-        <li><a th:href="@{/allLotList}">Lots</a></li>
-        <li><a th:href="@{/freeItems}">Free items</a></li>
-<!--       TO-DO add something-->
-    </ul>
-</div>
+<!--<div th:fragment="adminMenu" class="widget">-->
+<!--    <h3 class="widget-title">Menu</h3>-->
+<!--    <ul class="widget-list">-->
+<!--        <li><a th:href="@{/auctionList}">Auction list</a></li>-->
+<!--        <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>-->
+<!--        <li><a th:href="@{/allLotList}">Lots</a></li>-->
+<!--        <li><a th:href="@{/freeItems}">Free items</a></li>-->
+<!--&lt;!&ndash;       TO-DO add something&ndash;&gt;-->
+<!--    </ul>-->
+<!--</div>-->
 <div th:fragment="backHome">
     <a th:href="@{/home}">Back to the home page</a>
 </div>
@@ -65,9 +65,9 @@
 <div th:fragment="aucList">
     <table border="1" cellspacing="0">
         <tr>
-            <td width="300px">ID</td>
-            <td width="100px">Start time</td>
-            <td width="100px">Duration</td>
+            <td width="300px" onclick="sortById()">ID</td>
+            <td width="100px" onclick="sortByTime()">Start time</td>
+            <td width="100px" onclick="sortByDuration()">Duration</td>
             <td width="50px"></td>
             <td width="50px"></td>
         </tr>
@@ -125,11 +125,6 @@
     </table>
 </div>
 <div th:fragment="activeAucLotList">
-    <script>
-        function viewItems(ind=0){
-
-        }
-    </script>
     <table border="1" cellspacing="0">
         <tr>
             <td width="100px">ID</td>
@@ -155,18 +150,18 @@
     <table>
         <tr>
             <td width="50px"><a th:href="@{/{id}/Subscribe(id=${auction.getID()})}" >Subscribe</a></td>
-            <td width="50px"><a th:href="@{/{id}/addLot(id=${auction.getID()})}" >Add lot</a></td>
-            <td width="100px"><a th:href="@{/{id}/deleteLot(id=${auction.getID()})}" >Delete lot</a></td>
+            <td width="50px"><a sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/{id}/addLot(id=${auction.getID()})}" >Add lot</a></td>
+            <td width="100px"><a sec:authorize="hasRole('ADMIN')" th:href="@{/{id}/deleteLot(id=${auction.getID()})}" >Delete lot</a></td>
         </tr>
     </table>
 </div>
 <div th:fragment="itemList">
     <table border="1" cellspacing="0">
         <tr>
-            <td width="100px">ID</td>
-            <td width="100px">Name</td>
-            <td width="500px">Description</td>
-            <td width="200px">Status</td>
+            <td width="100px" onclick="sortById()">ID</td>
+            <td width="100px" onclick="sortByName()">Name</td>
+            <td width="500px" onclick="sortByDescription()">Description</td>
+            <td width="200px" onclick="sortByStatus()">Status</td>
             <td width="200px">Owner</td>
         </tr>
         <tbody>
@@ -183,19 +178,21 @@
 <div th:fragment="itemListButtons">
     <table>
         <tr>
-            <td width="100px"><a th:href="@{/addItem}" >Add item</a></td>
-            <td width="100px"><a th:href="@{/deleteItem}" >Delete item</a></td>
+            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a th:href="@{/addItem}" >Add item</a></td>
+            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a th:href="@{/deleteItem}" >Delete item</a></td>
         </tr>
     </table>
 </div>
 <div th:fragment="logout">
-    <a th:href="@{/finish}">Log out</a>
+    <form action="#" th:action="@{/logout}" method="post">
+        <input type="submit" value="Log out"/>
+    </form>
 </div>
 <div th:fragment="loggedAsAndLogout">
     <table>
         <tr>
             <td>Logged as:</td>
-            <td width="300px" th:text="${user.username}"></td>
+            <td width="300px" th:text="${#httpServletRequest.remoteUser}"></td>
             <td><div th:insert="components :: logout" ></div></td>
         </tr>
     </table>
@@ -206,9 +203,9 @@
 <div th:fragment="allLotList">
     <table border="1" cellspacing="0">
         <tr>
-            <td width="100px">ID</td>
-            <td width="300px">Name</td>
-            <td width="100px">Price</td>
+            <td width="100px" onclick="sortById()">ID</td>
+            <td width="300px" onclick="sortByName()">Name</td>
+            <td width="100px" onclick="sortByPrice()">Price</td>
             <td width="50px"></td>
             <td width="130px"></td>
             <!--      <td width="100px">Min price</td>

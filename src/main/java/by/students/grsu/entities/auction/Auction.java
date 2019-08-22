@@ -50,7 +50,7 @@ public class Auction implements AuctionInfo {
             case "done":{this.status= AuctionStatus.Done;  break;}
             case "active":{
                 this.status= AuctionStatus.Active;
-                makeActive();
+                //makeActive();
                 break;}
         }
     }

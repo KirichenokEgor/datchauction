@@ -9,7 +9,7 @@ public class Lot implements LotInfo {
     private int ID;
     private String name;
     private double currentPrice;
-    private double priceStep;//todo auto calculate
+    private double priceStep;
     private double minPrice;
     private List<Item> items;
     private LotStatus status;
@@ -112,7 +112,8 @@ public class Lot implements LotInfo {
     }
 
     public void calculatePriceStep(int ticks) {
-        priceStep = (currentPrice-minPrice)/ticks;
+        priceStep = Math.round(((currentPrice-minPrice)/ticks)*100)/100.0;
+        System.out.println("priceStep=" + priceStep);///////////////////////////////////////
     }
 
     @Override
@@ -127,7 +128,8 @@ public class Lot implements LotInfo {
     }
 
     public void makePriceStep(){
-        this.currentPrice-=priceStep;
+        this.currentPrice = Math.round((currentPrice - priceStep)*100)/100.0;
+        System.out.println("currentPrice=" + currentPrice);
     }
 
     public void makeEnded(){

@@ -3,9 +3,7 @@ package by.students.grsu.entities.services;
 import by.students.grsu.entities.dao.ItemDao;
 import by.students.grsu.entities.item.Item;
 import by.students.grsu.entities.item.ItemInfo;
-import by.students.grsu.entities.lot.Lot;
-import by.students.grsu.entities.users.User;
-import by.students.grsu.entities.users.UserRole;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,16 +14,16 @@ public class ItemService {
     public ItemService(ItemDao itemDao){
         this.itemDao=itemDao;
     }
-    public int addItem(String name, String description, User owner) throws Exception {
-        if(owner.getRole()== UserRole.Buyer)throw new AuctionException("Buyer can't make or have items",41);
-        return itemDao.addItem(name, description,  owner.getUsername());
+    public int addItem(String name, String description, SecurityContextHolderAwareRequestWrapper contextHolder) throws Exception {
+        //if(!contextHolder.isUserInRole("SELLER") && !contextHolder.isUserInRole("ADMIN"))throw new AuctionException("Buyer can't make or have items",41);
+        return itemDao.addItem(name, description, contextHolder.getRemoteUser());
     }
     public ItemInfo getItemById(int id) throws SQLException, AuctionException {
         return itemDao.getItemById(id);
     }
-    public List<Item> getItemsByOwner(User owner) throws Exception {
-        if(owner.getRole()==UserRole.Buyer)throw new Exception("Buyer can't make or have items");
-        return itemDao.getItemsByOwner(owner.getUsername());
+    public List<Item> getItemsByOwner(SecurityContextHolderAwareRequestWrapper contextHolder) throws Exception {
+        //if(owner.getRole()==UserRole.Buyer)throw new Exception("Buyer can't make or have items");
+        return itemDao.getItemsByOwner(contextHolder.getRemoteUser());
     }
     public void deleteItemById(int id) throws Exception {
         try {
@@ -46,9 +44,9 @@ public class ItemService {
             return null;
         }
     }
-    public List<Item> getFreeItemsByOwner(User owner){
+    public List<Item> getFreeItemsByOwner(SecurityContextHolderAwareRequestWrapper contextHolder){
         try {
-            List<Item> itemList = getItemsByOwner(owner);
+            List<Item> itemList = getItemsByOwner(contextHolder);
             for(int i = 0; i < itemList.size(); i++)
                 if(!itemList.get(i).isOnLot())continue;
                 else {

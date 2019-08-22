@@ -5,14 +5,14 @@ import by.students.grsu.entities.item.ItemInfo;
 import by.students.grsu.entities.item.TempItem;
 import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.services.ItemService;
-import by.students.grsu.entities.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
@@ -21,9 +21,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Controller
-@SessionAttributes("user")
+//@SessionAttributes("user")
 public class ItemController {
     private ItemService itemService;
+    //private SecurityContextHolderAwareRequestWrapper contextHolder;
 
     @PostConstruct
     private void postConstructor(){
@@ -35,8 +36,13 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+//    @Autowired
+//    public void setSecurityContextHolderAwareRequestWrapper(SecurityContextHolderAwareRequestWrapper contextHolder) {
+//        this.contextHolder = contextHolder;
+//    }
+
     @RequestMapping(value = "/addItem", method = RequestMethod.GET)
-    public ModelAndView addItem(@ModelAttribute("user") User user) {
+    public ModelAndView addItem() {
         ModelAndView mv = new ModelAndView("addItem");
         mv.addObject("item", new TempItem());
         mv.addObject("back", "freeItems");
@@ -44,11 +50,12 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/saveItem", method = RequestMethod.POST)
-    public String itemInfo(@ModelAttribute("item") TempItem item, @ModelAttribute("user") User user,
+    public String itemInfo(@ModelAttribute("item") TempItem item, SecurityContextHolderAwareRequestWrapper contextHolder,
                            ModelMap model) {
-        //there should be adding item to the db
+        //TODO fetch user from Security
+        //mb add item itself?
         try {
-            ItemInfo newItem = itemService.getItemById(itemService.addItem(item.getName(),item.getDescription(), user));
+            ItemInfo newItem = itemService.getItemById(itemService.addItem(item.getName(),item.getDescription(), contextHolder));
             model.addAttribute("ID", newItem.getID());
             model.addAttribute("name", newItem.getName());
             model.addAttribute("description", newItem.getDescription());
@@ -68,35 +75,29 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/deleteItem", method = RequestMethod.GET)
-    public ModelAndView deleteItem(@ModelAttribute("user") User user) {
+    public ModelAndView deleteItem(SecurityContextHolderAwareRequestWrapper contextHolder) {
         ModelAndView mv = new ModelAndView("deleteItem");
         try {
             //List<Item> items = itemService.getItemsByOwner(user);
-            List<Item> items = itemService.getFreeItemsByOwner(user);
+            List<Item> items = itemService.getFreeItemsByOwner(contextHolder);
             mv.addObject("items", items);
-//        }catch (SQLException e){
-//            mv.addObject("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-//        }catch (AuctionException e){
-//            mv.addObject("errMessage", "Internal error " + e.getCode() + ". Sorry.");
         }catch (Exception e){
             mv.addObject("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }
 
-        //mv.addObject("num", new IntegerWrapper());
         mv.addObject("back", "freeItems");
         return mv;
     }
 
     @RequestMapping(value = "/deleteItemPart2", method = RequestMethod.GET)
-    public String itemInfo(@ModelAttribute("user") User user,
-                           ModelMap model, ServletRequest request) {
+    public String itemInfo(ModelMap model, ServletRequest request, Authentication authentication, SecurityContextHolderAwareRequestWrapper contextHolder) {
         int num = Integer.parseInt(request.getParameter("item"));
 
         try {
             ItemInfo item = itemService.getItemById(num);
-            if(!item.getOwner().equals(user.getUsername())){
+            if(!item.getOwner().equals(contextHolder.getRemoteUser())){
                 model.addAttribute("errMessage", "Sorry, you can't delete this item, because it's not yours.");
-                List<Item> items = itemService.getItemsByOwner(user);
+                List<Item> items = itemService.getItemsByOwner(contextHolder);
                 model.addAttribute("items", items);
                 return "deleteItem";
             }
@@ -112,20 +113,14 @@ public class ItemController {
             return "deleteItem";
         }
 
-        //model.addAttribute("back", "freeItems");
-
         return "redirect:/freeItems";
     }
 
     @RequestMapping(value = "/freeItems", method = RequestMethod.GET)
-    public String watchFreeItems(ModelMap model, @ModelAttribute("user") User user) {
+    public String watchFreeItems(ModelMap model, Authentication authentication, SecurityContextHolderAwareRequestWrapper contextHolder) {
         try {
-            List<Item> items = itemService.getFreeItemsByOwner(user);
+            List<Item> items = itemService.getFreeItemsByOwner(contextHolder);
             model.addAttribute("items", items);
-//        }catch (SQLException e){
-//            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-//        }catch (AuctionException e){
-//            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
         }catch (Exception e){
             model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }

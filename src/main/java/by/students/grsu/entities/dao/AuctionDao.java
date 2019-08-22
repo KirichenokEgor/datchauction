@@ -138,7 +138,7 @@ public class AuctionDao {
     public Queue<AuctionStartTime> getAuctionsQueue() throws Exception {
         try {
             Queue<AuctionStartTime> queue = new LinkedList<AuctionStartTime>();
-            ResultSet rs = statement.executeQuery("SELECT ID,beginTime FROM auctions WHERE status=\'planned\' ORDER BY beginTime");
+            ResultSet rs = statement.executeQuery("SELECT ID,beginTime FROM auctions WHERE status=\'planned\' OR status=\'active\' ORDER BY beginTime");
             while(rs.next()){
                 queue.add(new AuctionStartTime(rs.getInt("ID"),rs.getTime("beginTime").toLocalTime()));
             }

@@ -70,6 +70,7 @@ var error = document.getElementById("error");
 form.onsubmit = function(e){
     if(Number.parseInt(min_price.value) > Number.parseInt(price.value)){
 		error.innerText = "min price should be smaller than price";
+		min_price.focus();
 		event.preventDefault();
 	}
 	//else{

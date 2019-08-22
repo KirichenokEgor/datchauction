@@ -2,7 +2,6 @@ package by.students.grsu.entities.services;
 
 import by.students.grsu.entities.auction.*;
 import by.students.grsu.entities.dao.AuctionDao;
-import by.students.grsu.entities.lot.Lot;
 
 import java.sql.SQLException;
 import java.time.LocalTime;
@@ -22,6 +21,7 @@ public class AuctionService implements AuctionFollower {
     }
     public int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException {
         Auction newAuction = auctionDao.addAuction(description, maxLots, beginTime, maxDuration);
+        auctionPlatformObserver.auctionsChanged();
         return newAuction.getID();
     }
 

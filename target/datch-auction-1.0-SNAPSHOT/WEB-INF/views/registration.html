@@ -23,7 +23,7 @@
 <header class="headr" th:insert="components :: header"></header>
 <h3>Registration Page</h3>
 <div th:text = "${registrationMessage}"/><br>
-<form action="#" th:action="@{/confirmRegistration}" th:object="${tempUser}">
+<form action="#" th:action="@{/confirmRegistration}" th:object="${tempUser}" method="post">
     <table>
         <tr>
             <td><label th:text="Username" /></td>
@@ -43,7 +43,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" value="Confirm and login"/>
+                <input type="submit" value="Confirm"/>
             </td>
         </tr>
     </table>

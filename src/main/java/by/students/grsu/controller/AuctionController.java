@@ -6,25 +6,29 @@ import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.services.AuctionService;
 import by.students.grsu.entities.services.ItemService;
 import by.students.grsu.entities.services.LotService;
-import by.students.grsu.entities.users.User;
+import by.students.grsu.websocket.UserSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes("user")
+//@SessionAttributes("user")
 public class AuctionController {
     private AuctionService auctionService;
     private LotService lotService;
     private ItemService itemService;
+    private UserSessionService sessionService;
 
     @PostConstruct
     private void postConstructor(){
@@ -55,16 +59,27 @@ public class AuctionController {
         this.itemService = itemService;
     }
 
+    @Autowired
+    public void setUserSessionService(UserSessionService sessionService) {
+        this.sessionService = sessionService;
+    }
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')") does not work
     @RequestMapping(value = "/addAuction", method = RequestMethod.GET)
-    public ModelAndView addAuction(@ModelAttribute("user") User user) {
-        ModelAndView mv = new ModelAndView("addAuction");
+    public ModelAndView addAuction(HttpServletRequest request) {
+        ModelAndView mv;
+        if(request.isUserInRole("ADMIN")){
+        mv = new ModelAndView("addAuction");
         mv.addObject("auc", new TempAuction());
-        mv.addObject("back", "auctionList");
+        mv.addObject("back", "auctionList");}
+        else {
+            mv = new ModelAndView("redirect:/auctionList");
+        }
         return mv;
     }
 
     @RequestMapping(value = "/saveAuction", method = RequestMethod.POST)
-    public String auctionInfo(@ModelAttribute("auc") TempAuction auc, @ModelAttribute("user") User user,
+    public String auctionInfo(@ModelAttribute("auc") TempAuction auc,
                               ModelMap model) {
         try {
             AuctionInfo createdAuction = auctionService.getAuctionInfo
@@ -81,7 +96,7 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/auctionList", method = RequestMethod.GET)
-    public String watchAuctions(ModelMap model, @ModelAttribute("user") User user) {
+    public String watchAuctions(ModelMap model) {
         //в зависимости от прав юзера юзать разные методы, чтобы достать аукционы
 
         List<AuctionInfo> auctions = auctionService.getAllAuctions();
@@ -90,7 +105,7 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/activeAuctionList", method = RequestMethod.GET)
-    public String watchActiveAuctions(ModelMap model, @ModelAttribute("user") User user) {
+    public String watchActiveAuctions(ModelMap model) {
         //в зависимости от прав юзера юзать разные методы, чтобы достать аукционы
 
         List<AuctionInfo> auctions = auctionService.getActiveAuctions();
@@ -99,8 +114,8 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/deleteAuction", method = RequestMethod.GET)
-    public ModelAndView deleteAuction(@ModelAttribute("user") User user) {
-        //TODO check if user is admin
+    public ModelAndView deleteAuction() {
+        //TODO check if user is admin --- use Security annotation
         ModelAndView mv = new ModelAndView("deleteAuction");
         List<AuctionInfo> auctions = auctionService.getAllAuctions();
         mv.addObject("auctions", auctions);
@@ -118,8 +133,7 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.GET)
-    public String auctionInfo(@ModelAttribute("user") User user,
-                              ModelMap model, ServletRequest request) {
+    public String auctionInfo(ServletRequest request) {
         //TODO check if user is admin
         int num = Integer.parseInt(request.getParameter("auc"));
         deleteAuction(num);
@@ -127,7 +141,7 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/{id}/lotList", method = RequestMethod.GET)
-    public String watchLots(ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("user") User user) {
+    public String watchLots(ModelMap model, @PathVariable("id") Integer id) {
         AuctionInfo auc = auctionService.getAuctionWithLots(id);
         //AuctionInfo auc = auctionService.getAuctionWithLots(id);
 //        List<Lot> lots = lotService.getLotsByAuctionId(id);
@@ -138,7 +152,7 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/{id}/join", method = RequestMethod.GET)
-    public String joinAuction(@ModelAttribute("user") User user, @PathVariable("id") Integer id,
+    public String joinAuction(@PathVariable("id") Integer id,
                               ModelMap model) {
         //TODO add user to auction members
 //        AuctionInfo auc = auctionService.getAuctionInfo(id);
@@ -147,8 +161,13 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/{id}/activeAuction", method = RequestMethod.GET)
-    public String watchActiveAuction(@ModelAttribute("user") User user, @PathVariable("id") Integer id,
-                              ModelMap model) {
+    public String watchActiveAuction(@PathVariable("id") Integer id,
+                              ModelMap model, HttpServletRequest request) {
+        try {
+            sessionService.waitSession(request.getRemoteUser());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         AuctionInfo auc = auctionService.getAuctionWithLots(id);
         model.addAttribute("auction", auc);
         //for test

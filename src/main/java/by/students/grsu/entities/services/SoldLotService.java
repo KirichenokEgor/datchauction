@@ -3,7 +3,6 @@ package by.students.grsu.entities.services;
 import by.students.grsu.entities.auction.ActiveAuction;
 import by.students.grsu.entities.dao.SoldLotDao;
 import by.students.grsu.entities.lot.SoldLot;
-import by.students.grsu.entities.users.User;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -30,9 +29,9 @@ public class SoldLotService implements SoldLotFollower {
             e.printStackTrace();
         }
     }
-    public List<SoldLot> getSoldLotsByUser(User user){
+    public List<SoldLot> getSoldLotsByUser(String username){
         try {
-            return soldLotDao.getSoldLotsByUser(user.getUsername());
+            return soldLotDao.getSoldLotsByUser(username);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

@@ -1,7 +1,7 @@
 package by.students.grsu.entities.services;
 
 public class AuctionConfiguration {
-    private String daoLocation = "localhost";
+    private String daoLocation = "localhost/datchauction";
     private String daoUser = "datchDBManager";
     private String daoPassword = "ineedyourbase";
 

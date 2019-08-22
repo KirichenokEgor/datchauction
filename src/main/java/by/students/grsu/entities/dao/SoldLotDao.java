@@ -12,8 +12,12 @@ import java.util.List;
 public class SoldLotDao {
     private Statement statement;
 
-    public SoldLotDao(Statement statement) throws SQLException {
-        statement.execute("use datchauction");
+    public SoldLotDao(Statement statement) {
+        try {
+            statement.execute("use datchauction");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         this.statement = statement;
     }
     public void addSoldLot(int lotId,String buyerUsername,double price) throws Exception {

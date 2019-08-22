@@ -21,21 +21,38 @@
 </head>
 <body>
 <header class="headr" th:insert="components :: header"></header>
+<br>
+<br>
+<br>
 <h3>Login Page</h3>
-<div th:text = "${loginMessage}"></div><br>
-<form action="#" th:action="@{/confirmLogin}" th:object="${tempUser}" method="post">
+<form action="#" th:action="@{/login}" method="post">
+    <div th:if="${param.error != null}">
+        <p>
+            Invalid username and password.
+        </p>
+    </div>
+    <div th:if="${param.logout != null}">
+        <p>
+            You have been logged out.
+        </p>
+    </div>
     <table>
         <tr>
-            <td><label th:text="Email" /></td>
-            <td><input type="email" minlength="6" th:field="*{email}" required></td>
+            <td><label th:text="Username" /></td>
+            <td><input name="username" id="username" type="text" minlength="4" required autofocus placeholder="Username"></td>
         </tr>
         <tr>
             <td><label th:text="Password" /></td>
-            <td><input type="password" minlength="4" th:field="*{password}" required></td>
+            <td><input name="password" id="password" type="password" minlength="4" required placeholder="Password"></td>
+        </tr>
+        <tr>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" value="Login"/>
+                <input type="submit" value="Log in"/>
             </td>
         </tr>
     </table>

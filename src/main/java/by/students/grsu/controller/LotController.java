@@ -4,13 +4,12 @@ import by.students.grsu.entities.auction.AuctionInfo;
 import by.students.grsu.entities.item.Item;
 import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.lot.LotInfo;
-import by.students.grsu.entities.lot.TempLot;
 import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.services.AuctionService;
 import by.students.grsu.entities.services.ItemService;
 import by.students.grsu.entities.services.LotService;
-import by.students.grsu.entities.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes("user")
+//@SessionAttributes("user")
 public class LotController {
     private LotService lotService;
     private ItemService itemService;
     private AuctionService auctionService;
+    //private SecurityContextHolderAwareRequestWrapper contextHolder;
 
     @PostConstruct
     private void postConstructor(){
@@ -49,22 +47,22 @@ public class LotController {
         this.auctionService = auctionService;
     }
 
+//    @Autowired
+//    public void setSecurityContextHolderAwareRequestWrapper(SecurityContextHolderAwareRequestWrapper contextHolder) {
+//        this.contextHolder = contextHolder;
+//    }
+
     @RequestMapping(value = "/{a_id}/addLot", method = RequestMethod.GET)
-    public ModelAndView addLot(@PathVariable("a_id") Integer a_id, @ModelAttribute("user") User user) {
+    public ModelAndView addLot(@PathVariable("a_id") Integer a_id, SecurityContextHolderAwareRequestWrapper contextHolder) {
         ModelAndView mv = new ModelAndView("addLot");
         mv.addObject("a_id", a_id);
         try {
-            List<Item> items = itemService.getFreeItemsByOwner(user);
+            List<Item> items = itemService.getFreeItemsByOwner(contextHolder);
             mv.addObject("items", items);
-//        }catch (SQLException e){
-//            mv.addObject("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-//        }catch (AuctionException e){
-//            mv.addObject("errMessage", "Internal error " + e.getCode() + ". Sorry.");
         }catch (Exception e){
             mv.addObject("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }
 
-        //mv.addObject("lot", new TempLot());
         mv.addObject("back", a_id + "/lotList");
         return mv;
     }
@@ -93,7 +91,7 @@ public class LotController {
 //    }
 
     @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.GET)
-    public String lotInfo(@ModelAttribute("user") User user, @PathVariable("a_id") Integer a_id,
+    public String lotInfo(@PathVariable("a_id") Integer a_id,
                           ModelMap model, ServletRequest request){
         String[] parameters = request.getParameterValues("items");
         int[] ids = new int[parameters.length];
@@ -119,7 +117,7 @@ public class LotController {
     }
 
     @RequestMapping(value = "/{a_id}/{l_id}/lotInfo", method = RequestMethod.GET)
-    public String lotInfo(ModelMap model, @ModelAttribute("user") User user, @PathVariable("a_id") Integer a_id, @PathVariable("l_id") Integer l_id) {
+    public String lotInfo(ModelMap model, @PathVariable("a_id") Integer a_id, @PathVariable("l_id") Integer l_id) {
         Lot lot = lotService.getLotById(l_id);
         //TODO add list of items as attribute
         model.addAttribute("ID", lot.getID());
@@ -134,7 +132,7 @@ public class LotController {
     }
 
     @RequestMapping(value = "/{a_id}/deleteLot", method = RequestMethod.GET)
-    public ModelAndView deleteLot(@ModelAttribute("user") User user, @PathVariable("a_id") Integer a_id) {
+    public ModelAndView deleteLot(@PathVariable("a_id") Integer a_id) {
         ModelAndView mv = new ModelAndView("deleteLot");
         try {
             AuctionInfo auc = auctionService.getAuctionWithLots(a_id);
@@ -150,7 +148,7 @@ public class LotController {
     }
 
     @RequestMapping(value = "/{a_id}/deleteLotPart2", method = RequestMethod.GET)
-    public String itemInfo(@ModelAttribute("user") User user, @PathVariable("a_id") Integer a_id,
+    public String itemInfo(@PathVariable("a_id") Integer a_id,
                            ModelMap model, ServletRequest request) {
         int num = Integer.parseInt(request.getParameter("lot"));
 
@@ -176,7 +174,7 @@ public class LotController {
     }
 
     @RequestMapping(value = "/allLotList", method = RequestMethod.GET)
-    public String watchAllLots(ModelMap model, @ModelAttribute("user") User user) {
+    public String watchAllLots(ModelMap model) {
         //AuctionInfo auc = auctionService.getAuctionWithLots(id);
         List<Lot> lots = lotService.getAllLots();
         model.addAttribute("lots", lots);
@@ -184,7 +182,7 @@ public class LotController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String searchLots(ModelMap model, @ModelAttribute("user") User user, ServletRequest request) {
+    public String searchLots(ModelMap model, ServletRequest request) {
         String searchStr = request.getParameter("s");
         List<Lot> lots = lotService.getLotsBySearch(searchStr);
         model.addAttribute("lots", lots);

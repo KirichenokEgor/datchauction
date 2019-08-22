@@ -1,7 +1,7 @@
 package by.students.grsu.entities.users;
 
 public interface Follower {
-    void tickHappened();
-    void auctionEnded();
-    void lotSold();
+    void tickHappened(int auctionId);
+    void auctionEnded(int auctionId);
+    void lotSold(int auctionId);
 }

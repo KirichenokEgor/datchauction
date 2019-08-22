@@ -6,12 +6,12 @@ public class MvcWebApplicationInitializer extends AbstractAnnotationConfigDispat
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;
+        return new Class[] { WebSecurityConfig.class };
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { MvcWebConfig.class };
+        return new Class[] { MvcWebConfig.class,WebSocketConfig.class };
     }
 
     @Override
