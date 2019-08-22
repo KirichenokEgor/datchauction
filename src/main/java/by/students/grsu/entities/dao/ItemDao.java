@@ -120,4 +120,15 @@ public class ItemDao {
             statement.execute("UPDATE items SET lotID=0 WHERE lotID="+lotId);
         else throw new Exception("Lots not found");
     }
+    public List<Item> getAllFreeItems() throws Exception {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT * FROM items WHERE lotID=0");
+            List<Item> itemList = new ArrayList<Item>();
+            while(rs.next())
+                itemList.add(new Item(rs.getInt("ID"),rs.getString("name"),rs.getString("description"),rs.getString("owner"),rs.getInt("lotID")));
+            return itemList;
+        } catch (SQLException e) {
+            throw new Exception(e.getMessage() + " (Item Dao)");
+        }
+    }
 }

@@ -5,6 +5,7 @@ by\students\grsu\entities\lot\TempLot.class
 by\students\grsu\entities\auction\TempAuction.class
 by\students\grsu\config\WebSocketConfig.class
 by\students\grsu\entities\auction\ActiveAuctionInterface.class
+by\students\grsu\controller\SoldLotController.class
 by\students\grsu\config\SecurityWebApplicationInitializer.class
 by\students\grsu\entities\services\AuctionPlatformObserver.class
 by\students\grsu\entities\services\SoldLotFollower.class

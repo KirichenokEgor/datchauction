@@ -44,14 +44,14 @@ public class LotDao {
                     break;
                 else id++;
             }while (rs.next());
-            st.execute("INSERT INTO lots VALUES(" + id + ", \'" + name + "\', " + startPrice + ", " + minPrice + ", \'" + status.toLowerCase() + "\', " + auctionId + ",0)");
+            st.execute("INSERT INTO lots VALUES(" + id + ", \'" + name + "\', " + startPrice + ", " + minPrice + ", \'" + status.toLowerCase() + "\', " + auctionId + ")");
         }
         else{
-            st.execute("INSERT INTO lots VALUES(1, \'"+name+"\', "+startPrice+", "+minPrice+", \'"+status.toLowerCase()+"\', "+auctionId+",0)");
+            st.execute("INSERT INTO lots VALUES(1, \'"+name+"\', "+startPrice+", "+minPrice+", \'"+status.toLowerCase()+"\', "+auctionId + ")");
         }
         return id;
     } catch (SQLException e) {
-        throw new Exception(e.getMessage());
+        throw new Exception(e.getMessage() + "   dao");
     }
 }
     public void deleteLot(int id) throws Exception {

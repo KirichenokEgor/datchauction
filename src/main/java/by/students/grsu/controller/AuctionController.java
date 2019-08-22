@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
@@ -79,47 +78,50 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/saveAuction", method = RequestMethod.POST)
-    public String auctionInfo(@ModelAttribute("auc") TempAuction auc,
-                              ModelMap model) {
+    public String auctionInfo(@ModelAttribute("auc") TempAuction auc) {
         try {
             AuctionInfo createdAuction = auctionService.getAuctionInfo
                     (auctionService.addAuction(auc.getDescription(), auc.getMaxLots(), auc.getStartTime(), auc.getMaxDuration()));
-            model.addAttribute("id", createdAuction.getID());
-            model.addAttribute("start_time", createdAuction.getBeginTime());
-            model.addAttribute("maxDuration", createdAuction.getMaxDuration());
+            return "redirect:/" + createdAuction.getID() + "/lotList";
         }
         catch (SQLException e){
             e.printStackTrace();
         }
-        model.addAttribute("back", "auctionList");
-        return "auction";
+        return "redirect:/auctionList";
     }
 
     @RequestMapping(value = "/auctionList", method = RequestMethod.GET)
-    public String watchAuctions(ModelMap model) {
+    public String watchAuctions(ModelMap model, HttpServletRequest request) {
         //в зависимости от прав юзера юзать разные методы, чтобы достать аукционы
-
-        List<AuctionInfo> auctions = auctionService.getAllAuctions();
+        List<AuctionInfo> auctions;
+        if(request.isUserInRole("ADMIN")) {
+            auctions = auctionService.getAllAuctions();
+        }else {
+            auctions = auctionService.getActiveAuctions();
+            auctions.addAll(auctionService.getPlannedAuctions());
+        }
         model.addAttribute("auctions", auctions);
         return "auctionList";
     }
 
     @RequestMapping(value = "/activeAuctionList", method = RequestMethod.GET)
     public String watchActiveAuctions(ModelMap model) {
-        //в зависимости от прав юзера юзать разные методы, чтобы достать аукционы
-
         List<AuctionInfo> auctions = auctionService.getActiveAuctions();
         model.addAttribute("auctions", auctions);
         return "activeAuctionList";
     }
 
     @RequestMapping(value = "/deleteAuction", method = RequestMethod.GET)
-    public ModelAndView deleteAuction() {
-        //TODO check if user is admin --- use Security annotation
-        ModelAndView mv = new ModelAndView("deleteAuction");
-        List<AuctionInfo> auctions = auctionService.getAllAuctions();
-        mv.addObject("auctions", auctions);
-        mv.addObject("back", "auctionList");
+    public ModelAndView deleteAuction(HttpServletRequest request) {
+        ModelAndView mv;
+        if(request.isUserInRole("ADMIN")) {
+            mv = new ModelAndView("deleteAuction");
+            List<AuctionInfo> auctions = auctionService.getAllAuctions();
+            mv.addObject("auctions", auctions);
+            mv.addObject("back", "auctionList");
+        }else{
+            mv = new ModelAndView("redirect:/auctionList");
+        }
         return mv;
     }
 
@@ -133,47 +135,58 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.GET)
-    public String auctionInfo(ServletRequest request) {
+    public String auctionInfo(HttpServletRequest request) {
         //TODO check if user is admin
-        int num = Integer.parseInt(request.getParameter("auc"));
-        deleteAuction(num);
+        if(request.isUserInRole("ADMIN")) {
+            int num = Integer.parseInt(request.getParameter("auc"));
+            deleteAuction(num);
+        }
         return "redirect:/auctionList";
     }
 
     @RequestMapping(value = "/{id}/lotList", method = RequestMethod.GET)
     public String watchLots(ModelMap model, @PathVariable("id") Integer id) {
         AuctionInfo auc = auctionService.getAuctionWithLots(id);
-        //AuctionInfo auc = auctionService.getAuctionWithLots(id);
-//        List<Lot> lots = lotService.getLotsByAuctionId(id);
         model.addAttribute("auction", auc);
-//        model.addAttribute("lots", lots);
-
         return "lotList";
     }
 
     @RequestMapping(value = "/{id}/join", method = RequestMethod.GET)
     public String joinAuction(@PathVariable("id") Integer id,
                               ModelMap model) {
-        //TODO add user to auction members
-//        AuctionInfo auc = auctionService.getAuctionInfo(id);
-//        model.addAttribute("auction", auc);
         return "redirect:/{id}/activeAuction";
     }
 
     @RequestMapping(value = "/{id}/activeAuction", method = RequestMethod.GET)
     public String watchActiveAuction(@PathVariable("id") Integer id,
                               ModelMap model, HttpServletRequest request) {
+        AuctionInfo auc = auctionService.getAuctionWithLots(id);
+        if(auc.getStringStatus() != "Active") return "redirect:/home";
         try {
             sessionService.waitSession(request.getRemoteUser());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AuctionInfo auc = auctionService.getAuctionWithLots(id);
         model.addAttribute("auction", auc);
-        //for test
-        model.addAttribute("items", itemService.getItemsByLot(5));
-        //end for test
         model.addAttribute("back", "activeAuctionList");
         return "activeAuction";
+    }
+
+    @RequestMapping(value = "/{id}/makePlanned", method = RequestMethod.GET)
+    public String makePlanned(@PathVariable("id") Integer id,
+                                     ModelMap model, HttpServletRequest request) {
+        if(request.isUserInRole("ADMIN")) {
+            auctionService.setAuctionPlanned(id);
+        }
+//        AuctionInfo auc = auctionService.getAuctionWithLots(id);
+//        if(auc.getStringStatus() != "Active") return "redirect:/home";
+//        try {
+//            sessionService.waitSession(request.getRemoteUser());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        model.addAttribute("auction", auc);
+//        model.addAttribute("back", "activeAuctionList");
+        return "redirect:/auctionList";
     }
 }

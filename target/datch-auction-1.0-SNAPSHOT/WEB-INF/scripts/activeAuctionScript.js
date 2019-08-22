@@ -32,9 +32,12 @@ function loadBody(id){
 
 function createLotTable(){
      lotTable = document.getElementById("lotList");
-     var rows = document.getElementsByClassName("lotRow");
-     for(var row of rows)
-     lotTable.removeChild(row);
+     //var rows = document.getElementsByClassName("lotRow");
+     while (lotTable.firstChild) {
+         lotTable.removeChild(lotTable.firstChild);
+     }
+     //for(var row of rows)
+     //lotTable.removeChild(row);
      var lots = auction.lots;
      var index = 0;
      document
@@ -76,9 +79,12 @@ function createLotTable(){
 function createItemTable(button){
      var lots = auction.lots;
 	 itemList = document.getElementById("itemList");
-	 var rows = document.getElementsByClassName("itemRow");
-     for(var row of rows)
-       itemList.removeChild(row);
+	 while (itemList.firstChild) {
+          itemList.removeChild(itemList.firstChild);
+     }
+	 //var rows = document.getElementsByClassName("itemRow");
+     //for(var row of rows)
+      // itemList.removeChild(row);
 	 var index = Number(button.id.slice(2));
 	 var item;
 	 for(item of lots[index].items){

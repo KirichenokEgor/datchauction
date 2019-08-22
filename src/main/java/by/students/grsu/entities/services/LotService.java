@@ -24,7 +24,7 @@ public class LotService implements LotFollower,DealsFollower{
             itemService.createLotWithItems(items,newLotId);
             return lotDao.getLotById(newLotId);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new Exception(e.getMessage() + "service");
         }
     }
 

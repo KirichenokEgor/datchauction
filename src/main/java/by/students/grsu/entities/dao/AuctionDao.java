@@ -85,8 +85,9 @@ public class AuctionDao {
             ResultSet rs = statement.executeQuery("SELECT * FROM auctions WHERE ID="+ID);
             if(rs.next()) {
                 String oldStatus = rs.getString("status");
-                statement.execute("UPDATE auctions SET status=\'" + newStatus + "\',currentLots=0 WHERE ID=" + ID);
-                if(oldStatus.equals(newStatus))return false;
+                statement.execute("UPDATE auctions SET status=\'" + newStatus + "\' WHERE ID=" + ID);
+                if(newStatus.equals("planned") && !oldStatus.equals(newStatus)) statement.execute("update auctions set currentLots=0 where ID=" + ID);
+                if(oldStatus.equals(newStatus))return false;//useless?????????
                 else return true;
             }
             else throw new Exception("Auction not found");

@@ -6,7 +6,6 @@ import by.students.grsu.entities.item.TempItem;
 import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -42,17 +41,21 @@ public class ItemController {
 //    }
 
     @RequestMapping(value = "/addItem", method = RequestMethod.GET)
-    public ModelAndView addItem() {
-        ModelAndView mv = new ModelAndView("addItem");
-        mv.addObject("item", new TempItem());
-        mv.addObject("back", "freeItems");
+    public ModelAndView addItem(HttpServletRequest request) {
+        ModelAndView mv;
+        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
+            mv = new ModelAndView("addItem");
+            mv.addObject("item", new TempItem());
+            mv.addObject("back", "freeItems");
+        }else{
+            mv = new ModelAndView("redirect:/home");
+        }
         return mv;
     }
 
     @RequestMapping(value = "/saveItem", method = RequestMethod.POST)
     public String itemInfo(@ModelAttribute("item") TempItem item, SecurityContextHolderAwareRequestWrapper contextHolder,
                            ModelMap model) {
-        //TODO fetch user from Security
         //mb add item itself?
         try {
             ItemInfo newItem = itemService.getItemById(itemService.addItem(item.getName(),item.getDescription(), contextHolder));
@@ -62,67 +65,77 @@ public class ItemController {
             model.addAttribute("status", newItem.getStatus());
             model.addAttribute("owner", newItem.getOwner());
             //model.addAttribute("item", item);
-//        }catch (SQLException e){
-//            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-//            System.out.println(e.getMessage());
         }catch (Exception e){
             model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
             System.out.println(e.getMessage());
+            /////////////return?
         }
         model.addAttribute("back", "freeItems");
-
         return "item";
     }
 
     @RequestMapping(value = "/deleteItem", method = RequestMethod.GET)
-    public ModelAndView deleteItem(SecurityContextHolderAwareRequestWrapper contextHolder) {
-        ModelAndView mv = new ModelAndView("deleteItem");
-        try {
-            //List<Item> items = itemService.getItemsByOwner(user);
-            List<Item> items = itemService.getFreeItemsByOwner(contextHolder);
-            mv.addObject("items", items);
-        }catch (Exception e){
-            mv.addObject("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
+    public ModelAndView deleteItem(SecurityContextHolderAwareRequestWrapper contextHolder, HttpServletRequest request) {
+        ModelAndView mv;
+        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
+            mv = new ModelAndView("deleteItem");
+            try {
+                //List<Item> items = itemService.getItemsByOwner(user);
+                List<Item> items;
+                if(!request.isUserInRole("ADMIN")) items = itemService.getFreeItemsByOwner(contextHolder);
+                else items = itemService.getAllFreeItems();
+                mv.addObject("items", items);
+            } catch (Exception e) {
+                mv.addObject("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
+            }
+            mv.addObject("back", "freeItems");
+        }else{
+            mv = new ModelAndView("redirect:/home");
         }
-
-        mv.addObject("back", "freeItems");
         return mv;
     }
 
     @RequestMapping(value = "/deleteItemPart2", method = RequestMethod.GET)
-    public String itemInfo(ModelMap model, ServletRequest request, Authentication authentication, SecurityContextHolderAwareRequestWrapper contextHolder) {
-        int num = Integer.parseInt(request.getParameter("item"));
-
-        try {
-            ItemInfo item = itemService.getItemById(num);
-            if(!item.getOwner().equals(contextHolder.getRemoteUser())){
-                model.addAttribute("errMessage", "Sorry, you can't delete this item, because it's not yours.");
-                List<Item> items = itemService.getItemsByOwner(contextHolder);
-                model.addAttribute("items", items);
+    public String itemInfo(ModelMap model, HttpServletRequest request, SecurityContextHolderAwareRequestWrapper contextHolder) {
+        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
+            int num = Integer.parseInt(request.getParameter("item"));
+            try {
+                ItemInfo item = itemService.getItemById(num);
+                if (!item.getOwner().equals(contextHolder.getRemoteUser()) && !request.isUserInRole("ADMIN")) {
+                    model.addAttribute("errMessage", "Sorry, you can't delete this item, because it's not yours.");
+                    List<Item> items = itemService.getItemsByOwner(contextHolder);
+                    model.addAttribute("items", items);
+                    return "deleteItem";
+                }
+                itemService.deleteItemById(num);
+                return "redirect:/freeItems";
+            } catch (SQLException e) {
+                model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
+                return "deleteItem";
+            } catch (AuctionException e) {
+                model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+                return "deleteItem";
+            } catch (Exception e) {
+                model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
                 return "deleteItem";
             }
-            itemService.deleteItemById(num);
-        }catch (SQLException e){
-            model.addAttribute("errMessage", "SQLError. Sorry." + e.getSQLState() + "\n" + e.getErrorCode());
-            return "deleteItem";
-        }catch (AuctionException e){
-            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
-            return "deleteItem";
-        }catch (Exception e){
-            model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
-            return "deleteItem";
         }
-
-        return "redirect:/freeItems";
+        return "redirect:/home";
     }
 
     @RequestMapping(value = "/freeItems", method = RequestMethod.GET)
-    public String watchFreeItems(ModelMap model, Authentication authentication, SecurityContextHolderAwareRequestWrapper contextHolder) {
-        try {
-            List<Item> items = itemService.getFreeItemsByOwner(contextHolder);
-            model.addAttribute("items", items);
-        }catch (Exception e){
-            model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
+    public String watchFreeItems(ModelMap model, SecurityContextHolderAwareRequestWrapper contextHolder, HttpServletRequest request) {
+        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
+            try {
+                List<Item> items;
+                if(!request.isUserInRole("ADMIN")) items = itemService.getFreeItemsByOwner(contextHolder);
+                else items = itemService.getAllFreeItems();
+                model.addAttribute("items", items);
+            } catch (Exception e) {
+                model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
+            }
+        }else{
+            return "redirect:/home";
         }
 
         return "freeItemList";

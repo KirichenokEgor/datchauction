@@ -33,7 +33,9 @@ C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\services\L
 C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\services\SoldLotService.java
 C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\dao\UserDao.java
 C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\auction\AuctionStartTime.java
+C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\config\MyDataSource.java
 C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\item\Item.java
+C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\controller\SoldLotController.java
 C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\services\UserService.java
 C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\services\AuctionPlatformObserver.java
 C:\KiriEg_files\_datchauction\src\main\java\by\students\grsu\entities\auction\AuctionInfo.java

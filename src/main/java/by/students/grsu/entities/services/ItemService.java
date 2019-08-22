@@ -59,6 +59,9 @@ public class ItemService {
             return null;
         }
     }
+    public List<Item> getAllFreeItems() throws Exception {
+        return itemDao.getAllFreeItems();
+    }
     public void createLotWithItems(int[] itemsIds, int lotId) throws Exception {
         for (int id : itemsIds)
             itemDao.setItemOnLot(id, lotId);
