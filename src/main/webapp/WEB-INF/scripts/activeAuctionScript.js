@@ -1,7 +1,7 @@
 var auction;
 var auctionId;
 var lotTable;
-var socketConn = new WebSocket('ws://'+window.location.host+'/app/activeAuction'); ///todo relative link
+var socketConn = new WebSocket('ws://'+window.location.host+'/app/activeAuction');
 socketConn.onmessage = function(event) {
     var command = event.data.slice(0,2);
     if(command==="RA"){     //RA - Render Auction
@@ -32,15 +32,12 @@ function loadBody(id){
 
 function createLotTable(){
      lotTable = document.getElementById("lotList");
-     //var rows = document.getElementsByClassName("lotRow");
-     while (lotTable.firstChild) {
-         lotTable.removeChild(lotTable.firstChild);
-     }
-     //for(var row of rows)
-     //lotTable.removeChild(row);
+     var rows = document.getElementsByClassName("lotRow");
+     var length = rows.length;
+     for(var i=0;i<length;i++)
+     rows[0].remove();
      var lots = auction.lots;
      var index = 0;
-     document
      for(var lot of lots){
     	var tr = document.createElement('tr');
     	tr.setAttribute("class","lotRow");
@@ -50,24 +47,30 @@ function createLotTable(){
     	var td4 = document.createElement('td');
     	var td5 = document.createElement('td');
     	var itemsButton = document.createElement('button');
-    	var buyButton = document.createElement('button');
     	itemsButton.id = "l "+index;
-    	buyButton.id = "b "+index;
     	itemsButton.setAttribute("onclick","createItemTable(this)");
-    	buyButton.setAttribute("onclick","buyLot(this)");
-    	index++;
     	var text1 = document.createTextNode(lot.ID);
     	var text2 = document.createTextNode(lot.name);
     	var text3 = document.createTextNode(lot.currentPrice);
     	var text4 = document.createTextNode("items");
-    	var text5 = document.createTextNode("buy");
+    	if(lot.status==="Registered"){
+    	    var buyButton = document.createElement('button');
+    	    buyButton.id = "b "+index;
+    	    buyButton.setAttribute("onclick","buyLot(this)");
+    	    var text5 = document.createTextNode("buy");
+    	    buyButton.appendChild(text5);
+    	    td5.appendChild(buyButton);
+    	}
+    	else {
+    	 var text5 = document.createTextNode("sold");
+    	 td5.appendChild(text5);
+    	}
+    	index++;
     	td1.appendChild(text1);
     	td2.appendChild(text2);
     	td3.appendChild(text3);
     	itemsButton.appendChild(text4);
-    	buyButton.appendChild(text5);
     	td4.appendChild(itemsButton);
-    	td5.appendChild(buyButton);
     	tr.appendChild(td1);
     	tr.appendChild(td2);
     	tr.appendChild(td3);
@@ -79,12 +82,10 @@ function createLotTable(){
 function createItemTable(button){
      var lots = auction.lots;
 	 itemList = document.getElementById("itemList");
-	 while (itemList.firstChild) {
-          itemList.removeChild(itemList.firstChild);
-     }
-	 //var rows = document.getElementsByClassName("itemRow");
-     //for(var row of rows)
-      // itemList.removeChild(row);
+	 var rows = document.getElementsByClassName("itemRow");
+     var length = rows.length;
+         for(var i=0;i<length;i++)
+         rows[0].remove();
 	 var index = Number(button.id.slice(2));
 	 var item;
 	 for(item of lots[index].items){

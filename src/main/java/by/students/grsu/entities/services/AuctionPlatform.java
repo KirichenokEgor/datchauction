@@ -25,16 +25,19 @@ public class AuctionPlatform extends Thread implements AuctionPlatformObserver{
         this.handler = handler;
         auctionService.setPlatformObserver(this);
         activeAuctions = new ArrayList<ActiveAuction>();
+        auctionService.updateDoneAuctions();
         createQueue();
         this.start();
     }
     @Override
     public void run() {
+        LocalTime lastTick = LocalTime.now();
         while(true){
+            if(lastTick.isAfter(LocalTime.now())){auctionService.updateDoneAuctions();createQueue();}
+            lastTick = LocalTime.now();
             try {
                 if(!auctionsQueue.isEmpty())
                     if(auctionsQueue.peek().getBeginTime().isBefore(LocalTime.now())){
-
                         ActiveAuction newActiveAuction = new ActiveAuction(auctionService.getAuctionWithLots(auctionsQueue.remove().getAuctionId()));
                         activeAuctions.add(newActiveAuction);
                         newActiveAuction.joinPlatformObserver(this);
@@ -42,6 +45,7 @@ public class AuctionPlatform extends Thread implements AuctionPlatformObserver{
                         lotService.auctionStarted(newActiveAuction);
                         soldLotService.auctionStarted(newActiveAuction);
                         handler.auctionStarted(newActiveAuction);
+                        newActiveAuction.start();
                         continue;
                     }
                 sleep(10000);

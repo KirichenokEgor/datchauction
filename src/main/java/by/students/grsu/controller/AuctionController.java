@@ -1,9 +1,11 @@
 package by.students.grsu.controller;
 
 import by.students.grsu.entities.auction.AuctionInfo;
+import by.students.grsu.entities.auction.FollowedAuction;
 import by.students.grsu.entities.auction.TempAuction;
 import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.services.AuctionService;
+import by.students.grsu.entities.services.FollowedAuctionService;
 import by.students.grsu.entities.services.ItemService;
 import by.students.grsu.entities.services.LotService;
 import by.students.grsu.websocket.UserSessionService;
@@ -28,6 +30,7 @@ public class AuctionController {
     private LotService lotService;
     private ItemService itemService;
     private UserSessionService sessionService;
+    private FollowedAuctionService followedAuctionService;
 
     @PostConstruct
     private void postConstructor(){
@@ -63,6 +66,11 @@ public class AuctionController {
         this.sessionService = sessionService;
     }
 
+    @Autowired
+    public void setFollowedAuctionService(FollowedAuctionService followedAuctionService) {
+        this.followedAuctionService = followedAuctionService;
+    }
+
     //@PreAuthorize("hasRole('ROLE_ADMIN')") does not work
     @RequestMapping(value = "/addAuction", method = RequestMethod.GET)
     public ModelAndView addAuction(HttpServletRequest request) {
@@ -93,20 +101,24 @@ public class AuctionController {
     @RequestMapping(value = "/auctionList", method = RequestMethod.GET)
     public String watchAuctions(ModelMap model, HttpServletRequest request) {
         //в зависимости от прав юзера юзать разные методы, чтобы достать аукционы
-        List<AuctionInfo> auctions;
+        List<AuctionInfo> iAuctions;
         if(request.isUserInRole("ADMIN")) {
-            auctions = auctionService.getAllAuctions();
+            iAuctions = auctionService.getAllAuctions();
         }else {
-            auctions = auctionService.getActiveAuctions();
-            auctions.addAll(auctionService.getPlannedAuctions());
+            iAuctions = auctionService.getActiveAuctions();
+            iAuctions.addAll(auctionService.getPlannedAuctions());
         }
+        List<FollowedAuction> auctions;// = new ArrayList<FollowedAuction>();
+        auctions = followedAuctionService.auctionsAsFollowed(iAuctions, request.getRemoteUser());
+        //for(AuctionInfo auc : iAuctions) auctions.add(new FollowedAuction(auc, false));
         model.addAttribute("auctions", auctions);
         return "auctionList";
     }
 
     @RequestMapping(value = "/activeAuctionList", method = RequestMethod.GET)
-    public String watchActiveAuctions(ModelMap model) {
-        List<AuctionInfo> auctions = auctionService.getActiveAuctions();
+    public String watchActiveAuctions(ModelMap model, HttpServletRequest request) {
+        List<AuctionInfo> iAuctions = auctionService.getActiveAuctions();
+        List<FollowedAuction> auctions = followedAuctionService.auctionsAsFollowed(iAuctions, request.getRemoteUser());
         model.addAttribute("auctions", auctions);
         return "activeAuctionList";
     }
@@ -116,7 +128,8 @@ public class AuctionController {
         ModelAndView mv;
         if(request.isUserInRole("ADMIN")) {
             mv = new ModelAndView("deleteAuction");
-            List<AuctionInfo> auctions = auctionService.getAllAuctions();
+            List<AuctionInfo> iAuctions = auctionService.getAllAuctions();
+            List<FollowedAuction> auctions = followedAuctionService.auctionsAsFollowed(iAuctions, request.getRemoteUser());
             mv.addObject("auctions", auctions);
             mv.addObject("back", "auctionList");
         }else{
@@ -132,6 +145,7 @@ public class AuctionController {
             itemService.freeItemsByLot(lot.getID());
         }
         lotService.deleteLotsByAuction(id);
+        followedAuctionService.deleteFollowedAuctionsById(id);
     }
 
     @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.GET)
@@ -159,7 +173,7 @@ public class AuctionController {
 
     @RequestMapping(value = "/{id}/activeAuction", method = RequestMethod.GET)
     public String watchActiveAuction(@PathVariable("id") Integer id,
-                              ModelMap model, HttpServletRequest request) {
+                                     ModelMap model, HttpServletRequest request) {
         AuctionInfo auc = auctionService.getAuctionWithLots(id);
         if(auc.getStringStatus() != "Active") return "redirect:/home";
         try {
@@ -174,19 +188,24 @@ public class AuctionController {
 
     @RequestMapping(value = "/{id}/makePlanned", method = RequestMethod.GET)
     public String makePlanned(@PathVariable("id") Integer id,
-                                     ModelMap model, HttpServletRequest request) {
+                              ModelMap model, HttpServletRequest request) {
         if(request.isUserInRole("ADMIN")) {
             auctionService.setAuctionPlanned(id);
         }
-//        AuctionInfo auc = auctionService.getAuctionWithLots(id);
-//        if(auc.getStringStatus() != "Active") return "redirect:/home";
-//        try {
-//            sessionService.waitSession(request.getRemoteUser());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        model.addAttribute("auction", auc);
-//        model.addAttribute("back", "activeAuctionList");
         return "redirect:/auctionList";
+    }
+
+    @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.GET)
+    public String subscribe(@PathVariable("id") Integer id,
+                            HttpServletRequest request) {
+        followedAuctionService.addFollowedAuction(request.getRemoteUser(), id);
+        return "redirect:/auctionList";
+    }
+
+    @RequestMapping(value = "/followedAuctions", method = RequestMethod.GET)
+    public String watchFollowedAuctions(ModelMap model, HttpServletRequest request) {
+        List<FollowedAuction> auctions = followedAuctionService.getFollowedAuctionsByUser(request.getRemoteUser());
+        model.addAttribute("auctions", auctions);
+        return "followedAuctionList";
     }
 }

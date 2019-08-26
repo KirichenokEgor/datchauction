@@ -15,6 +15,7 @@ by\students\grsu\entities\dao\ItemDao.class
 by\students\grsu\config\MvcWebApplicationInitializer.class
 by\students\grsu\controller\LotController.class
 by\students\grsu\entities\users\TempUser.class
+by\students\grsu\entities\auction\FollowedAuction.class
 by\students\grsu\config\WebSecurityConfig.class
 by\students\grsu\entities\item\ItemInfo.class
 by\students\grsu\controller\ItemController.class
@@ -26,6 +27,7 @@ by\students\grsu\entities\auction\AuctionFollower.class
 by\students\grsu\entities\services\ItemService.class
 by\students\grsu\entities\services\UserService.class
 by\students\grsu\config\MyDataSource.class
+by\students\grsu\entities\services\FollowedAuctionService.class
 by\students\grsu\controller\RegistrationController.class
 by\students\grsu\entities\dao\UserDao.class
 by\students\grsu\entities\services\AuctionConfiguration.class
@@ -45,6 +47,7 @@ by\students\grsu\entities\auction\Auction.class
 by\students\grsu\entities\services\AuctionPlatform.class
 by\students\grsu\entities\lot\LotStatus.class
 by\students\grsu\entities\auction\AuctionInfo.class
+by\students\grsu\entities\dao\FollowedAuctionDao.class
 by\students\grsu\config\MvcWebConfig.class
 by\students\grsu\websocket\WebSocketHandler.class
 by\students\grsu\entities\lot\SoldLot.class

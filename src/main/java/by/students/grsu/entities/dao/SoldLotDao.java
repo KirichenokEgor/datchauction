@@ -20,8 +20,8 @@ public class SoldLotDao {
         }
         this.statement = statement;
     }
-    public void addSoldLot(int lotId,String buyerUsername,double price) throws Exception {
-        statement.execute("INSERT INTO soldLots VALUES("+lotId+", \'"+buyerUsername+"\', "+price+")");
+    public void addSoldLot(int lotId,String buyerUsername,String sellerUsername,double price) throws Exception {
+        statement.execute("INSERT INTO soldLots VALUES("+lotId+", \'"+buyerUsername+"\', "+price+",\'"+sellerUsername+"\')");
     }
     public void deleteSoldLot(int lotId) throws Exception {
         ResultSet rs = statement.executeQuery("SELECT * FROM soldLots WHERE lotId="+lotId);
@@ -31,12 +31,12 @@ public class SoldLotDao {
         List<SoldLot> lotList = new ArrayList<SoldLot>();
         ResultSet rs = statement.executeQuery("SELECT * FROM soldLots WHERE buyer=\'"+username+"\'");
         while(rs.next())
-            lotList.add(new SoldLot(rs.getNString("buyer"),rs.getInt("lotId"),rs.getDouble("price")));
+            lotList.add(new SoldLot(rs.getNString("buyer"),rs.getNString("seller"),rs.getInt("lotId"),rs.getDouble("price")));
         return lotList;
     }
     public SoldLot getSoldLotById(int lotId) throws Exception {
         ResultSet rs = statement.executeQuery("SELECT * FROM soldLots WHERE lotId="+lotId);
-        if(rs.next())return new SoldLot(rs.getString("buyer"),rs.getInt("lotId"),rs.getDouble("price"));
+        if(rs.next())return new SoldLot(rs.getString("buyer"),rs.getNString("seller"),rs.getInt("lotId"),rs.getDouble("price"));
         else throw new Exception("SoldLot not found");
     }
 }

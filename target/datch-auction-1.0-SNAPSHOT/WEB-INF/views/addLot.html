@@ -18,6 +18,12 @@
         width: 100%;
         background: #f0f0f0; /* Цвет фона */
         }
+   .row {
+		border: 1px solid;
+	}
+	.table{
+		border-collapse: collapse;
+	}
     </style>
 </head>
 <body>
@@ -32,7 +38,7 @@
 
 <p id="error" style="color: red"></p>
 <form id="form" action="#" th:action="@{/{a_id}/saveLot(a_id=${a_id})}">
-    <table>
+    <table class="table">
         <tr>
             <td><label th:text="Name" /></td>
             <td><input name="name" type="text" minlength="3" required></td>
@@ -49,11 +55,19 @@
             <td><label th:text="Description" /></td>
             <td><input name="description" type="text" /></td>
         </tr>
-            <select name="items" multiple required>
-                <option th:each="item: ${items}">
-                    <a th:text="${item.getID()}"></a>
-                </option>
-            </select>
+        <tr>
+            <td class="row" width="100px" onclick="sortById()">ID</td>
+            <td class="row" width="100px" onclick="sortByName()">Name</td>
+            <td class="row" width="500px" onclick="sortByDescription()">Description</td>
+            <td class="row" width="100px">Chose</td>
+        </tr>
+        <tbody>
+        <tr th:each="item: ${items}">
+            <td class="row" width="100px" th:text="${item.getID()}"></td>
+            <td class="row" width="100px" th:text="${item.getName()}"></td>
+            <td class="row" width="500px" th:text="${item.getDescription()}"></td>
+            <td class="row" width="100px"><input type="checkbox" name="items" th:value = "${item.getID()}"/></td>
+        </tr>
         <tr>
             <td colspan="2">
                 <input type="submit" value="Submit"/>
@@ -65,22 +79,17 @@
 var min_price = document.getElementById("min_price");
 var price = document.getElementById("price");
 var form = document.getElementById("form");
-var error = document.getElementById("error");
 
 form.onsubmit = function(e){
     if(Number.parseInt(min_price.value) > Number.parseInt(price.value)){
-		error.innerText = "min price should be smaller than price";
+		alert("min price should be smaller than price");
 		min_price.focus();
 		event.preventDefault();
 	}
-	//else{
-	    //error.innerText = "good input";
-	    //event.preventDefault();
-	//}
 }
 </script>
 <hr>
-<div th:insert="components :: itemList"></div>
+
 <br>
 <br>
 <br>

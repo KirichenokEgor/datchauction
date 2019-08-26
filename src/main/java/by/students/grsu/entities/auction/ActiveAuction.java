@@ -22,7 +22,6 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
         auction.makeActive();
         this.auction=auction;
         userFollowers= new ArrayList<Follower>();
-        this.start();
     }
 
     @Override
@@ -81,7 +80,7 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
             if(lot.getID()==lotId){
                 if(lot.getStatus()==LotStatus.Sold)throw new Exception("Lot already sold!");
                 lot.setSold();
-                lotSold(lotId,user,lot.getCurrentPrice());
+                lotSold(lotId,user,lot.getOwner(),lot.getCurrentPrice());
                 break;
             }
     }
@@ -114,8 +113,8 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
         for(Follower follower : userFollowers)
             follower.tickHappened(auction.getID());
     }
-    private void lotSold(int id,String user,double price){
-        soldLotFollower.lotSold(user,id,price);
+    private void lotSold(int id,String user,String seller,double price){
+        soldLotFollower.lotSold(user,seller,id,price);
         lotFollower.lotSold(id);
         for(Follower follower : userFollowers)
             follower.lotSold(auction.getID());

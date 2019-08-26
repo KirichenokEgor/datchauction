@@ -1,6 +1,5 @@
 package by.students.grsu.controller;
 
-import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.services.UserService;
 import by.students.grsu.entities.users.TempUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.annotation.PostConstruct;
 

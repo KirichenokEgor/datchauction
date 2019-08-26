@@ -24,7 +24,7 @@ public class LotService implements LotFollower,DealsFollower{
             itemService.createLotWithItems(items,newLotId);
             return lotDao.getLotById(newLotId);
         } catch (Exception e) {
-            throw new Exception(e.getMessage() + "service");
+            throw new Exception(e.getMessage());
         }
     }
 
@@ -114,7 +114,7 @@ public class LotService implements LotFollower,DealsFollower{
             lotDao.setEndByAuctionId(auctionId);
             freeEndedLots();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

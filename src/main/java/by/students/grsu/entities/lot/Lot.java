@@ -113,7 +113,6 @@ public class Lot implements LotInfo {
 
     public void calculatePriceStep(int ticks) {
         priceStep = Math.round(((currentPrice-minPrice)/ticks)*100)/100.0;
-        System.out.println("priceStep=" + priceStep);///////////////////////////////////////
     }
 
     @Override
@@ -129,7 +128,7 @@ public class Lot implements LotInfo {
 
     public void makePriceStep(){
         this.currentPrice = Math.round((currentPrice - priceStep)*100)/100.0;
-        System.out.println("currentPrice=" + currentPrice);
+       // System.out.println("currentPrice=" + currentPrice);
     }
 
     public void makeEnded(){
@@ -146,4 +145,5 @@ public class Lot implements LotInfo {
     public int getAuctionId() {
         return auctionId;
     }
+    public String getOwner(){ return items.get(0).getOwner();}
 }

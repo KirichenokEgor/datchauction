@@ -14,9 +14,9 @@ public class SoldLotService implements SoldLotFollower {
         this.soldLotDao=soldLotDao;
         this.dealsFollower=dealsFollower;
     }
-    public void addSoldLot(int lotId,String buyerUsername,double price){
+    public void addSoldLot(int lotId,String buyerUsername, String sellerName,double price){
         try {
-            soldLotDao.addSoldLot(lotId,buyerUsername,price);
+            soldLotDao.addSoldLot(lotId,buyerUsername,sellerName,price);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -50,7 +50,7 @@ public class SoldLotService implements SoldLotFollower {
         auction.joinSoldLotFollower(this);
     }
     @Override
-    public void lotSold(String buyerName, int lotId, double price) {
-        addSoldLot(lotId,buyerName,price);
+    public void lotSold(String buyerName,String sellerName, int lotId, double price) {
+        addSoldLot(lotId,buyerName,sellerName,price);
     }
 }

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
-public class MyDataSource implements DataSource {
+class MyDataSource implements DataSource{
 
     @Override
     public Connection getConnection() throws SQLException {

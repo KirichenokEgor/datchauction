@@ -54,60 +54,10 @@ public class MvcWebConfig implements WebMvcConfigurer {
                 .addResourceLocations("/WEB-INF/scripts/","/WEB-INF/css/");
     }
 
-//    @Bean
-//    public AuctionService auctionService(){
-//        return new AuctionService();
-//    }
-//    @Bean
-//    public ItemService itemService(){
-//        return new ItemService();
-//    }
-//    @Bean
-//    public LotService lotService(){
-//        return new LotService();
-//    }
-//    @Bean
-//    public UserService userService(){
-//        return new UserService();
-//    }
-//    @Bean
-//    public AuctionPlatform auctionPlatform(){
-//        return new AuctionPlatform();
-//    }
-//    @Bean
-//    public AuctionDao auctionDao(){
-//        return new AuctionDao();
-//    }
-//    @Bean
-//    public ItemDao itemDao(){
-//        return new ItemDao();
-//    }
-//    @Bean
-//    public LotDao lotDao(){
-//        return new LotDao();
-//    }
-//    @Bean
-//    public UserDao userDao(){
-//        return new UserDao();
-//    }
-//    @Bean
-//    public Statement st() throws AuctionException {
-//        Statement st = null;
-//        //"localhost","datchDBManager","ineedyourbase"
-//        String address = "localhost";
-//        String username = "datchDBManager";
-//        String password = "ineedyourbase";
-//        try{
-//            DriverManager.registerDriver(new Driver());
-//            Connection connection = DriverManager.getConnection("jdbc:mysql://"+address,username,password);
-//            st = connection.createStatement();
-//            st.execute("use datchauction");}
-//        catch (SQLException e){
-//            System.out.println(e.getMessage());
-//            throw new AuctionException("Internal error",0);
-//        }
-//        return st;
-//    }
+    @Bean
+    public FollowedAuctionService followedAuctionService(FollowedAuctionDao followedAuctionDao){
+        return new FollowedAuctionService(followedAuctionDao);
+    }
     @Bean
     public AuctionService auctionService(AuctionDao auctionDao, ItemService itemService/*, LotService lotService*/){
         return new AuctionService(auctionDao, itemService/*, lotService*/);
@@ -172,6 +122,9 @@ public class MvcWebConfig implements WebMvcConfigurer {
     }
     @Bean
     public SoldLotDao soldLotDao(Statement statement){return new SoldLotDao(statement);}
+    @Bean
+    public FollowedAuctionDao followedAuctionDao(Statement statement){return new FollowedAuctionDao(statement);}
+
     /*
      * STEP 2 - Create SpringTemplateEngine
      * */

@@ -47,11 +47,11 @@ public class LotDao {
             st.execute("INSERT INTO lots VALUES(" + id + ", \'" + name + "\', " + startPrice + ", " + minPrice + ", \'" + status.toLowerCase() + "\', " + auctionId + ")");
         }
         else{
-            st.execute("INSERT INTO lots VALUES(1, \'"+name+"\', "+startPrice+", "+minPrice+", \'"+status.toLowerCase()+"\', "+auctionId + ")");
+            st.execute("INSERT INTO lots VALUES(1, \'"+name+"\', "+startPrice+", "+minPrice+", \'"+status.toLowerCase()+"\', "+auctionId+")");
         }
         return id;
     } catch (SQLException e) {
-        throw new Exception(e.getMessage() + "   dao");
+        throw new Exception(e.getMessage());
     }
 }
     public void deleteLot(int id) throws Exception {
@@ -80,7 +80,7 @@ public class LotDao {
         try {
             ResultSet rs = st.executeQuery("SELECT * FROM lots WHERE id="+id);
             if(rs.next()){
-                st.execute("UPDATE lots SET status=\'"+status.toLowerCase()+"\' WHERE id="+id);
+                st.execute("UPDATE lots SET status=\'"+status+"\', auctionId=0 WHERE id="+id);
             }
             else throw new Exception("Lot not found");
         } catch (SQLException e) {
@@ -101,10 +101,7 @@ public class LotDao {
     public void setEndByAuctionId(int auctionId) throws Exception {
     try {
         ResultSet rs = st.executeQuery("SELECT * FROM lots WHERE auctionId="+auctionId);
-        if(rs.next()){
             st.execute("UPDATE lots SET status=\'end\' WHERE auctionId="+auctionId+" and status=\'registered\'");
-        }
-        else throw new Exception("Lots not found");
     } catch (SQLException e) {
         throw new Exception(e.getMessage());
     }
@@ -218,4 +215,3 @@ public class LotDao {
         }
     }
 }
-

@@ -5,6 +5,7 @@ import by.students.grsu.entities.services.SoldLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,5 +32,10 @@ public class SoldLotController {
         List<SoldLot> soldLots = soldLotService.getSoldLotsByUser(request.getRemoteUser());
         model.addAttribute("lots", soldLots);
         return "purchase";
+    }
+    @RequestMapping(value = "/confirmDeal/{l_id}", method = RequestMethod.GET)
+    public String confirmDeal(ModelMap model, @PathVariable int l_id){
+        soldLotService.tradeComplete(l_id);
+        return "redirect:/home";
     }
 }

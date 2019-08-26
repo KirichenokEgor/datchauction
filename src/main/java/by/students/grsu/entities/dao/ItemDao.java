@@ -62,6 +62,7 @@ public class ItemDao {
             return new Item(rs.getInt("id"),rs.getString("name"),rs.getString("description"),rs.getString("owner"),rs.getInt("lotID"));
         }else throw new AuctionException("Item not found",21);
     }
+
     public List<Item> getItemsByOwner(String ownerName) throws Exception{
         ResultSet rs = statement.executeQuery("SELECT * FROM items WHERE owner=\'"+ownerName+"\'");
         if(!rs.next())throw new AuctionException("This user has no items",22);

@@ -11,8 +11,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-
-
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

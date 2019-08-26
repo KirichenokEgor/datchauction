@@ -12,7 +12,7 @@ var lots=[];
 var rows = document.getElementsByTagName("tr");
 for(var i=2;i<rows.length;i++){
     var row = rows[i].cells;
-    lots[i-2]=new Lot(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].children[0],row[4].children[0])
+    lots[i-2]=new Lot(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].children[0], row[4].children.length!=0?row[4].children[0]:row[4].innerHTML)
 }
 function sortById(){
     lots.sort(function(a,b){return Number(b.id)-Number(a.id)});
@@ -35,6 +35,7 @@ function sortByPrice(){
     else lastSort=3;
     renderTable();}
 function renderTable(){
+    var words = document.getElementById("searchWords").value;
     for(var i=2;i<rows.length;i++){
         var row = rows[i].cells;
         row[0].innerHTML=lots[i-2].id;
@@ -42,9 +43,16 @@ function renderTable(){
         row[2].innerHTML=lots[i-2].price;
         if(row[3].children.length!=0)
         row[3].removeChild(row[3].children[0]);
-        if(row[4].children.length!=0)
-        row[4].removeChild(row[4].children[0]);
+        row[4].innerHTML="";
         row[3].appendChild(lots[i-2].firstLink);
+        if(lots[i-2].secondLink==="Sold")
+        row[4].innerHTML="Sold";
+        else
         row[4].appendChild(lots[i-2].secondLink);
+        if(lots[i-2].name.search(words)==-1)rows[i].hidden=true;
+        	else rows[i].hidden=false;
     }
+}
+function search(){
+	renderTable();
 }

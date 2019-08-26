@@ -139,43 +139,43 @@ public class LotController {
     }
 
     @RequestMapping(value = "/{a_id}/deleteLot", method = RequestMethod.GET)
-    public ModelAndView deleteLot(@PathVariable("a_id") Integer a_id, HttpServletRequest request) {
-        ModelAndView mv;
-        if(request.isUserInRole("ADMIN") /*|| request.isUserInRole("SELLER")*/) {
-            mv = new ModelAndView("deleteLot");
-            try {
-                AuctionInfo auc = auctionService.getAuctionWithLots(a_id);
-                mv.addObject("auction", auc);
-            } catch (Exception e) {
-                mv.addObject("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
-            }
-            mv.addObject("back", a_id + "/lotList");
-        }else{
-            mv = new ModelAndView("redirect:/" + a_id + "/lotList");
+    public ModelAndView deleteLot(@PathVariable("a_id") Integer a_id) {
+        ModelAndView mv = new ModelAndView("deleteLot");
+        try {
+            AuctionInfo auc = auctionService.getAuctionWithLots(a_id);
+            //List<Lot> lots = lotService.getLotsByAuctionId(a_id);
+            mv.addObject("auction", auc);
+        }catch (Exception e){
+            mv.addObject("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
         }
+
+        //mv.addObject("num", new IntegerWrapper());
+        mv.addObject("back", a_id + "/lotList");
         return mv;
     }
 
     @RequestMapping(value = "/{a_id}/deleteLotPart2", method = RequestMethod.GET)
     public String itemInfo(@PathVariable("a_id") Integer a_id,
-                           ModelMap model, HttpServletRequest request) {
-        if(request.isUserInRole("ADMIN") /*|| request.isUserInRole("SELLER")*/) {
-            int num = Integer.parseInt(request.getParameter("lot"));
-            try {
-                Lot lot = lotService.getLotById(num);
+                           ModelMap model, ServletRequest request) {
+        int num = Integer.parseInt(request.getParameter("lot"));
+
+        try {
+            Lot lot = lotService.getLotById(num);
+            //TODO check if user is admin?
 //            if(!item.getOwner().equals(user.getUsername())){
 //                model.addAttribute("errMessage", "Sorry, you can't delete this item, because it's not yours.");
 //                List<Item> items = itemService.getItemsByOwner(user);
 //                model.addAttribute("items", items);
 //                return "deleteItem";
 //            }
-                lotService.deleteLot(num);
-                itemService.freeItemsByLot(num);
-            } catch (Exception e) {
-                model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
-                return "deleteItem";
-            }
+            lotService.deleteLot(num);
+            itemService.freeItemsByLot(num);
+        }catch (Exception e){
+            model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
+            return "deleteItem";
         }
+
+        //model.addAttribute("back", "freeItems");
 
         return "redirect:/" + a_id + "/lotList";
     }

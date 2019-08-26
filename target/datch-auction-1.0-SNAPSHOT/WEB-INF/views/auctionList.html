@@ -31,7 +31,7 @@
     <h3>Auction List</h3>
     <hr>
     <div th:text = "${errMessage}"></div><br>
-    <header th:insert="components :: aucList"></header>
+    <div th:insert="components :: aucList"></div>
     <hr>
     <table sec:authorize="hasRole('ADMIN')">
         <tr>

@@ -17,7 +17,6 @@ import java.util.Queue;
 public class AuctionDao {
     private Statement statement;
     private LotDao lotDao;
-    //private int aCount = 0;
     public AuctionDao(Statement statement,LotDao lotDao){
         try {
             statement.execute("use datchauction");
@@ -77,18 +76,14 @@ public class AuctionDao {
             throw new Exception(e.getMessage());
         }
     }
-    public boolean setStatus(int ID,String newStatus) throws Exception {
+    public void setStatus(int ID,String newStatus) throws Exception {
         try{
             newStatus=newStatus.toLowerCase();
             if(!newStatus.equals("disabled") && !newStatus.equals("active") && !newStatus.equals("planned") && !newStatus.equals("done"))
                 throw new Exception("Wrong status word");
             ResultSet rs = statement.executeQuery("SELECT * FROM auctions WHERE ID="+ID);
             if(rs.next()) {
-                String oldStatus = rs.getString("status");
-                statement.execute("UPDATE auctions SET status=\'" + newStatus + "\' WHERE ID=" + ID);
-                if(newStatus.equals("planned") && !oldStatus.equals(newStatus)) statement.execute("update auctions set currentLots=0 where ID=" + ID);
-                if(oldStatus.equals(newStatus))return false;//useless?????????
-                else return true;
+                statement.execute("UPDATE auctions SET status=\'" + newStatus + "\',currentLots=0 WHERE ID=" + ID);
             }
             else throw new Exception("Auction not found");
         }catch (SQLException e){
@@ -146,6 +141,13 @@ public class AuctionDao {
             return queue;
         } catch (SQLException e) {
             throw new Exception(e.getMessage());
+        }
+    }
+    public void updateDoneAuctions(){
+        try {
+            statement.execute("UPDATE auctions SET status=\'planned\' WHERE status=\'done\'");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

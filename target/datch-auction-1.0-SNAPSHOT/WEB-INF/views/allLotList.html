@@ -30,10 +30,10 @@
 <br>
 <h3>All lots</h3>
 <hr>
-<form action="#" th:action="@{/search}">
-    <p><input type="search" name="s" minlength="3" placeholder="Search">
-        <input type="submit" value="Search"></p>
-</form>
+<!--<form action="#" th:action="@{/search}">-->
+    <p><input type="search" id="searchWords" onchange="search()" name="s" minlength="3" placeholder="Search">
+<!--        <input type="submit" value="Search"></p>-->
+<!--</form>-->
 <hr>
 <div th:insert="components :: allLotList"></div>
 <br>

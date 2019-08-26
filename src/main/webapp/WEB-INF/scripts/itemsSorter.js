@@ -12,7 +12,7 @@ var items=[];
 var rows = document.getElementsByTagName("tr");
 for(var i=2;i<rows.length-1;i++){
     var row = rows[i].cells;
-    items[i-2]=new Lot(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].innerHTML,row[4].innerHTML)
+    items[i-2]=new Item(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].innerHTML,row[4].innerHTML)
 }
 function sortById(){
     items.sort(function(a,b){return Number(b.id)-Number(a.id)});

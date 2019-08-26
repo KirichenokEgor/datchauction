@@ -36,7 +36,7 @@
     <table>
         <select name="auc" required>
             <option th:each="auc: ${auctions}">
-                <a th:text="${auc.getID()}"></a>
+                <a th:text="${auc.getAuction().getID()}"></a>
             </option>
         </select>
         <tr>

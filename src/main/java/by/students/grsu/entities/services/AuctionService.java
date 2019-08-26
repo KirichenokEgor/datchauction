@@ -12,7 +12,7 @@ import java.util.Queue;
 public class AuctionService implements AuctionFollower {
     private AuctionDao auctionDao;
     private ItemService itemService;
-    //private LotService lotService;
+    private LotService lotService;
     private AuctionPlatformObserver auctionPlatformObserver;
     public AuctionService(AuctionDao auctionDao, ItemService itemService/*, LotService lotService*/){
         this.auctionDao = auctionDao;
@@ -43,7 +43,9 @@ public class AuctionService implements AuctionFollower {
     }
     public void setAuctionDisabled(int id){
         try {
+
             auctionDao.setStatus(id, AuctionStatus.Disabled.toString());
+            auctionPlatformObserver.auctionsChanged();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -135,7 +137,7 @@ public class AuctionService implements AuctionFollower {
         try {
             auctionDao.setStatus(id, AuctionStatus.Done.toString());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
     public void auctionStarted(ActiveAuction activeAuction){
@@ -160,5 +162,8 @@ public class AuctionService implements AuctionFollower {
 
     public Queue<AuctionStartTime> getAuctionsQueue() throws Exception {
         return auctionDao.getAuctionsQueue();
+    }
+    public void updateDoneAuctions(){
+        auctionDao.updateDoneAuctions();
     }
 }
