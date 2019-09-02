@@ -3,25 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Lot List</title>
-    <style>
-   .headr {
-        position: fixed; /* Относительное позиционирование */
-        top: 0px; /* Положение от верхнего края */
-        left: 8px; /* Положение от левого края */
-        width: 100%;
-        background: #f0f0f0; /* Цвет фона */
-        }
-   .footr {
-        position: fixed; /* Относительное позиционирование */
-        bottom: 0px; /* Положение от верхнего края */
-        left: 8px; /* Положение от левого края */
-        width: 100%;
-        background: #f0f0f0; /* Цвет фона */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
 </head>
 <body>
-<div th:insert="components :: improvedHeader" ></div>
+<div th:replace="components/improvedHeader.html" ></div>
 <br>
 <br>
 <br>
@@ -32,21 +17,21 @@
 <hr>
 <table>
     <tr>
-        <td width="100px"><b>ID</b></td>
-        <td width="200px"><b>Start_time</b></td>
-        <td width="150px"><b>Duration_in_minutes</b></td>
+        <td width="5%"><b>ID</b></td>
+        <td width="10%"><b>Start_time</b></td>
+        <td width="5%"><b>Duration_in_minutes</b></td>
     </tr>
     <tr>
-        <td width="100px" th:text="${auction.getID()}"></td>
-        <td width="200px" th:text="${auction.getBeginTime()}"></td>
-        <td width="150px" th:text="${auction.getMaxDuration()}"></td>
+        <td width="5%" th:text="${auction.getID()}"></td>
+        <td width="10%" th:text="${auction.getBeginTime()}"></td>
+        <td width="5%" th:text="${auction.getMaxDuration()}"></td>
     </tr>
 </table>
 <hr>
 <h3>Lot List</h3>
 <hr>
-<div th:insert="components :: lotList"></div>
-<div th:insert="components :: lotListButtons"></div>
+<div th:replace="components/lotList.html"></div>
+<div th:replace="components/lotListButtons.html"></div>
 <br>
 <br>
 <br>
@@ -54,6 +39,6 @@
 <br>
 <br>
 <br>
-<div th:insert="components :: improvedFooter" ></div>
+<div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

@@ -1,0 +1,27 @@
+<div th:fragment="aucList">
+    <table border="1" cellspacing="0" width="40%">
+        <tr>
+            <td width="28%" onclick="sortById()">ID</td>
+            <td width="18%" onclick="sortByTime()">Start time</td>
+            <td width="18%" onclick="sortByDuration()">Duration</td>
+            <td width="18%"></td>
+            <td width="18%"></td>
+        </tr>
+        <tbody>
+        <tr th:each="auc: ${auctions}">
+            <td width="28%" th:text="${auc.getAuction().getID()}"></td>
+            <td width="18%" th:text="${auc.getAuction().getBeginTime()}"></td>
+            <td width="18%" th:text="${auc.getAuction().getMaxDuration()}"></td>
+            <td width="18%">
+                <a th:if="${auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/lotList(id=${auc.getAuction().getID()})}" >View</a>
+                <a th:if="${auc.getAuction().getStringStatus() == 'Active'}" th:href="@{/{id}/join(id=${auc.getAuction().getID()})}">Join</a>
+                <a th:unless="${auc.getAuction().getStringStatus() == 'Active' || auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/makePlanned(id=${auc.getAuction().getID()})}">Make Planned</a>
+            </td>
+            <td width="18%">
+                <a th:if="${auc.getAuction().getStringStatus() == 'Planned' && !auc.isFollowed()}" th:href="@{/{id}/subscribe(id=${auc.getAuction().getID()})}" >Subscribe</a>
+                <a th:if="${auc.getAuction().getStringStatus() == 'Planned' && auc.isFollowed()}" th:href="@{/{id}/unsubscribe(id=${auc.getAuction().getID()})}" >Unsubscribe</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

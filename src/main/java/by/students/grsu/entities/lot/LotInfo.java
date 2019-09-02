@@ -5,9 +5,9 @@ import by.students.grsu.entities.item.ItemInfo;
 import java.util.List;
 
 public interface LotInfo {
-    public String getName();
+    String getName();
 
-    public int getID();
+    int getID();
 
     LotStatus getStatus();
 

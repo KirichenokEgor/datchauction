@@ -3,25 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Followed Auctions</title>
-    <style>
-   .headr {
-        position: fixed; /* Относительное позиционирование */
-        top: 0px; /* Положение от верхнего края */
-        left: 8px; /* Положение от левого края */
-        width: 100%;
-        background: #f0f0f0; /* Цвет фона */
-        }
-   .footr {
-        position: fixed; /* Относительное позиционирование */
-        bottom: 0px; /* Положение от верхнего края */
-        left: 8px; /* Положение от левого края */
-        width: 100%;
-        background: #f0f0f0; /* Цвет фона */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
 </head>
 <body>
-<div th:insert="components :: improvedHeader" ></div>
+<div th:replace="components/improvedHeader.html" ></div>
 <br>
 <br>
 <br>
@@ -31,7 +16,7 @@
 <h3>Auction List</h3>
 <hr>
 <!--<div th:text = "${errMessage}"></div><br>-->
-<div th:insert="components :: aucList"></div>
+<div th:replace="components/aucList.html"></div>
 <hr>
 <br>
 <br>
@@ -40,6 +25,6 @@
 <br>
 <br>
 <br>
-<div th:insert="components :: improvedFooter" ></div>
+<div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

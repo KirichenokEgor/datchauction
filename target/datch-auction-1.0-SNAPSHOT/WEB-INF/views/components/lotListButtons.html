@@ -1,0 +1,9 @@
+<div th:fragment="lotListButtons">
+    <table th:if="${auction.getStringStatus() == 'Planned'}">
+        <tr>
+            <td width="50px"><a th:href="@{/{id}/subscribe(id=${auction.getID()})}" >Subscribe</a></td>
+            <td width="50px"><a sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/{id}/addLot(id=${auction.getID()})}" >Add lot</a></td>
+            <td width="100px"><a sec:authorize="hasRole('ADMIN')" th:href="@{/{id}/deleteLot(id=${auction.getID()})}" >Delete lot</a></td>
+        </tr>
+    </table>
+</div>

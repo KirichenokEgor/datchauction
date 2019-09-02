@@ -4,8 +4,7 @@ import by.students.grsu.entities.item.Item;
 import by.students.grsu.entities.item.ItemInfo;
 import by.students.grsu.entities.item.TempItem;
 import by.students.grsu.entities.services.AuctionException;
-import by.students.grsu.entities.services.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.students.grsu.entities.services.interfaces.ItemService;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,36 +19,24 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Controller
-//@SessionAttributes("user")
 public class ItemController {
     private ItemService itemService;
-    //private SecurityContextHolderAwareRequestWrapper contextHolder;
 
-    @PostConstruct
-    private void postConstructor(){
-        System.out.println("ItemService: OK");
-    }
-
-    @Autowired
-    public void setItemService(ItemService itemService) {
+    public ItemController(ItemService itemService){
         this.itemService = itemService;
     }
 
-//    @Autowired
-//    public void setSecurityContextHolderAwareRequestWrapper(SecurityContextHolderAwareRequestWrapper contextHolder) {
-//        this.contextHolder = contextHolder;
-//    }
+    @PostConstruct
+    private void postConstructor(){
+        System.out.println("ItemController: OK");
+    }
 
     @RequestMapping(value = "/addItem", method = RequestMethod.GET)
     public ModelAndView addItem(HttpServletRequest request) {
         ModelAndView mv;
-        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
             mv = new ModelAndView("addItem");
             mv.addObject("item", new TempItem());
             mv.addObject("back", "freeItems");
-        }else{
-            mv = new ModelAndView("redirect:/home");
-        }
         return mv;
     }
 
@@ -77,7 +64,6 @@ public class ItemController {
     @RequestMapping(value = "/deleteItem", method = RequestMethod.GET)
     public ModelAndView deleteItem(SecurityContextHolderAwareRequestWrapper contextHolder, HttpServletRequest request) {
         ModelAndView mv;
-        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
             mv = new ModelAndView("deleteItem");
             try {
                 //List<Item> items = itemService.getItemsByOwner(user);
@@ -89,15 +75,11 @@ public class ItemController {
                 mv.addObject("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
             }
             mv.addObject("back", "freeItems");
-        }else{
-            mv = new ModelAndView("redirect:/home");
-        }
         return mv;
     }
 
     @RequestMapping(value = "/deleteItemPart2", method = RequestMethod.GET)
     public String itemInfo(ModelMap model, HttpServletRequest request, SecurityContextHolderAwareRequestWrapper contextHolder) {
-        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
             int num = Integer.parseInt(request.getParameter("item"));
             try {
                 ItemInfo item = itemService.getItemById(num);
@@ -119,13 +101,10 @@ public class ItemController {
                 model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
                 return "deleteItem";
             }
-        }
-        return "redirect:/home";
     }
 
     @RequestMapping(value = "/freeItems", method = RequestMethod.GET)
     public String watchFreeItems(ModelMap model, SecurityContextHolderAwareRequestWrapper contextHolder, HttpServletRequest request) {
-        if(request.isUserInRole("ADMIN") || request.isUserInRole("SELLER")) {
             try {
                 List<Item> items;
                 if(!request.isUserInRole("ADMIN")) items = itemService.getFreeItemsByOwner(contextHolder);
@@ -134,10 +113,6 @@ public class ItemController {
             } catch (Exception e) {
                 model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
             }
-        }else{
-            return "redirect:/home";
-        }
-
         return "freeItemList";
     }
 }

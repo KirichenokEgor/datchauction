@@ -1,5 +1,6 @@
 package by.students.grsu.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,51 +8,49 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true/*, securedEnabled = true, jsr250Enabled = true*/)//prePost is needed
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
     DataSource dataSource;
 
-    @PostConstruct
-    void pc(){
-        dataSource = new MyDataSource();
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        //System.out.println("handler bean created");
+        return new CustomAccessDeniedHandler();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                //.antMatchers("/", "/home").permitAll()
+                .antMatchers("/addAuction", "/saveAuction", "/deleteAuction", "/deleteAuctionPart2", "**/makePlanned", "**/deleteLot", "**/deleteLotPart2").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/addItem", "/saveItem", "/deleteItem", "/deleteItemPart2", "/freeItems", "**/addLot", "**/saveLot").access("hasRole('ROLE_ADMIN') || hasRole('ROLE_SELLER')")
                 .antMatchers("/registration", "/confirmRegistration").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
                     .loginPage("/login")
-                    //.successForwardUrl("/home")
+                    .defaultSuccessUrl("/", false)
                     .permitAll()
                     .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true)
-                .permitAll();
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout")
+                    .invalidateHttpSession(true)
+                    .permitAll()
+                    .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
     }
 
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
         JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-
-//        userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-//                        .username("KiriEg")
-//                        .password("1111")
-//                        .roles("ADMIN")
-//                        .build());
-
         return userDetailsManager;
     }
 }

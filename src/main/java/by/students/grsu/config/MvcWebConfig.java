@@ -1,17 +1,19 @@
 package by.students.grsu.config;
 
-import by.students.grsu.entities.dao.*;
-import by.students.grsu.entities.services.*;
+import by.students.grsu.entities.dao.implementations.*;
+import by.students.grsu.entities.dao.interfaces.*;
+import by.students.grsu.entities.services.implementations.*;
+import by.students.grsu.entities.services.interfaces.*;
+import by.students.grsu.entities.services.interfaces.followersAndObservers.DealsFollower;
 import by.students.grsu.websocket.UserSessionService;
 import by.students.grsu.websocket.WebSocketHandler;
-import com.mysql.cj.jdbc.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -21,9 +23,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebMvc
@@ -54,76 +54,99 @@ public class MvcWebConfig implements WebMvcConfigurer {
                 .addResourceLocations("/WEB-INF/scripts/","/WEB-INF/css/");
     }
 
+    /*SERVICES*/
+
     @Bean
     public FollowedAuctionService followedAuctionService(FollowedAuctionDao followedAuctionDao){
-        return new FollowedAuctionService(followedAuctionDao);
+        return new DefaultFollowedAuctionService(followedAuctionDao);
     }
     @Bean
-    public AuctionService auctionService(AuctionDao auctionDao, ItemService itemService/*, LotService lotService*/){
-        return new AuctionService(auctionDao, itemService/*, lotService*/);
+    public AuctionService auctionService(AuctionDao auctionDao){
+        return new DefaultAuctionService(auctionDao);
     }
     @Bean
     public ItemService itemService(ItemDao itemDao){
-        return new ItemService(itemDao);
+        return new DefaultItemService(itemDao);
     }
     @Bean
-    public LotService lotService(LotDao lotDao,AuctionService auctionService,ItemService itemService){
-        return new LotService(lotDao,auctionService,itemService);
+    public LotService lotService(LotDao lotDao, AuctionService auctionService, ItemService itemService){
+        return new DefaultLotService(lotDao,auctionService,itemService);
     }
-    @Bean
-    public AuctionConfiguration auctionConfiguration(){
-        return new AuctionConfiguration();
-    }
+//    @Bean
+//    public AuctionConfiguration auctionConfiguration(){
+//        return new AuctionConfiguration();
+//    }
     @Bean
     public UserService userService(UserDao userDao){
-        return new UserService(userDao);
+        return new DefaultUserService(userDao);
     }
     @Bean
-    public SoldLotService soldLotService(SoldLotDao soldLotDao, LotService lotService){
-        return new SoldLotService(soldLotDao,lotService);
+    public SoldLotService soldLotService(SoldLotDao soldLotDao, DealsFollower lotService){
+        return new DefaultSoldLotService(soldLotDao, lotService);
     }
     @Bean
-    public AuctionPlatform auctionPlatform(AuctionService auctionService, SoldLotService soldLotService, LotService lotService, WebSocketHandler handler){
-        return new AuctionPlatform(auctionService,soldLotService,lotService,handler);
+    public AuctionPlatform auctionPlatform(AuctionService auctionService, SoldLotService soldLotService, LotService lotService, FollowedAuctionService followedAuctionService, WebSocketHandler handler){
+        return new DefaultAuctionPlatform(auctionService, soldLotService, lotService, followedAuctionService, handler);
     }
     @Bean
     public UserSessionService getUserSessionService(){
         return new UserSessionService();
     }
+
+    /*DAOS*/
+
+//    @Bean
+//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)///////////////////////////////////////////////////////////////
+//    public Statement statement(AuctionConfiguration configuration) throws Exception {
+//        try {
+//            DriverManager.registerDriver(new Driver());
+//            Statement statement =
+//                    DriverManager.getConnection("jdbc:mysql://"+configuration.getDaoLocation(),configuration.getDaoUser(),configuration.getDaoPassword()).createStatement();
+//            //statement.execute("use datchauction");
+//            return statement;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        throw new Exception("Connection with database failed");
+//    }
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)///////////////////////////////////////////////////////////////
-    public Statement statement(AuctionConfiguration configuration) throws Exception {
-        try {
-            DriverManager.registerDriver(new Driver());
-            Statement statement =
-                    DriverManager.getConnection("jdbc:mysql://"+configuration.getDaoLocation(),configuration.getDaoUser(),configuration.getDaoPassword()).createStatement();
-            //statement.execute("use datchauction");
-            return statement;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        throw new Exception("Connection with database failed");
+    public AuctionDao auctionDao(JdbcTemplate jdbcTemplate, LotDao lotDao){
+        return new MySqlAuctionDao(jdbcTemplate,lotDao);
     }
     @Bean
-    public AuctionDao auctionDao(Statement statement,LotDao lotDao){
-        return new AuctionDao(statement,lotDao);
+    public ItemDao itemDao(JdbcTemplate jdbcTemplate){
+        return new MySqlItemDao(jdbcTemplate);
     }
     @Bean
-    public ItemDao itemDao(Statement statement){
-        return new ItemDao(statement);
+    public LotDao lotDao(JdbcTemplate jdbcTemplate, ItemDao itemDao){
+        return new MySqlLotDao(jdbcTemplate,itemDao);
     }
     @Bean
-    public LotDao lotDao(Statement statement,ItemDao itemDao){
-        return new LotDao(statement,itemDao);
+    public UserDao userDao(JdbcTemplate jdbcTemplate){
+        return new MySqlUserDao(jdbcTemplate);
     }
     @Bean
-    public UserDao userDao(Statement statement){
-        return new UserDao(statement);
+    public SoldLotDao soldLotDao(JdbcTemplate jdbcTemplate){return new MySqlSoldLotDao(jdbcTemplate);}
+    @Bean
+    public FollowedAuctionDao followedAuctionDao(JdbcTemplate jdbcTemplate, AuctionDao auctionDao){return new MySqlFollowedAuctionDao(jdbcTemplate, auctionDao);}
+
+    /*DATASOURCE*/
+
+    @Bean
+    public DataSource mysqlDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");//"com.mysql.jdbc.Driver"
+        dataSource.setUrl("jdbc:mysql://localhost/datchAuction");
+        dataSource.setUsername("default");
+        dataSource.setPassword("1111");
+        //todo somehow set a pull of connections
+        return dataSource;
     }
+
     @Bean
-    public SoldLotDao soldLotDao(Statement statement){return new SoldLotDao(statement);}
-    @Bean
-    public FollowedAuctionDao followedAuctionDao(Statement statement){return new FollowedAuctionDao(statement);}
+    public JdbcTemplate jdbcTemplate(DataSource dataSource){
+        return new JdbcTemplate(dataSource);
+    }
 
     /*
      * STEP 2 - Create SpringTemplateEngine

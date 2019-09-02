@@ -1,0 +1,20 @@
+<div th:fragment="itemList">
+    <table border="1" cellspacing="0" width="60%">
+        <tr>
+            <td width="19%" onclick="sortById()">ID</td>
+            <td width="15%" onclick="sortByName()">Name</td>
+            <td width="46%" onclick="sortByDescription()">Description</td>
+            <td width="5%" onclick="sortByStatus()">Status</td>
+            <td width="15%">Owner</td>
+        </tr>
+        <tbody>
+        <tr th:each="item: ${items}">
+            <td width="19%" th:text="${item.getID()}"></td>
+            <td width="15%" th:text="${item.getName()}"></td>
+            <td width="46%" th:text="${item.getDescription()}"></td>
+            <td width="5%" th:text="${item.getStatus()}"></td>
+            <td width="15%" th:text="${item.getOwner()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

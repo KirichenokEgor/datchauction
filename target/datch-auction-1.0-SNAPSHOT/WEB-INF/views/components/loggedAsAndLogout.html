@@ -1,0 +1,9 @@
+<div th:fragment="loggedAsAndLogout">
+    <table>
+        <tr>
+            <td>Logged as:</td>
+            <td width="300px" th:text="${#httpServletRequest.remoteUser}"></td>
+            <td><div th:replace="components/logout.html" ></div></td>
+        </tr>
+    </table>
+</div>

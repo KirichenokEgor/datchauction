@@ -1,8 +1,7 @@
 package by.students.grsu.controller;
 
 import by.students.grsu.entities.lot.SoldLot;
-import by.students.grsu.entities.services.SoldLotService;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.students.grsu.entities.services.interfaces.SoldLotService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +16,13 @@ import java.util.List;
 public class SoldLotController {
     SoldLotService soldLotService;
 
-    @Autowired
-    public void setSoldLotService(SoldLotService soldLotService) {
+    public SoldLotController(SoldLotService soldLotService){
         this.soldLotService = soldLotService;
     }
 
     @PostConstruct
     private void postConstructor(){
-        System.out.println("SoldLotService: OK");
+        System.out.println("SoldLotController: OK");
     }
 
     @RequestMapping(value = "/soldLotList", method = RequestMethod.GET)
@@ -36,6 +34,6 @@ public class SoldLotController {
     @RequestMapping(value = "/confirmDeal/{l_id}", method = RequestMethod.GET)
     public String confirmDeal(ModelMap model, @PathVariable int l_id){
         soldLotService.tradeComplete(l_id);
-        return "redirect:/home";
+        return "redirect:/soldLotList";
     }
 }

@@ -91,6 +91,11 @@
           <artifactId>thymeleaf-extras-springsecurity4</artifactId>
           <version>3.0.4.RELEASE</version>
       </dependency>
+      <dependency>
+          <groupId>javax</groupId>
+          <artifactId>javaee-api</artifactId>
+          <version>8.0.1</version>
+      </dependency>
   </dependencies>
 
   <build>

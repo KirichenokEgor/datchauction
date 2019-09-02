@@ -1,0 +1,8 @@
+<div th:fragment="itemListButtons">
+    <table>
+        <tr>
+            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a th:href="@{/addItem}" >Add item</a></td>
+            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a th:href="@{/deleteItem}" >Delete item</a></td>
+        </tr>
+    </table>
+</div>

@@ -3,25 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Lot Info</title>
-    <style>
-   .headr {
-        position: fixed; /* Относительное позиционирование */
-        top: 0px; /* Положение от верхнего края */
-        left: 8px; /* Положение от левого края */
-        width: 100%;
-        background: #f0f0f0; /* Цвет фона */
-        }
-   .footr {
-        position: fixed; /* Относительное позиционирование */
-        bottom: 0px; /* Положение от верхнего края */
-        left: 8px; /* Положение от левого края */
-        width: 100%;
-        background: #f0f0f0; /* Цвет фона */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
 </head>
 <body>
-<div th:insert="components :: improvedHeader" ></div>
+<div th:replace="components/improvedHeader.html" ></div>
 <br>
 <br>
 <br>
@@ -32,21 +17,21 @@
 <div th:text = "${errMessage}"></div><br>
 <table>
     <tr>
-        <td>ID</td>
+        <td width="5%" style="font-weight:bold">ID</td>
         <td th:text="${ID}"></td>
     </tr>
     <tr>
-        <td>Name</td>
+        <td width="5%" style="font-weight:bold">Name</td>
         <td th:text="${name}"></td>
     </tr>
     <tr>
-        <td>Price</td>
+        <td width="5%" style="font-weight:bold">Price</td>
         <td th:text="${price}"></td>
     </tr>
 </table>
 <hr>
 <h3>Items</h3>
-<div th:insert="components :: itemList"></div>
+<div th:replace="components/itemList.html"></div>
 <br>
 <br>
 <br>
@@ -54,6 +39,6 @@
 <br>
 <br>
 <br>
-<div th:insert="components :: improvedFooter" ></div>
+<div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

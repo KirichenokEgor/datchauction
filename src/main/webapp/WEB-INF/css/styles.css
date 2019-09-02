@@ -2,6 +2,7 @@
   padding: 20px 30px;
   background: white;
   font-family: 'Roboto', sans-serif;
+  width: 20%;
 }
 .widget-title {
   text-transform: uppercase;
@@ -31,3 +32,40 @@
   transition: .3s linear;
 }
 .widget-list a:hover {color: #b99d61;}
+.headr {
+  position: fixed; /* Относительное позиционирование */
+  top: 0px; /* Положение от верхнего края */
+  left: 8px; /* Положение от левого края */
+  width: 100%;
+  background: #f0f0f0; /* Цвет фона */
+}
+.footr {
+  position: fixed; /* Относительное позиционирование */
+  bottom: 0px; /* Положение от верхнего края */
+  left: 8px; /* Положение от левого края */
+  width: 100%;
+  background: #f0f0f0; /* Цвет фона */
+}
+.layer1 {
+  position: static; /* Относительное позиционирование */
+  //background: #f0f0f0; /* Цвет фона */
+  //height: 50px; /* Высота блока */
+}
+.layer2right {
+  position: fixed; /* Абсолютное позиционирование */
+  top: inherit; /* Положение от верхнего края */
+  right: 15px; /* Положение от правого края */
+  //line-height: 1px;
+}
+.layer2left {
+  position: absolute; /* Абсолютное позиционирование */
+  //top: inherit; /* Положение от верхнего края */
+  //left: 15px; /* Положение от левого края */
+  //line-height: 1px;
+}
+.row {
+  border: 1px solid;
+}
+.table{
+  border-collapse: collapse;
+}

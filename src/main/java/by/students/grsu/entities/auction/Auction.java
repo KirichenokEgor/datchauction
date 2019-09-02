@@ -126,4 +126,8 @@ public class Auction implements AuctionInfo {
     public AuctionStatus getStatus() {
         return status;
     }
+
+    public int getCurrentLots() {
+        return currentLots;
+    }
 }

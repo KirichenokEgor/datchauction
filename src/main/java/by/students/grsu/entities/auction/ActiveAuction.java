@@ -2,9 +2,7 @@ package by.students.grsu.entities.auction;
 
 import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.lot.LotStatus;
-import by.students.grsu.entities.services.AuctionPlatformObserver;
-import by.students.grsu.entities.services.LotFollower;
-import by.students.grsu.entities.services.SoldLotFollower;
+import by.students.grsu.entities.services.interfaces.followersAndObservers.*;
 import by.students.grsu.entities.users.Follower;
 
 import java.time.LocalTime;
@@ -18,6 +16,7 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
     private LotFollower lotFollower;
     private SoldLotFollower soldLotFollower;
     private AuctionPlatformObserver auctionPlatformObserver;
+    private FollowedAuctionFollower followedAuctionFollower;
     public ActiveAuction(Auction auction){
         auction.makeActive();
         this.auction=auction;
@@ -34,10 +33,11 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
             } catch (InterruptedException e) {
                 System.out.println("Interrupted while waiting observers");
             }
-            if(auctionFollower==null)continue;
-            if(lotFollower==null)continue;
-            if(soldLotFollower==null)continue;
-            if(auctionPlatformObserver==null)continue;
+            if(auctionFollower == null) continue;
+            if(lotFollower == null) continue;
+            if(soldLotFollower == null) continue;
+            if(auctionPlatformObserver == null) continue;
+            if(followedAuctionFollower == null) continue;
             break;
         }
         int tick = auction.getTick()*1000;
@@ -86,13 +86,16 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
     }
 
     public void joinAuctionFollower(AuctionFollower auctionFollower){
-        this.auctionFollower=auctionFollower;
+        this.auctionFollower = auctionFollower;
     }
     public void joinLotFollower(LotFollower lotFollower){
         this.lotFollower = lotFollower;
     }
     public void joinSoldLotFollower(SoldLotFollower soldLotFollower){
-        this.soldLotFollower=soldLotFollower;
+        this.soldLotFollower = soldLotFollower;
+    }
+    public void joinFollowedAuctionFollower(FollowedAuctionFollower followedAuctionFollower){
+        this.followedAuctionFollower = followedAuctionFollower;
     }
     public void joinPlatformObserver(AuctionPlatformObserver platformObserver){
         auctionPlatformObserver=platformObserver;
@@ -123,6 +126,7 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
         System.out.println("Auction " + auction.getID() + " ended");
         auctionFollower.auctionEnded(auction.getID());
         lotFollower.auctionEnded(auction.getID());
+        followedAuctionFollower.auctionEnded(auction.getID());
         auctionPlatformObserver.auctionEnded(this);
         for(Follower follower : userFollowers)
             follower.auctionEnded(auction.getID());

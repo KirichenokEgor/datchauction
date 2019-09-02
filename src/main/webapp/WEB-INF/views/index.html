@@ -3,66 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Auction Dashboard</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
 </head>
 <body>
-<style>
-.widget {
-  padding: 20px 30px;
-  background: white;
-  font-family: 'Roboto', sans-serif;
-  width: 20%;
-}
-.widget-title {
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #222;
-  font-size: 16px;
-  padding-left: 15px;
-  margin-bottom: 15px;
-  border-left: 2px solid #b99d61;
-}
-.widget-list {
-  padding: 0;
-  list-style: none;
-}
-.widget-list a:before {
-  content: "\2014";
-  margin-right: 14px;
-}
-.widget-list a {
-  text-decoration: none;
-  outline: none;
-  display: block;
-  padding: 6px 0;
-  letter-spacing: 1px;
-  font-weight: 300;
-  color: #444;
-  transition: .3s linear;
-}
-.widget-list a:hover {color: #b99d61;}
-.headr {
-        position: fixed; /* Относительное позиционирование */
-        top: 0px; /* Положение от верхнего края */
-        left: 8px; /* Положение от левого края */
-        width: 100%;
-        background: #f0f0f0; /* Цвет фона */
-        }
-.footr {
-    position: fixed; /* Относительное позиционирование */
-    bottom: 0px; /* Положение от верхнего края */
-    left: 8px; /* Положение от левого края */
-    width: 100%;
-    background: #f0f0f0; /* Цвет фона */
-    }
-</style>
-<div th:insert="components :: improvedHeader" ></div>
+<div th:replace="components/improvedHeader.html" ></div>
 <br>
 <br>
 <br>
 <br>
 <br>
 <br>
-<div th:insert="components :: userMenu" ></div>
+<div th:replace="components/userMenu.html"></div>
+<!-- <div th:replace="components :: userMenu"></div> -->
 <!--<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
 <!--<div sec:authorize="isAuthenticated()">-->
 <!--    Text visible only to authenticated users.-->
@@ -74,6 +26,6 @@
 <br>
 <br>
 <br>
-<footer class="footr" th:insert="components :: footer"></footer>
+<div class="footr" th:insert="components/footer.html"></div>
 </body>
 </html>
