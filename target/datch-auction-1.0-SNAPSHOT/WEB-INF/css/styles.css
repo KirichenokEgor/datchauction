@@ -55,10 +55,12 @@
   position: fixed; /* Абсолютное позиционирование */
   top: inherit; /* Положение от верхнего края */
   right: 15px; /* Положение от правого края */
+  width: 45%;
   //line-height: 1px;
 }
 .layer2left {
   position: absolute; /* Абсолютное позиционирование */
+  width: 45%;
   //top: inherit; /* Положение от верхнего края */
   //left: 15px; /* Положение от левого края */
   //line-height: 1px;

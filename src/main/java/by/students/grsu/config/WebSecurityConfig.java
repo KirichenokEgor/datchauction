@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/addAuction", "/saveAuction",
                         "/deleteAuction", "/deleteAuctionPart2", "**/makePlanned",
-                        "**/deleteLot", "**/deleteLotPart2")
+                        "**/deleteLot", "**/deleteLotPart2", "/userManager")
                         .access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/addItem", "/saveItem", "/deleteItem",
                         "/deleteItemPart2", "/freeItems", "**/addLot", "**/saveLot")
