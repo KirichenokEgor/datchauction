@@ -5,7 +5,7 @@ import by.students.grsu.entities.auction.ActiveAuctionInterface;
 import by.students.grsu.entities.auction.AuctionStartTime;
 import by.students.grsu.entities.services.interfaces.*;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.AuctionPlatformObserver;
-import by.students.grsu.websocket.WebSocketHandler;
+import by.students.grsu.websocket.ActiveAuctionWebSocketHandler;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public class DefaultAuctionPlatform extends Thread implements AuctionPlatformObs
     private LotService lotService;
     private SoldLotService soldLotService;
     private FollowedAuctionService followedAuctionService;
-    private WebSocketHandler handler;
+    private ActiveAuctionWebSocketHandler handler;
     private List<ActiveAuction> activeAuctions;
-    public DefaultAuctionPlatform(AuctionService auctionService, SoldLotService soldLotService, LotService lotService, FollowedAuctionService followedAuctionService, WebSocketHandler handler){
+    public DefaultAuctionPlatform(AuctionService auctionService, SoldLotService soldLotService, LotService lotService, FollowedAuctionService followedAuctionService, ActiveAuctionWebSocketHandler handler){
         this.auctionService = auctionService;
         this.lotService = lotService;
         this.soldLotService = soldLotService;

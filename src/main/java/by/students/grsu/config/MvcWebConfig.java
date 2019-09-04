@@ -5,8 +5,8 @@ import by.students.grsu.entities.dao.interfaces.*;
 import by.students.grsu.entities.services.implementations.*;
 import by.students.grsu.entities.services.interfaces.*;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.DealsFollower;
+import by.students.grsu.websocket.ActiveAuctionWebSocketHandler;
 import by.students.grsu.websocket.UserSessionService;
-import by.students.grsu.websocket.WebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -61,8 +61,8 @@ public class MvcWebConfig implements WebMvcConfigurer {
         return new DefaultFollowedAuctionService(followedAuctionDao);
     }
     @Bean
-    public AuctionService auctionService(AuctionDao auctionDao){
-        return new DefaultAuctionService(auctionDao);
+    public AuctionService auctionService(AuctionDao auctionDao, ItemService itemService){
+        return new DefaultAuctionService(auctionDao, itemService);
     }
     @Bean
     public ItemService itemService(ItemDao itemDao){
@@ -85,7 +85,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
         return new DefaultSoldLotService(soldLotDao, lotService);
     }
     @Bean
-    public AuctionPlatform auctionPlatform(AuctionService auctionService, SoldLotService soldLotService, LotService lotService, FollowedAuctionService followedAuctionService, WebSocketHandler handler){
+    public AuctionPlatform auctionPlatform(AuctionService auctionService, SoldLotService soldLotService, LotService lotService, FollowedAuctionService followedAuctionService, ActiveAuctionWebSocketHandler handler){
         return new DefaultAuctionPlatform(auctionService, soldLotService, lotService, followedAuctionService, handler);
     }
     @Bean
@@ -110,16 +110,16 @@ public class MvcWebConfig implements WebMvcConfigurer {
 //        throw new Exception("Connection with database failed");
 //    }
     @Bean
-    public AuctionDao auctionDao(JdbcTemplate jdbcTemplate, LotDao lotDao){
-        return new MySqlAuctionDao(jdbcTemplate,lotDao);
+    public AuctionDao auctionDao(JdbcTemplate jdbcTemplate){
+        return new MySqlAuctionDao(jdbcTemplate);
     }
     @Bean
     public ItemDao itemDao(JdbcTemplate jdbcTemplate){
         return new MySqlItemDao(jdbcTemplate);
     }
     @Bean
-    public LotDao lotDao(JdbcTemplate jdbcTemplate, ItemDao itemDao){
-        return new MySqlLotDao(jdbcTemplate,itemDao);
+    public LotDao lotDao(JdbcTemplate jdbcTemplate){
+        return new MySqlLotDao(jdbcTemplate);
     }
     @Bean
     public UserDao userDao(JdbcTemplate jdbcTemplate){
@@ -128,7 +128,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     @Bean
     public SoldLotDao soldLotDao(JdbcTemplate jdbcTemplate){return new MySqlSoldLotDao(jdbcTemplate);}
     @Bean
-    public FollowedAuctionDao followedAuctionDao(JdbcTemplate jdbcTemplate, AuctionDao auctionDao){return new MySqlFollowedAuctionDao(jdbcTemplate, auctionDao);}
+    public FollowedAuctionDao followedAuctionDao(JdbcTemplate jdbcTemplate){return new MySqlFollowedAuctionDao(jdbcTemplate);}
 
     /*DATASOURCE*/
 
@@ -136,10 +136,9 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public DataSource mysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");//"com.mysql.jdbc.Driver"
-        dataSource.setUrl("jdbc:mysql://localhost/datchAuction");
-        dataSource.setUsername("default");
+        dataSource.setUrl("jdbc:mysql://localhost/dutchAuction");
+        dataSource.setUsername("defaultDao");
         dataSource.setPassword("1111");
-        //todo somehow set a pull of connections
         return dataSource;
     }
 

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class HomeController {
@@ -27,5 +28,12 @@ public class HomeController {
     @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
     public String accessDenied(){
         return "accessDenied";
+    }
+
+    @RequestMapping("/userManager")
+    public String userManager(HttpServletRequest request){
+        if(request.isUserInRole("ADMIN"))
+            return "userManager";
+        else return "error";
     }
 }

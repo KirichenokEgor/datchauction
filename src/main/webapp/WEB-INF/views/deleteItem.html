@@ -16,21 +16,44 @@
 <h3>Choose item to delete</h3>
 <hr>
 <div th:text = "${errMessage}"></div><br>
-<div th:replace="components/itemList.html"></div>
-<form action="#" th:action="@{/deleteItemPart2}">
-    <table>
-        <select name="item" required>
-            <option th:each="item: ${items}">
-                <a th:text="${item.getID()}"></a>
-            </option>
-        </select>
+<!--<div th:replace="components/itemList.html"></div>-->
+<form id="deleteItemForm" action="#" th:action="@{/deleteItemPart2}">
+    <table border="1" cellspacing="0">
         <tr>
-            <td colspan="2">
-                <input type="submit" value="Submit"/>
+            <td width="100px" onclick="sortById()">ID</td>
+            <td width="100px" onclick="sortByName()">Name</td>
+            <td width="500px" onclick="sortByDescription()">Description</td>
+            <td width="200px" onclick="sortByStatus()">Status</td>
+            <td width="200px">Owner</td>
+            <td width="50px">Chose</td>
+        </tr>
+        <tbody>
+        <tr class="itemRow" th:each="item: ${items}">
+            <td width="100px" th:text="${item.getID()}"></td>
+            <td width="100px" th:text="${item.getName()}"></td>
+            <td width="500px" th:text="${item.getDescription()}"></td>
+            <td width="200px" th:text="${item.getStatus()}"></td>
+            <td width="200px" th:text="${item.getOwner()}"></td>
+            <td width="50px">
+                <input type="radio" th:value="${item.getID()}" name="item"/>
             </td>
         </tr>
+        </tbody>
     </table>
+    <input type="submit" value="Submit"/>
 </form>
+<script type="text/javascript">
+var form = document.getElementById("deleteItemForm");
+form.onsubmit = function(e){
+    var somethingChosen = false;
+    for(var row of document.getElementsByClassName("itemRow"))
+       if(row.cells[5].children[0].checked)somethingChosen=true;
+	if(!somethingChosen){
+	    alert("Please chose item");
+	    event.preventDefault();
+	}
+}
+</script>
 <br>
 <br>
 <br>

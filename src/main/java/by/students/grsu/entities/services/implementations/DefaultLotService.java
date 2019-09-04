@@ -21,6 +21,7 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
         this.lotDao = lotDao;
         this.auctionService = auctionService;
         this.itemService = itemService;
+        auctionService.setLotService(this);
     }
     @Override
     public LotInfo createLot(int auctionId, String name, double startPrice, double minPrice, int[] items) throws Exception {
@@ -56,11 +57,14 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
     @Override
     public void deleteLotsByAuction(int auctionId){
         try {
-            lotDao.deleteLotsByAuction(auctionId);
+            lotDao.setEndByAuctionId(auctionId);
+            freeEndedLots();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
+
 
 //    public void deleteLot(int id){
 //        try {

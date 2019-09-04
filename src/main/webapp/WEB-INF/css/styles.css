@@ -55,10 +55,12 @@
   position: fixed; /* Абсолютное позиционирование */
   top: inherit; /* Положение от верхнего края */
   right: 15px; /* Положение от правого края */
+  width: 45%;
   //line-height: 1px;
 }
 .layer2left {
   position: absolute; /* Абсолютное позиционирование */
+  width: 45%;
   //top: inherit; /* Положение от верхнего края */
   //left: 15px; /* Положение от левого края */
   //line-height: 1px;
@@ -66,6 +68,23 @@
 .row {
   border: 1px solid;
 }
+.item {
+  border: 1px solid;
+}
 .table{
   border-collapse: collapse;
+}
+.usersTable{
+  border-collapse: collapse;
+  border: 1px solid;
+}
+.usersRow{
+  border: 1px solid;
+  align: center;
+}
+button{
+  width: 100%;
+}
+input{
+  width: 100%;
 }

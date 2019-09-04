@@ -1,8 +1,8 @@
 package by.students.grsu.entities.services;
 
 public class AuctionConfiguration {
-    private String daoLocation = "localhost/datchauction";
-    private String daoUser = "default";
+    private String daoLocation = "localhost/dutchauction";
+    private String daoUser = "defaultDao";
     private String daoPassword = "1111";
 
     public String getDaoLocation() {

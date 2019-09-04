@@ -24,7 +24,7 @@ public class Lot implements LotInfo {
             item.lotCreated(ID);
         this.status=LotStatus.Registered;
     }
-    public Lot(int id,String name,double startPrice,double minPrice, String status,int auctionId) throws Exception {
+    public Lot(int id,String name,double startPrice,double minPrice, String status,int auctionId){
         this.ID=id;
         this.name=name;
         this.currentPrice=startPrice;
@@ -41,9 +41,6 @@ public class Lot implements LotInfo {
             case "end": {
                 this.status = LotStatus.End;
                 break;
-            }
-            default: {
-                throw new Exception("Wrong status name");
             }
         }
         this.auctionId=auctionId;
@@ -107,9 +104,9 @@ public class Lot implements LotInfo {
         this.currentPrice = currentPrice;
     }
 
-    public double getPriceStep() {
-        return priceStep;
-    }
+//    public double getPriceStep() {
+//        return priceStep;
+//    }
 
     public void calculatePriceStep(int ticks) {
         priceStep = Math.round(((currentPrice-minPrice)/ticks)*100)/100.0;
@@ -146,4 +143,7 @@ public class Lot implements LotInfo {
         return auctionId;
     }
     public String getOwner(){ return items.get(0).getOwner();}
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 }

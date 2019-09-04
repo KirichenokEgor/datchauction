@@ -1,5 +1,6 @@
 package by.students.grsu.config;
-import by.students.grsu.websocket.WebSocketHandler;
+import by.students.grsu.websocket.ActiveAuctionWebSocketHandler;
+import by.students.grsu.websocket.UserManagerWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +15,13 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     @Autowired
-    private WebSocketHandler myWebSocketHandler;
-
+    private ActiveAuctionWebSocketHandler activeAuctionWebSocketHandler;
+    @Autowired
+    private UserManagerWebSocketHandler userManagerWebSocketHandler;
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(myWebSocketHandler, "/activeAuction");
+        registry.addHandler(activeAuctionWebSocketHandler, "/activeAuction").
+                addHandler(userManagerWebSocketHandler, "/usersManager");
     }
 
 }

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class WebSocketHandler extends TextWebSocketHandler implements Follower {
+public class ActiveAuctionWebSocketHandler extends TextWebSocketHandler implements Follower {
     private Gson gson = new Gson();
     private Map<WebSocketSession,Integer> sessions = new HashMap<WebSocketSession,Integer>();
     private Map<WebSocketSession, String> users = new HashMap<WebSocketSession, String>();

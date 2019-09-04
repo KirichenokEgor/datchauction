@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Manager</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+</head>
+<body>
+<div th:insert="components/improvedHeader.html" ></div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table>
+    <tr>
+
+        <td width="350px"><input type="text" id="searchWords"/></td>
+        <td width="100px" ><button type="button" onclick="search()">search</button></td>
+    </tr>
+</table>
+<br>
+<table class="usersTable">
+    <tr>
+        <td class="usersRow" width="150px">username</td>
+        <td class="usersRow" width="100px">role</td>
+        <td class="usersRow" width="100px"></td>
+        <td class="usersRow" width="100px"></td>
+    </tr>
+    <tbody class="usersTable" id="usersList">
+
+    </tbody>
+</table>
+<br>
+<table>
+    <tr>
+        <td width="175px"><button type="button" id="prevPage" onclick="prevPage()">prev</button></td>
+        <td width="100px" align="center" id="pageNumber">1</td>
+        <td width="175px" ><button type="button" id="nextPage" onclick="nextPage()">next</button></td>
+    </tr>
+</table>
+<br>
+<div th:insert="components/improvedFooter.html" ></div>
+<script th:src="@{/scripts/userManager.js}"></script>
+</body>
+</html>

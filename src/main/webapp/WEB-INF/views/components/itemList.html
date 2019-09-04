@@ -8,7 +8,7 @@
             <td width="15%">Owner</td>
         </tr>
         <tbody>
-        <tr th:each="item: ${items}">
+        <tr class="itemRow" th:each="item: ${items}">
             <td width="19%" th:text="${item.getID()}"></td>
             <td width="15%" th:text="${item.getName()}"></td>
             <td width="46%" th:text="${item.getDescription()}"></td>

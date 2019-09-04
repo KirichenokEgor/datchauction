@@ -1,9 +1,9 @@
 package by.students.grsu.entities.dao.implementations;
 
 import by.students.grsu.entities.auction.FollowedAuction;
-import by.students.grsu.entities.dao.interfaces.AuctionDao;
 import by.students.grsu.entities.dao.interfaces.FollowedAuctionDao;
 import by.students.grsu.rowMappers.FollowedAuctionRowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
@@ -11,19 +11,18 @@ import java.util.List;
 
 public class MySqlFollowedAuctionDao implements FollowedAuctionDao {
     private JdbcTemplate jdbcTemplate;
-    private AuctionDao auctionDao;
 
-    public MySqlFollowedAuctionDao(JdbcTemplate jdbcTemplate, AuctionDao auctionDao) {
+    public MySqlFollowedAuctionDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.auctionDao = auctionDao;
     }
 
     public boolean contains(String username, int aucId){
-//        ResultSet rs = statement.executeQuery("SELECT * FROM followedAuctions WHERE aucId="+aucId+" and username=\'"+username+"\'");
-//        if(rs.next()) return true;
-//        return false;
-        Integer checkId = jdbcTemplate.queryForObject("SELECT aucId FROM followedAuctions WHERE aucId="+aucId+" and username=\'"+username+"\'", Integer.class);
-        return checkId != null;
+        try {
+            jdbcTemplate.queryForObject("SELECT aucId FROM followedAuctions WHERE aucId=" + aucId + " and username=\'" + username + "\'", Integer.class);
+            return true;
+        }catch (EmptyResultDataAccessException e){
+            return false;
+        }
     }
 
     public void addFollowedAuction(String username, int aucId){
@@ -51,10 +50,10 @@ public class MySqlFollowedAuctionDao implements FollowedAuctionDao {
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
-        //todo smth AAAAAAARRRGGGHH
         List<FollowedAuction> aucList = jdbcTemplate.query("select * from followedAuctions right outer join auctions" +
                 " on followedAuctions.aucId = auctions.id where followedAuctions.username =\'" +
                 username + "\'", new FollowedAuctionRowMapper());
+        //todo mb check
         return aucList;
     }
 //    public Auction getFollowedAuctionById(int aucId) throws Exception {

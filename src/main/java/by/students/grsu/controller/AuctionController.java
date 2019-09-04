@@ -3,7 +3,6 @@ package by.students.grsu.controller;
 import by.students.grsu.entities.auction.AuctionInfo;
 import by.students.grsu.entities.auction.FollowedAuction;
 import by.students.grsu.entities.auction.TempAuction;
-import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.services.interfaces.AuctionService;
 import by.students.grsu.entities.services.interfaces.FollowedAuctionService;
 import by.students.grsu.entities.services.interfaces.ItemService;
@@ -110,11 +109,6 @@ public class AuctionController {
 
     private void deleteAuction(int id){
         auctionService.deleteAuction(id);
-        List<Lot> lots = lotService.getLotsByAuctionId(id);
-        for(Lot lot : lots){
-            itemService.freeItemsByLot(lot.getID());
-        }
-        lotService.deleteLotsByAuction(id);
         followedAuctionService.deleteFollowedAuctionsById(id);
     }
 
@@ -142,7 +136,7 @@ public class AuctionController {
     public String watchActiveAuction(@PathVariable("id") Integer id,
                                      ModelMap model, HttpServletRequest request) {
         AuctionInfo auc = auctionService.getAuctionWithLots(id);
-        if(auc.getStringStatus() != "Active") return "redirect:/home";
+        if(!auc.getStringStatus().equals("Active")) return "redirect:/home";
         try {
             sessionService.waitSession(request.getRemoteUser());
         } catch (Exception e) {

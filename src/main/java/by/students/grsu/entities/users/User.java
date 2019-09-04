@@ -1,49 +1,37 @@
-//package by.students.grsu.entities.users;
-//
-////import java.util.ArrayList;
-//
-//public class User {
-//    private UserRole role;
-//    private String username;
-//    private String email;
-//    //private String password;
-//
-//    public User(String username,String email, String role){
-//        this.setUsername(username);
-//        this.setEmail(email);
-//        //this.password=password;
-//        if(role.equals("seller")) this.setRole(UserRole.Seller);
-//        else if(role.equals("admin")) this.setRole(UserRole.Admin);
-//        else this.setRole(UserRole.Buyer);
-//    }
-//
-//    public String getRole() {
-//        return role.toString().toLowerCase();
-//    }
-//
-//    public void setRole(UserRole role) {
-//        this.role = role;
-//    }
-//
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    private void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    private void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public String userInfo(){
-//        return "Username: " + username + "\nEmail: "+email + "\nRole: "+role.toString();
-//    }
-//
-//
-//}
+package by.students.grsu.entities.users;
+
+public class User {
+    private String role;
+    private String username;
+    private String email;
+    private boolean enabled = true;
+
+    public User(String username,String email, String role){
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
+    public User(String username, String role){
+        this.username = username;
+        this.role = role.split("_")[1];
+        this.email = "<hidden>";
+    }
+    public String getRole() {
+        return role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+}

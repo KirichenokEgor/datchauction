@@ -66,6 +66,23 @@
 .row {
   border: 1px solid;
 }
+.item {
+  border: 1px solid;
+}
 .table{
   border-collapse: collapse;
+}
+.usersTable{
+  border-collapse: collapse;
+  border: 1px solid;
+}
+.usersRow{
+  border: 1px solid;
+  align: center;
+}
+button{
+  width: 100%;
+}
+input{
+  width: 100%;
 }

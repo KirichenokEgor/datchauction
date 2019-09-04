@@ -2,7 +2,10 @@ package by.students.grsu.entities.services.implementations;
 
 import by.students.grsu.entities.auction.*;
 import by.students.grsu.entities.dao.interfaces.AuctionDao;
+import by.students.grsu.entities.lot.Lot;
 import by.students.grsu.entities.services.interfaces.AuctionService;
+import by.students.grsu.entities.services.interfaces.ItemService;
+import by.students.grsu.entities.services.interfaces.LotService;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.AuctionFollower;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.AuctionPlatformObserver;
 
@@ -14,19 +17,25 @@ import java.util.Queue;
 
 public class DefaultAuctionService implements AuctionFollower, AuctionService {
     private AuctionDao auctionDao;
-//    private ItemService itemService;
-//    private LotService lotService;
+    private ItemService itemService;
+    private LotService lotService;
     private AuctionPlatformObserver auctionPlatformObserver;
-    public DefaultAuctionService(AuctionDao auctionDao/*, ItemService itemService, LotService lotService*/){
+    public DefaultAuctionService(AuctionDao auctionDao, ItemService itemService/*, LotService lotService*/){
         this.auctionDao = auctionDao;
+        this.itemService = itemService;
         //this.itemService = itemService;
         //this.lotService = lotService;
     }
+
+    public void setLotService(LotService lotService){
+        this.lotService = lotService;
+    }
+
     @Override
     public int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException {
-        Auction newAuction = auctionDao.addAuction(description, maxLots, beginTime, maxDuration);
+        int id = auctionDao.addAuction(description, maxLots, beginTime, maxDuration);
         auctionPlatformObserver.auctionsChanged();
-        return newAuction.getID();
+        return id;
     }
 
     @Override
@@ -138,8 +147,12 @@ public class DefaultAuctionService implements AuctionFollower, AuctionService {
     @Override
     public void deleteAuction(int id){
         try {
+            Auction auction = auctionDao.getAuctionWithLots(id);
+            for(Lot lot : auction.getLots())
+                itemService.freeItemsByLot(lot.getID());
             auctionDao.deleteAuction(id);
-        } catch (SQLException e) {
+            lotService.deleteLotsByAuction(id);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

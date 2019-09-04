@@ -16,21 +16,40 @@
 <h3>Choose lot to delete</h3>
 <hr>
 <div th:text = "${errMessage}"></div><br>
-<div th:replace="components/lotList.html"></div>
-<form action="#" th:action="@{/{a_id}/deleteLotPart2(a_id=${a_id})}">
-    <table>
-        <select name="lot" required>
-            <option th:each="lot: ${auction.getILots()}">
-                <a th:text="${lot.getID()}"></a>
-            </option>
-        </select>
+<!--<div th:replace="components/lotList.html"></div>-->
+<form id="deleteLotForm" action="#" th:action="@{/{a_id}/deleteLotPart2(a_id=${a_id})}">
+    <table border="1" cellspacing="0">
         <tr>
-            <td colspan="2">
-                <input type="submit" value="Submit"/>
+            <td width="100px">ID</td>
+            <td width="300px">Name</td>
+            <td width="100px">Price</td>
+            <td width="50px">Chose</td>
+        </tr>
+        <tbody>
+        <tr class="lotRow" th:each="lot: ${auction.getILots()}">
+            <td width="100px" th:text="${lot.getID()}"></td>
+            <td width="300px" th:text="${lot.getName()}"></td>
+            <td width="100px" th:text="${lot.getCurrentPrice()}"></td>
+            <td width="50px">
+                <input type="radio" th:value="${lot.getID()}" name="lot"/>
             </td>
         </tr>
+        </tbody>
     </table>
+    <input type="submit" value="Submit"/>
 </form>
+<script type="text/javascript">
+var form = document.getElementById("deleteLotForm");
+form.onsubmit = function(e){
+    var somethingChosen = false;
+    for(var row of document.getElementsByClassName("lotRow"))
+       if(row.cells[3].children[0].checked)somethingChosen=true;
+	if(!somethingChosen){
+	    alert("Please chose lot");
+	    event.preventDefault();
+	}
+}
+</script>
 <br>
 <br>
 <br>

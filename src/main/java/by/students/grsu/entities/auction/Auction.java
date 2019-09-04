@@ -39,9 +39,9 @@ public class Auction implements AuctionInfo {
         this.description = description;
         //Disabled, Planned, Active, Done
         this.lots = lotList;
-        this.currentLots = lotList.size();
+        //this.currentLots = lotList.size();
         this.maxLots = maxLots;
-        this.tick = currentLots*5;
+        //this.tick = currentLots*5;
         this.beginTime = beginTime;
         this.maxDuration=maxDuration;
         switch (status){
@@ -114,6 +114,8 @@ public class Auction implements AuctionInfo {
     }
 
     public void makeActive() {
+        currentLots = lots.size();
+        tick = currentLots*5;
         for(Lot lot : lots)
             lot.calculatePriceStep(maxDuration*60/tick);
         status= AuctionStatus.Active;

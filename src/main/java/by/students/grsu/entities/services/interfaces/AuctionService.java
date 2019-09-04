@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Queue;
 
 public interface AuctionService {
+    void setLotService(LotService lotService);
     int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException;
     AuctionInfo getAuctionInfo(int id);
     void setAuctionPlanned(int id);

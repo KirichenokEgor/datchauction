@@ -35,17 +35,17 @@
             <td><input name="description" type="text" /></td>
         </tr>
         <tr>
-            <td class="row" width="5%" onclick="sortById()">ID</td>
-            <td class="row" width="10%" onclick="sortByName()">Name</td>
-            <td class="row" width="25%" onclick="sortByDescription()">Description</td>
-            <td class="row" width="5%">Chose</td>
+            <td class="item" width="5%" onclick="sortById()">ID</td>
+            <td class="item" width="10%" onclick="sortByName()">Name</td>
+            <td class="item" width="25%" onclick="sortByDescription()">Description</td>
+            <td class="item" width="5%">Chose</td>
         </tr>
         <tbody>
-        <tr th:each="item: ${items}">
-            <td class="row" width="5%" th:text="${item.getID()}"></td>
-            <td class="row" width="10%" th:text="${item.getName()}"></td>
-            <td class="row" width="25%" th:text="${item.getDescription()}"></td>
-            <td class="row" width="5%"><input type="checkbox" name="items" th:value = "${item.getID()}"/></td>
+        <tr class="itemRow" th:each="item: ${items}">
+            <td class="item" width="5%" th:text="${item.getID()}"></td>
+            <td class="item" width="10%" th:text="${item.getName()}"></td>
+            <td class="item" width="25%" th:text="${item.getDescription()}"></td>
+            <td class="item" width="5%"><input type="checkbox" name="items" th:value = "${item.getID()}"/></td>
         </tr>
         <tr>
             <td colspan="2">
@@ -60,10 +60,17 @@ var price = document.getElementById("price");
 var form = document.getElementById("form");
 
 form.onsubmit = function(e){
+    var somethingChosen = false;
+    for(var row of document.getElementsByClassName("itemRow"))
+       if(row.cells[3].children[0].checked)somethingChosen=true;
     if(Number.parseInt(min_price.value) > Number.parseInt(price.value)){
 		alert("min price should be smaller than price");
 		min_price.focus();
 		event.preventDefault();
+	}
+	if(!somethingChosen){
+	    alert("Please chose at least one item");
+	    event.preventDefault();
 	}
 }
 </script>
@@ -76,5 +83,6 @@ form.onsubmit = function(e){
 <br>
 <br>
 <div th:replace="components/improvedFooter.html" ></div>
+<script th:src="@{/scripts/itemsSorter.js}"></script>
 </body>
 </html>

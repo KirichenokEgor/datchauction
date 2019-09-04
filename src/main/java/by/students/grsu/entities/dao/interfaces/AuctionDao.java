@@ -10,7 +10,7 @@ import java.util.Queue;
 
 public interface AuctionDao {
     Auction getAuctionById(int ID) throws Exception;
-    Auction addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException;
+    int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException;
     List<Auction> getAuctions() throws SQLException;
     void deleteAuction(int ID) throws SQLException;
     void addLotToAuction(int ID,boolean delete) throws Exception;
