@@ -34,8 +34,7 @@ public class MySqlUserDao implements UserDao {
 
     @Override
     public String getEmail(String username) {
-        // TODO: 9/3/2019 implement
-        return "";
+        return template.queryForObject("select email from users where username = '" + username + "'", String.class);
     }
 
     @Override
