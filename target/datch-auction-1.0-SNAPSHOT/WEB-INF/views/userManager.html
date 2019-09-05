@@ -15,13 +15,23 @@
 <br>
 <br>
 <br>
+<form id="form">
 <table>
     <tr>
-
-        <td width="350px"><input type="text" id="searchWords"/></td>
-        <td width="100px" ><button type="button" onclick="search()">search</button></td>
+        <td width="350px"><input type="search" id="searchWords"/></td>
+        <td><input type="submit" value="Search"></td>
+<!--        <td width="100px" ><button type="button" onclick="search()">search</button></td>-->
     </tr>
 </table>
+</form>
+<script type="text/javascript">
+var form = document.getElementById("form");
+
+form.onsubmit = function(e){
+    search();
+    event.preventDefault();
+}
+</script>
 <br>
 <table class="usersTable">
     <tr>

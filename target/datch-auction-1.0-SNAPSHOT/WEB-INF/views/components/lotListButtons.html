@@ -2,7 +2,7 @@
     <table th:if="${auction.getAuction().getStringStatus() == 'Planned'}" width="20%">
         <tr>
             <td width="150px"><a th:if="${auction.isFollowed()}" th:href="@{/{id}/unsubscribe(id=${auction.getAuction().getID()})}" >Unsubscribe</a></td>
-            <td width="150px"><a th:if="${!auction.isFollowed()}" th:href="@{/{id}/subscribe(id=${auction.getAuction().getID()})}" >Subscribe</a></td>
+            <td width="150px"><a th:unless="${auction.isFollowed()}" th:href="@{/{id}/subscribe(id=${auction.getAuction().getID()})}" >Subscribe</a></td>
         </tr>
         <tr>
             <td width="100px"><a sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/{id}/addLot(id=${auction.getAuction().getID()})}" >Add lot</a></td>

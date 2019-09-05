@@ -112,7 +112,8 @@ public class MySqlLotDao implements LotDao {
     }
 
     public List<Lot> getLotsBySearch(String substr) {
-        return template.query("SELECT * FROM lots LEFT OUTER JOIN items ON lots.id=items.lotId WHERE MATCH (lotName) AGAINST ('" + substr + "') ORDER BY id", lotListWithItemsExtractor);
+        //return template.query("SELECT * FROM lots LEFT OUTER JOIN items ON lots.id=items.lotId WHERE MATCH (lotName) AGAINST ('" + substr + "') ORDER BY id", lotListWithItemsExtractor);
+        return template.query("SELECT * FROM lots WHERE MATCH (lotName) AGAINST ('" + substr + "') ORDER BY id", lotListWithoutItemsExtractor);
     }
 
     public List<Integer> deleteEndedLots() {

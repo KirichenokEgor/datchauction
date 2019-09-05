@@ -55,26 +55,32 @@ public class MySqlUserDao implements UserDao {
     }
 
     public List<User> searchUsers(String... words) {
-        return template.query(buildSql(words), userListExtractor);
+        //return template.query(buildSql(words), userListExtractor);
+        if(words.length == 0) return template.query("SELECT * FROM authorities", userListExtractor);
+        StringBuilder substr = new StringBuilder();
+        for(int i = 0; i < words.length; i++) substr.append(words[i]).append(" ");
+        return template.query("SELECT * FROM authorities WHERE MATCH (username) AGAINST ('" + substr.toString() + "')", userListExtractor);
     }
 
-    private String buildSql(String[] words) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM authorities");
-        if (words.length > 0) {
-            sql.append(" WHERE ");
-        }
-
-        for(int i = 0; i < words.length; ++i) {
-            if (i != 0) {
-                sql.append(" OR ");
-            }
-
-            sql.append("username LIKE \"%").append(words[i]).append("%\"");
-        }
-
-        sql.append(" ORDER BY username;");
-        return sql.toString();
-    }
+//    private String buildSql(String[] words) {
+//
+//
+//        StringBuilder sql = new StringBuilder("SELECT * FROM authorities");
+//        if (words.length > 0) {
+//            sql.append(" WHERE ");
+//        }
+//
+//        for(int i = 0; i < words.length; ++i) {
+//            if (i != 0) {
+//                sql.append(" OR ");
+//            }
+//
+//            sql.append("username LIKE \"%").append(words[i]).append("%\"");
+//        }
+//
+//        sql.append(" ORDER BY username;");
+//        return sql.toString();
+//    }
 
     private boolean isBanned(String username) {
         Integer enabled = (Integer)template.queryForObject("SELECT enabled FROM users WHERE username='" + username + "'", Integer.class);
