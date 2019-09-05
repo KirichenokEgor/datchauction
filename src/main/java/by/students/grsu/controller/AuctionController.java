@@ -161,16 +161,17 @@ public class AuctionController {
     @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.GET)
     public String subscribe(@PathVariable("id") Integer id,
                             HttpServletRequest request) {
-        followedAuctionService.addFollowedAuction(request.getRemoteUser(), id);
+        if(auctionService.getAuctionInfo(id).getStringStatus().equals("Planned"))
+            followedAuctionService.addFollowedAuction(request.getRemoteUser(), id);
         String referer = request.getHeader("Referer");
         return "redirect:"+ referer;
-        //return "redirect:/auctionList";
     }
 
     @RequestMapping(value = "/{id}/unsubscribe", method = RequestMethod.GET)
     public String unsubscribe(@PathVariable("id") Integer id,
                             HttpServletRequest request) {
-        followedAuctionService.deleteFollowedAuction(request.getRemoteUser(), id);
+        if(auctionService.getAuctionInfo(id).getStringStatus().equals("Planned"))
+            followedAuctionService.deleteFollowedAuction(request.getRemoteUser(), id);
         String referer = request.getHeader("Referer");
         return "redirect:"+ referer;
     }
