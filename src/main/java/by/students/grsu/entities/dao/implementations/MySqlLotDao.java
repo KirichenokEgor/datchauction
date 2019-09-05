@@ -109,6 +109,11 @@ public class MySqlLotDao implements LotDao {
     }
 
     @Override
+    public List<Lot> getNotSoldLots() {
+        return template.query("SELECT * FROM lots WHERE status != 'sold' ORDER BY ID", lotListWithoutItemsExtractor);
+    }
+
+    @Override
     public List<Lot> getLotsBySearch(String substr) {
         //return template.query("SELECT * FROM lots LEFT OUTER JOIN items ON lots.id=items.lotId WHERE MATCH (lotName) AGAINST ('" + substr + "') ORDER BY id", lotListWithItemsExtractor);
         return template.query("SELECT * FROM lots WHERE MATCH (lotName) AGAINST ('" + substr + "') ORDER BY id", lotListWithoutItemsExtractor);

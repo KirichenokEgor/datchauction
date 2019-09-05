@@ -13,6 +13,7 @@ public interface LotDao {
     Lot getLotById(int id) throws Exception;
     List<Lot> getLotsByAuctionId(int auctionId);
     List<Lot> getAllLots();
+    List<Lot> getNotSoldLots();
     List<Lot> getLotsBySearch(String substr);
     List<Integer> deleteEndedLots();
     //List<Lot> getRegisteredLots() throws Exception;

@@ -125,8 +125,14 @@ public class LotController {
     }
 
     @RequestMapping(value = "/allLotList", method = RequestMethod.GET)
-    public String watchAllLots(ModelMap model) {
-        List<Lot> lots = lotService.getAllLots();
+    public String watchAllLots(ModelMap model, HttpServletRequest request) {
+        List<Lot> lots;
+        if(request.isUserInRole("ADMIN"))
+            lots = lotService.getAllLots();
+        else{
+            lots = lotService.getNotSoldLots();
+            //todo add lots of user
+        }
         model.addAttribute("lots", lots);
         return "allLotList";
     }

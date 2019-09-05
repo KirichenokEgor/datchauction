@@ -80,6 +80,15 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
         return null;
     }
     @Override
+    public List<Lot> getNotSoldLots(){
+        try {
+            return lotDao.getNotSoldLots();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    @Override
     public List<Lot> getLotsBySearch(String substr){
         try {
             return lotDao.getLotsBySearch(substr);

@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,15 +63,9 @@ public class AuctionController {
 
     @RequestMapping(value = "/saveAuction", method = RequestMethod.POST)
     public String auctionInfo(@ModelAttribute("auc") TempAuction auc) {
-        try {
-            AuctionInfo createdAuction = auctionService.getAuctionInfo
-                    (auctionService.addAuction(auc.getDescription(), auc.getMaxLots(), auc.getStartTime(), auc.getMaxDuration()));
-            return "redirect:/" + createdAuction.getID() + "/lotList";
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
-        return "redirect:/auctionList";
+        AuctionInfo createdAuction = auctionService.getAuctionInfo
+                (auctionService.addAuction(auc.getDescription(), auc.getMaxLots(), auc.getStartTime(), auc.getMaxDuration()));
+        return "redirect:/" + createdAuction.getID() + "/lotList";
     }
     @RequestMapping(value = "/auctionList", method = RequestMethod.GET)
         public String watchAuctions(ModelMap model, HttpServletRequest request) {

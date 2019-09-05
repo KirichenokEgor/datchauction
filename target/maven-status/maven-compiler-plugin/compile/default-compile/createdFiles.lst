@@ -10,7 +10,6 @@ by\students\grsu\controller\SoldLotController.class
 by\students\grsu\config\SecurityWebApplicationInitializer.class
 by\students\grsu\entities\services\interfaces\followersAndObservers\DealsFollower.class
 by\students\grsu\controller\LoginAndRegistrationController.class
-by\students\grsu\entities\dao\implementations\MySqlLotDao$4.class
 by\students\grsu\entities\services\interfaces\followersAndObservers\LotFollower.class
 by\students\grsu\rowMappers\FollowedAuctionRowMapper.class
 by\students\grsu\controller\HomeController.class
@@ -23,7 +22,6 @@ by\students\grsu\entities\services\interfaces\followersAndObservers\FollowedAuct
 by\students\grsu\entities\users\TempUser.class
 by\students\grsu\entities\services\interfaces\AuctionPlatform.class
 by\students\grsu\entities\auction\FollowedAuction.class
-by\students\grsu\entities\dao\implementations\MySqlSoldLotDao$1.class
 by\students\grsu\config\WebSecurityConfig.class
 by\students\grsu\entities\item\ItemInfo.class
 by\students\grsu\entities\services\interfaces\FollowedAuctionService.class
@@ -34,15 +32,12 @@ by\students\grsu\entities\services\implementations\DefaultLotService.class
 by\students\grsu\entities\lot\LotInfo.class
 by\students\grsu\entities\services\interfaces\AuctionService.class
 by\students\grsu\entities\dao\interfaces\UserDao.class
-by\students\grsu\entities\dao\implementations\MySqlLotDao$3.class
 by\students\grsu\entities\lot\Lot.class
-by\students\grsu\entities\dao\implementations\MySqlLotDao$2.class
 by\students\grsu\websocket\ActiveAuctionWebSocketHandler.class
 by\students\grsu\entities\dao\implementations\MySqlUserDao.class
 by\students\grsu\entities\services\implementations\DefaultSoldLotService.class
 by\students\grsu\entities\services\implementations\DefaultItemService.class
 by\students\grsu\entities\dao\implementations\MySqlAuctionDao.class
-by\students\grsu\entities\dao\implementations\MySqlSoldLotDao$2.class
 by\students\grsu\entities\services\AuctionConfiguration.class
 by\students\grsu\controller\AuctionController.class
 by\students\grsu\entities\services\interfaces\followersAndObservers\SoldLotFollower.class
@@ -65,7 +60,6 @@ by\students\grsu\entities\dao\implementations\MySqlFollowedAuctionDao.class
 by\students\grsu\entities\services\interfaces\LotService.class
 by\students\grsu\entities\dao\interfaces\ItemDao.class
 by\students\grsu\entities\auction\Auction.class
-by\students\grsu\entities\dao\implementations\MySqlLotDao$1.class
 by\students\grsu\entities\services\implementations\DefaultAuctionService.class
 by\students\grsu\entities\lot\LotStatus.class
 by\students\grsu\entities\services\interfaces\UserService.class
