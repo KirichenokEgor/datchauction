@@ -22,9 +22,9 @@
         <td width="5%"><b>Duration_in_minutes</b></td>
     </tr>
     <tr>
-        <td width="5%" th:text="${auction.getID()}"></td>
-        <td width="10%" th:text="${auction.getBeginTime()}"></td>
-        <td width="5%" th:text="${auction.getMaxDuration()}"></td>
+        <td width="5%" th:text="${auction.getAuction().getID()}"></td>
+        <td width="10%" th:text="${auction.getAuction().getBeginTime()}"></td>
+        <td width="5%" th:text="${auction.getAuction().getMaxDuration()}"></td>
     </tr>
 </table>
 <hr>

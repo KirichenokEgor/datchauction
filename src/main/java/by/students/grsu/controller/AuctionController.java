@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -120,9 +121,12 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/{id}/lotList", method = RequestMethod.GET)
-    public String watchLots(ModelMap model, @PathVariable("id") Integer id) {
+    public String watchLots(ModelMap model, @PathVariable("id") Integer id, HttpServletRequest request) {
         AuctionInfo auc = auctionService.getAuctionWithLots(id);
-        model.addAttribute("auction", auc);
+        List<AuctionInfo> list = new ArrayList<AuctionInfo>();
+        list.add(auc);
+        FollowedAuction auction = followedAuctionService.auctionsAsFollowed(list, request.getRemoteUser()).get(0);
+        model.addAttribute("auction", auction);
         return "lotList";
     }
 
@@ -158,7 +162,9 @@ public class AuctionController {
     public String subscribe(@PathVariable("id") Integer id,
                             HttpServletRequest request) {
         followedAuctionService.addFollowedAuction(request.getRemoteUser(), id);
-        return "redirect:/auctionList";
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
+        //return "redirect:/auctionList";
     }
 
     @RequestMapping(value = "/{id}/unsubscribe", method = RequestMethod.GET)
