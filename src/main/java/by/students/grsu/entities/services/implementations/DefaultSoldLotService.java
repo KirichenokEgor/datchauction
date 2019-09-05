@@ -36,12 +36,7 @@ public class DefaultSoldLotService implements SoldLotFollower, SoldLotService {
     }
     @Override
     public List<SoldLot> getSoldLotsByUser(String username){
-        try {
-            return soldLotDao.getSoldLotsByUser(username);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return soldLotDao.getSoldLotsByUser(username);
     }
     @Override
     public SoldLot getSoldLotById(int lotId) throws Exception{

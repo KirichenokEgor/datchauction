@@ -14,8 +14,8 @@ public class DefaultItemService implements ItemService {
     public DefaultItemService(ItemDao itemDao){
         this.itemDao=itemDao;
     }
-    public int addItem(String name, String description, SecurityContextHolderAwareRequestWrapper contextHolder) throws Exception {
-        //if(!contextHolder.isUserInRole("SELLER") && !contextHolder.isUserInRole("ADMIN"))throw new AuctionException("Buyer can't make or have items",41);
+    @Override
+    public int addItem(String name, String description, SecurityContextHolderAwareRequestWrapper contextHolder){
         return itemDao.addItem(name, description, contextHolder.getRemoteUser());
     }
     @Override
@@ -23,8 +23,7 @@ public class DefaultItemService implements ItemService {
         return itemDao.getItemById(id);
     }
     @Override
-    public List<Item> getItemsByOwner(SecurityContextHolderAwareRequestWrapper contextHolder) throws Exception {
-        //if(owner.getRole()==UserRole.Buyer)throw new Exception("Buyer can't make or have items");
+    public List<Item> getItemsByOwner(SecurityContextHolderAwareRequestWrapper contextHolder){
         return itemDao.getItemsByOwner(contextHolder.getRemoteUser());
     }
     @Override
@@ -65,11 +64,11 @@ public class DefaultItemService implements ItemService {
         }
     }
     @Override
-    public List<Item> getAllFreeItems() throws Exception {
+    public List<Item> getAllFreeItems(){
         return itemDao.getAllFreeItems();
     }
     @Override
-    public void createLotWithItems(int[] itemsIds, int lotId) throws Exception {
+    public void createLotWithItems(int[] itemsIds, int lotId){
         for (int id : itemsIds)
             itemDao.setItemOnLot(id, lotId);
     }

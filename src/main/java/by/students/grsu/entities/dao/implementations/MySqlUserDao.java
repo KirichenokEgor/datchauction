@@ -26,8 +26,10 @@ public class MySqlUserDao implements UserDao {
         this.template = template;
     }
 
-    public void setEmail(String username, String email) {
-        template.execute("update users set email = '" + email + "' where username = '" + username + "'");
+    @Override
+    public void setEmail(String username, String email) throws Exception {
+        if(template.update("update users set email = '" + email + "' where username = '" + username + "'") == 0)
+            throw new Exception("User not found");
     }
 
     @Override
@@ -36,24 +38,28 @@ public class MySqlUserDao implements UserDao {
         return "";
     }
 
+    @Override
     public void setRole(String username, String newRole) throws Exception {
         if (template.update("UPDATE authorities SET authority = 'ROLE_" + newRole.toUpperCase() + "' where username = '" + username + "'") == 0) {
             throw new Exception("User not found");
         }
     }
 
+    @Override
     public void banUser(String username) throws Exception {
         if (template.update("UPDATE users SET enabled=0 WHERE username='" + username + "'") == 0) {
             throw new Exception("User not found");
         }
     }
 
+    @Override
     public void unbanUser(String username) throws Exception {
         if (template.update("UPDATE users SET enabled=1 WHERE username='" + username + "'") == 0) {
             throw new Exception("User not found");
         }
     }
 
+    @Override
     public List<User> searchUsers(String... words) {
         //return template.query(buildSql(words), userListExtractor);
         if(words.length == 0) return template.query("SELECT * FROM authorities", userListExtractor);
@@ -83,7 +89,7 @@ public class MySqlUserDao implements UserDao {
 //    }
 
     private boolean isBanned(String username) {
-        Integer enabled = (Integer)template.queryForObject("SELECT enabled FROM users WHERE username='" + username + "'", Integer.class);
+        Integer enabled = template.queryForObject("SELECT enabled FROM users WHERE username='" + username + "'", Integer.class);
         return enabled != 1;
     }
 }

@@ -9,7 +9,6 @@ import by.students.grsu.entities.services.interfaces.LotService;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.AuctionFollower;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.AuctionPlatformObserver;
 
-import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +26,13 @@ public class DefaultAuctionService implements AuctionFollower, AuctionService {
         //this.lotService = lotService;
     }
 
+    @Override
     public void setLotService(LotService lotService){
         this.lotService = lotService;
     }
 
     @Override
-    public int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException {
+    public int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration){
         int id = auctionDao.addAuction(description, maxLots, beginTime, maxDuration);
         auctionPlatformObserver.auctionsChanged();
         return id;
@@ -188,7 +188,7 @@ public class DefaultAuctionService implements AuctionFollower, AuctionService {
         auctionPlatformObserver = platformObserver;
     }
     @Override
-    public Queue<AuctionStartTime> getAuctionsQueue() throws Exception {
+    public Queue<AuctionStartTime> getAuctionsQueue(){
         return auctionDao.getAuctionsQueue();
     }
     @Override

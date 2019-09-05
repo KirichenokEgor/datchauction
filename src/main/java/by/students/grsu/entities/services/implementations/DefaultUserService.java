@@ -15,7 +15,11 @@ public class DefaultUserService implements UserService {
     }
     @Override
     public void setEmail(String username, String email){
-        userDao.setEmail(username, email);
+        try {
+            userDao.setEmail(username, email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public String getEmail(String username){

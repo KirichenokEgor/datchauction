@@ -63,9 +63,6 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
             System.out.println(e.getMessage());
         }
     }
-
-
-
 //    public void deleteLot(int id){
 //        try {
 //            lotDao.deleteLot(id);
@@ -98,7 +95,7 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
             itemService.freeItemsByLot(index);
     }
     @Override
-    public void deleteLot(int lotId)/* throws Exception */{
+    public void deleteLot(int lotId){
         try {
             auctionService.deleteLot(lotDao.getLotById(lotId).getAuctionId());//decrement current lots
             lotDao.deleteLot(lotId);

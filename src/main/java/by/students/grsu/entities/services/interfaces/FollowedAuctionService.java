@@ -11,7 +11,7 @@ public interface FollowedAuctionService {
     void deleteFollowedAuction(String username, int aucId);
     void deleteFollowedAuctionsById(int aucId);
     List<FollowedAuction> getFollowedAuctionsByUser(String username);
-    void deleteFollowedAuctionByUser(String username);
+    void deleteFollowedAuctionsByUser(String username);
     boolean contains(String username, int aucId);
     List<FollowedAuction> auctionsAsFollowed(List<AuctionInfo> iAuctions, String username);
     void auctionStarted(ActiveAuction auction);

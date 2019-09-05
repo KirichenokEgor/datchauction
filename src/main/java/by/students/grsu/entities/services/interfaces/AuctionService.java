@@ -6,14 +6,13 @@ import by.students.grsu.entities.auction.AuctionInfo;
 import by.students.grsu.entities.auction.AuctionStartTime;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.AuctionPlatformObserver;
 
-import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Queue;
 
 public interface AuctionService {
     void setLotService(LotService lotService);
-    int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException;
+    int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration);
     AuctionInfo getAuctionInfo(int id);
     void setAuctionPlanned(int id);
     void addLot(int auctionId) throws Exception;
@@ -25,6 +24,6 @@ public interface AuctionService {
     Auction getAuctionWithLots(int id);
     void auctionStarted(ActiveAuction activeAuction);
     void setPlatformObserver(AuctionPlatformObserver platformObserver);
-    Queue<AuctionStartTime> getAuctionsQueue() throws Exception;
+    Queue<AuctionStartTime> getAuctionsQueue();
     void updateDoneAuctions();
 }

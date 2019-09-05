@@ -8,7 +8,6 @@ import by.students.grsu.entities.lot.Lot;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -90,6 +89,7 @@ public class MySqlAuctionDao implements AuctionDao {
         this.template = template;
     }
 
+    @Override
     public Auction getAuctionById(int ID) throws Exception {
         Auction auction = (Auction)this.template.query("SELECT * FROM auctions WHERE ID=" + ID, auctionExtractor);
         if (auction == null) {
@@ -99,7 +99,8 @@ public class MySqlAuctionDao implements AuctionDao {
         }
     }
 
-    public synchronized int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration) throws SQLException {
+    @Override
+    public synchronized int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration){
             template.update("INSERT INTO auctions VALUES (NULL, \'" + description + "\', "
                 + maxLots + ", \'" + beginTime + "\', " + maxDuration
                 + ", \'disabled\', 0)");
@@ -107,18 +108,22 @@ public class MySqlAuctionDao implements AuctionDao {
         return id;
     }
 
-    public List<Auction> getAuctions() throws SQLException {
+    @Override
+    public List<Auction> getAuctions(){
         return template.query("SELECT * FROM auctions ORDER BY ID", auctionListExtractor);
     }
 
+    @Override
     public void deleteAuction(int ID){
         template.update("DELETE FROM auctions WHERE ID=" + ID);
     }
 
-    public void addLotToAuction(int ID, boolean delete) throws Exception {
+    @Override
+    public void addLotToAuction(int ID, boolean delete){
         template.update("UPDATE auctions SET currentLots = currentLots" + (delete ? "-" : "+") + "1 WHERE ID=" + ID);
     }
 
+    @Override
     public void setStatus(int ID, String newStatus) throws Exception {
         newStatus = newStatus.toLowerCase();
         if (!newStatus.equals("disabled") && !newStatus.equals("active") && !newStatus.equals("planned") && !newStatus.equals("done")) {
@@ -128,6 +133,7 @@ public class MySqlAuctionDao implements AuctionDao {
         }
     }
 
+    @Override
     public List<Auction> getAuctionsByStatus(String status) throws Exception {
         status = status.toLowerCase();
         if (!status.equals("disabled") && !status.equals("active") && !status.equals("planned") && !status.equals("done")) {
@@ -137,6 +143,7 @@ public class MySqlAuctionDao implements AuctionDao {
         }
     }
 
+    @Override
     public Auction getAuctionWithLots(int id) throws Exception {
         Auction auction = (Auction)this.template.query("SELECT * FROM auctions LEFT OUTER JOIN lots ON auctions.id=lots.auctionId LEFT OUTER JOIN items ON lots.id=items.lotId WHERE auctions.id=" + id + " ORDER BY lots.id", this.auctionWithLotsExtractor);
         if (auction == null) {
@@ -146,10 +153,12 @@ public class MySqlAuctionDao implements AuctionDao {
         }
     }
 
-    public Queue<AuctionStartTime> getAuctionsQueue() throws Exception {
+    @Override
+    public Queue<AuctionStartTime> getAuctionsQueue(){
         return template.query("SELECT ID,beginTime FROM auctions WHERE status='planned' OR status='active' ORDER BY beginTime", this.auctionQueueExtractor);
     }
 
+    @Override
     public void updateDoneAuctions() {
         this.template.execute("UPDATE auctions SET status='planned' WHERE status='done'");
     }
