@@ -2,29 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login Page</title>
-    <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >-->
-    <style>
-.headr {
-  position: fixed; /* Относительное позиционирование */
-  top: 0px; /* Положение от верхнего края */
-  left: 8px; /* Положение от левого края */
-  width: 100%;
-  background: #f0f0f0; /* Цвет фона */
-}
-.footr {
-  position: fixed; /* Относительное позиционирование */
-  bottom: 0px; /* Положение от верхнего края */
-  left: 8px; /* Положение от левого края */
-  width: 100%;
-  background: #f0f0f0; /* Цвет фона */
-}
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
-<body>
+<body class="w3-theme">
 <header class="headr" th:insert="components/header.html"></header>
-<br>
-<br>
-<br>
 <h3>Login Page</h3>
 <form action="#" th:action="@{/login}" method="post">
     <div th:if="${param.error != null}">
@@ -40,16 +22,11 @@
     <table>
         <tr>
             <td><label th:text="Username" /></td>
-            <td><input name="username" id="username" type="text" minlength="4" required autofocus placeholder="Username"></td>
+            <td><input class="w3-input" name="username" id="username" type="text" minlength="4" required autofocus placeholder="Username"></td>
         </tr>
         <tr>
             <td><label th:text="Password" /></td>
-            <td><input name="password" id="password" type="password" minlength="4" required placeholder="Password"></td>
-        </tr>
-        <tr>
-            <input type="hidden"
-                   name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
+            <td><input class="w3-input" name="password" id="password" type="password" minlength="4" required placeholder="Password"></td>
         </tr>
         <tr>
             <td colspan="2">
@@ -60,9 +37,7 @@
 </form>
 <hr>
  Have no account? <a th:href="@{/registration}">Create new</a><br>
-<br>
-<br>
-<br>
+<hr>
 <footer class="footr" th:insert="components/footer.html"></footer>
 </body>
 </html>

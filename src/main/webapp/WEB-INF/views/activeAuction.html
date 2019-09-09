@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Active Auction</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
     <script th:src="@{/scripts/activeAuctionScript.js}"></script>
 </head>
-<body th:onload="'loadBody('+${auction.getID()}+')'">
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<body class="w3-theme" th:onload="'loadBody('+${auction.getID()}+')'">
+<div th:replace="components/improvedHeader.html" ></div>
+
 <h3>Auction Information</h3>
 <table>
     <tr>
@@ -32,7 +29,7 @@
     <div id="lotTable" class="layer2left">
         <h3>Lot List</h3>
         <div>
-            <table id="lotList" border="1" cellspacing="0">
+            <table class="w3-table" id="lotList" border="1" cellspacing="0">
                 <tr>
                     <td width="5%">ID</td>
                     <td width="15%">Name</td>
@@ -46,7 +43,7 @@
     <div id="itemTable" class="layer2right">
         <h3>Items</h3>
         <div>
-            <table id="itemList" border="1" cellspacing="0">
+            <table class="w3-table" id="itemList" border="1" cellspacing="0">
                 <tr>
                     <td width="5%">ID</td>
                     <td width="5%">Name</td>
@@ -57,7 +54,6 @@
         </div>
     </div>
 </div>
-<div th:replace="components/improvedHeader.html" ></div>
 
 <br>
 <br>

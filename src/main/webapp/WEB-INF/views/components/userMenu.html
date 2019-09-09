@@ -1,12 +1,12 @@
 <div th:fragment="userMenu" class="widget">
-    <h3 class="widget-title">Menu</h3>
-    <ul class="widget-list">
-        <li><a th:href="@{/auctionList}">Auction list</a></li>
-        <li><a th:href="@{/activeAuctionList}">Active auctions</a></li>
-        <li><a th:href="@{/allLotList}">Lots</a></li>
-        <li><a sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/freeItems}">Free items</a></li>
-        <li><a th:href="@{/soldLotList}">Purchase</a></li>
-        <li><a th:href="@{/followedAuctions}">Followed auctions</a></li>
-        <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/userManager}">User manager</a></li>
-    </ul>
+    <h3 >Menu</h3>
+    <table class="w3-table w3-theme-d4">
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/auctionList}">Auction list</a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/activeAuctionList}">Active auctions</a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/allLotList}">Lots</a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/freeItems}">Free items</a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/soldLotList}">Purchase</a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/followedAuctions}">Followed auctions</a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" sec:authorize="hasRole('ADMIN')" th:href="@{/userManager}">User manager</a></td></tr>
+    </table>
 </div>

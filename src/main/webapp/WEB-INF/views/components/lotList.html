@@ -1,19 +1,17 @@
 <div th:fragment="lotList">
-    <table border="1" cellspacing="0" width="40%">
-        <tr>
-            <td width="28%">ID</td>
-            <td width="42%">Name</td>
-            <td width="20%">Price</td>
-            <td width="10%"></td>
-            <!--      <td width="100px">Min price</td>
-                  <td width="500px">Description</td>  -->
+    <table class="w3-theme-l2 w3-table w3-bordered">
+        <tr class="w3-theme-d3">
+            <td style="width:10%" class="w3-center">ID</td>
+            <td style="width:35%" class="w3-center">Name</td>
+            <td style="width:35%" class="w3-center">Price</td>
+            <td style="width:20%"></td>
         </tr>
         <tbody>
         <tr th:each="lot: ${auction.getAuction().getILots()}">
-            <td width="28%" th:text="${lot.getID()}"></td>
-            <td width="42%" th:text="${lot.getName()}"></td>
-            <td width="20%" th:text="${lot.getCurrentPrice()}"></td>
-            <td width="10%"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getAuction().getID()}, l_id=${lot.getID()})}" >View</a></td>
+            <td class="w3-center" th:text="${lot.getID()}"></td>
+            <td class="w3-center" th:text="${lot.getName()}"></td>
+            <td class="w3-center" th:text="${lot.getCurrentPrice()}"></td>
+            <td class="w3-btn w3-center w3-theme-l3"><a class="w3-button w3-block" th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getAuction().getID()}, l_id=${lot.getID()})}" >View</a></td>
         </tr>
         </tbody>
     </table>

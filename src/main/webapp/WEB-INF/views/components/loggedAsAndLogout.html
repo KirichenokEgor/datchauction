@@ -1,9 +1,9 @@
-<div th:fragment="loggedAsAndLogout">
-    <table>
+<div class="w3-theme-d4 w3-display-container" th:fragment="loggedAsAndLogout">
+    <table class="w3-table">
         <tr>
-            <td>Logged as:</td>
+            <td width="150px">Logged as:</td>
             <td width="300px" th:text="${#httpServletRequest.remoteUser}"></td>
-            <td><div th:replace="components/logout.html" ></div></td>
+            <td class="w3-display-right"><div th:replace="components/logout.html" ></div></td>
         </tr>
     </table>
 </div>
