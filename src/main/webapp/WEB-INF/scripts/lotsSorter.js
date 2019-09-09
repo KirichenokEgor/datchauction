@@ -36,7 +36,7 @@ function sortByPrice(){
     renderTable();}
 function renderTable(){
     var words = document.getElementById("searchWords").value;
-    for(var i=2;i<rows.length;i++){
+    for(var i=3;i<rows.length;i++){
         var row = rows[i].cells;
         row[0].innerHTML=lots[i-2].id;
         row[1].innerHTML=lots[i-2].name;

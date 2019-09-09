@@ -63,7 +63,7 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
             System.out.println(e.getMessage());
         }
     }
-//    public void deleteLot(int id){
+    //    public void deleteLot(int id){
 //        try {
 //            lotDao.deleteLot(id);
 //        } catch (Exception e) {
@@ -113,7 +113,7 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
             System.out.println(e.getMessage());
         }
     }
-//    public List<Lot> getRegisteredLots() throws Exception {
+    //    public List<Lot> getRegisteredLots() throws Exception {
 //        return lotDao.getRegisteredLots();
 //    }
     @Override
@@ -142,6 +142,11 @@ public class DefaultLotService implements LotFollower, DealsFollower, LotService
     @Override
     public void auctionStarted(ActiveAuction auction){
         auction.joinLotFollower(this);
+    }
+
+    @Override
+    public List<Lot> getLotsBySeller(String username) {
+        return lotDao.getLotsBySeller(username);
     }
 
     @Override

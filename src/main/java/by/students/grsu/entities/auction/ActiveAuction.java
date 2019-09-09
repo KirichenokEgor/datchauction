@@ -56,8 +56,6 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
             lots = auction.getLots();
             for(Lot lot : lots)
                 if (lot.getStatus() == LotStatus.Registered){
-                    //System.out.println(lot.getID() + ": " + lot.getPriceStep());
-                    //lot.setCurrentPrice(lot.getCurrentPrice() - lot.getPriceStep());
                     lot.makePriceStep();
                     //  System.out.println(lot.getCurrentPrice());
                     auctionEnd=false;
@@ -75,7 +73,7 @@ public class ActiveAuction extends Thread implements ActiveAuctionInterface{
 
 
     @Override
-    public void buyLot(int lotId, String user) throws Exception {
+    public synchronized void buyLot(int lotId, String user) throws Exception {
         for(Lot lot : auction.getLots())
             if(lot.getID()==lotId){
                 if(lot.getStatus()==LotStatus.Sold)throw new Exception("Lot already sold!");

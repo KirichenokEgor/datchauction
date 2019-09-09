@@ -16,5 +16,6 @@ public interface LotDao {
     List<Lot> getNotSoldLots();
     List<Lot> getLotsBySearch(String substr);
     List<Integer> deleteEndedLots();
+    List<Lot> getLotsBySeller(String username);
     //List<Lot> getRegisteredLots() throws Exception;
 }

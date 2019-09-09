@@ -41,39 +41,39 @@ public class LotController {
     @RequestMapping(value = "/{a_id}/addLot", method = RequestMethod.GET)
     public ModelAndView addLot(@PathVariable("a_id") Integer a_id, SecurityContextHolderAwareRequestWrapper contextHolder, HttpServletRequest request) {
         ModelAndView mv;
-            mv = new ModelAndView("addLot");
-            mv.addObject("a_id", a_id);
-            try {
-                List<Item> items = itemService.getFreeItemsByOwner(contextHolder);
-                mv.addObject("items", items);
-            } catch (Exception e) {
-                mv.addObject("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
-            }
-            mv.addObject("back", a_id + "/lotList");
+        mv = new ModelAndView("addLot");
+        mv.addObject("a_id", a_id);
+        try {
+            List<Item> items = itemService.getFreeItemsByOwner(contextHolder);
+            mv.addObject("items", items);
+        } catch (Exception e) {
+            mv.addObject("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
+        }
+        mv.addObject("back", a_id + "/lotList");
         return mv;
     }
 
     @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.GET)
     public String lotInfo(@PathVariable("a_id") Integer a_id,
                           ModelMap model, HttpServletRequest request){
-            String[] parameters = request.getParameterValues("items");
-            int[] ids = new int[parameters.length];
-            for (int i = 0; i < parameters.length; i++) {
-                ids[i] = Integer.parseInt(parameters[i]);
-            }
+        String[] parameters = request.getParameterValues("items");
+        int[] ids = new int[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            ids[i] = Integer.parseInt(parameters[i]);
+        }
 
-            try {
-                LotInfo newLot = lotService.createLot(a_id, request.getParameter("name"), Double.parseDouble(request.getParameter("price")), Double.parseDouble(request.getParameter("min_price")), ids);
-                return "redirect:/" + a_id + "/" + newLot.getID() + "/lotInfo";
-            } catch (AuctionException e) {
-                model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
-                System.out.println(e.getMessage() + " controller");
-                //mb return to error page
-            } catch (Exception e) {
-                model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
-                System.out.println(e.getMessage() + " controller");
-                //mb return to error page
-            }
+        try {
+            LotInfo newLot = lotService.createLot(a_id, request.getParameter("name"), Double.parseDouble(request.getParameter("price")), Double.parseDouble(request.getParameter("min_price")), ids);
+            return "redirect:/" + a_id + "/" + newLot.getID() + "/lotInfo";
+        } catch (AuctionException e) {
+            model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
+            System.out.println(e.getMessage() + " controller");
+            //mb return to error page
+        } catch (Exception e) {
+            model.addAttribute("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
+            System.out.println(e.getMessage() + " controller");
+            //mb return to error page
+        }
         return "redirect:/" + a_id + "/lotList";
     }
 
@@ -127,11 +127,15 @@ public class LotController {
     @RequestMapping(value = "/allLotList", method = RequestMethod.GET)
     public String watchAllLots(ModelMap model, HttpServletRequest request) {
         List<Lot> lots;
+        List<Lot> myLots;
         if(request.isUserInRole("ADMIN"))
             lots = lotService.getAllLots();
         else{
             lots = lotService.getNotSoldLots();
-            //todo add lots of user
+        }
+        if(request.isUserInRole("SELLER") || request.isUserInRole("ADMIN")) {
+            myLots = lotService.getLotsBySeller(request.getRemoteUser());
+            model.addAttribute("myLots", myLots);
         }
         model.addAttribute("lots", lots);
         return "allLotList";
