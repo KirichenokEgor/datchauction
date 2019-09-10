@@ -5,11 +5,13 @@ public class SoldLot {
     private String buyerUsername;
     private int lotId;
     private double price;
-    public SoldLot(String buyerUsername,String sellerUsername, int lotId, double price){
+    //private String sellerEmail;
+    public SoldLot(String buyerUsername,String sellerUsername, int lotId, double price/*, String sellerEmail*/){
         this.buyerUsername=buyerUsername;
         this.sellerUsername = sellerUsername;
         this.lotId=lotId;
         this.price=price;
+        //this.sellerEmail = sellerEmail;
     }
     public String getBuyerUsername() {
         return buyerUsername;
@@ -24,4 +26,8 @@ public class SoldLot {
     public String getSellerUsername() {
         return sellerUsername;
     }
+
+//    public String getSellerEmail() {
+//        return sellerEmail;
+//    }
 }

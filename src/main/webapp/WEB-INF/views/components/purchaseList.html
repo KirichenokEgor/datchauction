@@ -1,19 +1,27 @@
 <div th:fragment="purchaseList">
-    <table border="1" cellspacing="0" width="40%">
+    <table border="1" cellspacing="0" width="50%">
         <tr>
-            <td width="28%">ID</td>
-            <td width="20%">Price</td>
-            <td width="20%">Buyer</td>
-            <td width="20%">Seller</td>
-            <td width="12%"></td>
+            <td width="23%">ID</td>
+            <td width="16%">Price</td>
+            <td width="16%">Buyer</td>
+            <td width="16%">Seller</td>
+            <td width="20%">Seller Email</td>
+            <td width="9%"></td>
         </tr>
         <tbody>
-        <tr th:each="lot: ${lots}">
-            <td width="28%" th:text="${lot.getLotId()}"></td>
-            <td width="20%" th:text="${lot.getPrice()}"></td>
-            <td width="20%" th:text="${lot.getBuyerUsername()}"></td>
-            <td width="20%" th:text="${lot.getSellerUsername()}"></td>
-            <td width="12%"><a th:href="@{/confirmDeal/{l_id}(l_id=${lot.getLotId()})}" onclick="alert('Done! Thanks for using our service!')" >confirm</a></td>
+        <tr th:each="lot: ${lots.keySet()}">
+<!--            <td width="23%" th:text="${lot.getLotId()}"></td>-->
+<!--            <td width="16%" th:text="${lot.getPrice()}"></td>-->
+<!--            <td width="16%" th:text="${lot.getBuyerUsername()}"></td>-->
+<!--            <td width="16%" th:text="${lot.getSellerUsername()}"></td>-->
+<!--            <td width="20%" th:text="${lot.getSellerUsername()}"></td>-->
+<!--            <td width="9%"><a th:href="@{/confirmDeal/{l_id}(l_id=${lot.getLotId()})}" onclick="alert('Done! Thanks for using our service!')" >confirm</a></td>-->
+            <td width="23%" th:text="${lot.getLotId()}"></td>
+            <td width="16%" th:text="${lot.getPrice()}"></td>
+            <td width="16%" th:text="${lot.getBuyerUsername()}"></td>
+            <td width="16%" th:text="${lot.getSellerUsername()}"></td>
+            <td width="20%" th:text="${lots.get(lot)}"></td>
+            <td width="9%"><a th:href="@{/confirmDeal/{l_id}(l_id=${lot.getLotId()})}" onclick="alert('Done! Thanks for using our service!')" >confirm</a></td>
         </tr>
         </tbody>
     </table>
