@@ -8,7 +8,7 @@
             <td width="18%"></td>
         </tr>
         <tbody>
-        <tr th:each="auc: ${auctions}">
+        <tr th:each="auc: ${auctions}" class="aucRow">
             <td width="28%" th:text="${auc.getAuction().getID()}"></td>
             <td width="18%" th:text="${auc.getAuction().getBeginTime()}"></td>
             <td width="18%" th:text="${auc.getAuction().getMaxDuration()}"></td>

@@ -9,10 +9,10 @@ class Auction{
 }
 var lastSort;
 var auctions=[];
-var rows = document.getElementsByTagName("tr");
-for(var i=2;i<rows.length-1;i++){
+var rows = document.getElementsByClassName("aucRow");
+for(var i=0;i<rows.length;i++){
     var row = rows[i].cells;
-    auctions[i-2]=new Auction(row[0].innerHTML,
+    auctions[i]=new Auction(row[0].innerHTML,
         row[1].innerHTML,
         row[2].innerHTML,
         row[3].children.length!=0?row[3].children[0]:row[3].innerHTML,
@@ -42,18 +42,18 @@ function sortByDuration(){
     else lastSort=3;
     renderTable();}
 function renderTable(){
-    for(var i=2;i<rows.length-1;i++){
+    for(var i=0;i<rows.length;i++){
         var row = rows[i].cells;
-        row[0].innerHTML=auctions[i-2].id;
-        row[1].innerHTML=auctions[i-2].startTime;
-        row[2].innerHTML=auctions[i-2].duration;
+        row[0].innerHTML=auctions[i].id;
+        row[1].innerHTML=auctions[i].startTime;
+        row[2].innerHTML=auctions[i].duration;
         row[3].innerHTML="";
         row[4].innerHTML="";
-        if(typeof(auctions[i-2].firstLink)==="string")
-            row[3].innerHTML=auctions[i-2].firstLink;
-        else row[3].appendChild(auctions[i-2].firstLink);
-        if(typeof(auctions[i-2].secondLink)==="string")
-            row[4].innerHTML=auctions[i-2].secondLink;
-        else row[4].appendChild(auctions[i-2].secondLink);
+        if(typeof(auctions[i].firstLink)==="string")
+            row[3].innerHTML=auctions[i].firstLink;
+        else row[3].appendChild(auctions[i].firstLink);
+        if(typeof(auctions[i].secondLink)==="string")
+            row[4].innerHTML=auctions[i].secondLink;
+        else row[4].appendChild(auctions[i].secondLink);
     }
 }

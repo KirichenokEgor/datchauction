@@ -8,12 +8,22 @@ class Lot{
     }
 }
 var lastSort;
-var lots=[];
-var rows = document.getElementsByTagName("tr");
-for(var i=2;i<rows.length;i++){
-    var row = rows[i].cells;
-    lots[i-2]=new Lot(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].children[0], row[4].children.length!=0?row[4].children[0]:row[4].innerHTML)
+var lots1=[];
+var lots2=[];
+var rows1 = document.getElementById("lotsTable").getElementsByClassName("lotRow");
+var rows2 = document.getElementById("myLotsTable").getElementsByClassName("lotRow");
+for(var i=0;i<rows1.length;i++){
+    var row = rows1[i].cells;
+    lots1[i]=new Lot(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].children[0], row[4].children.length!=0?row[4].children[0]:row[4].innerHTML)
 }
+for(var i=0;i<rows2.length;i++){
+    var row = rows2[i].cells;
+    lots2[i]=new Lot(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].children[0], row[4].children.length!=0?row[4].children[0]:row[4].innerHTML)
+}
+
+var rows = rows1;
+var lots = lots1;
+
 function sortById(){
     lots.sort(function(a,b){return Number(a.id)-Number(b.id)});
     if(lastSort==1){lots.reverse(); lastSort=0}
@@ -36,20 +46,21 @@ function sortByPrice(){
     renderTable();}
 function renderTable(){
     var words = document.getElementById("searchWords").value;
-    for(var i=3;i<rows.length;i++){
+    for(var i=0;i<rows.length;i++){
+        //if(rows[i].parentNode.hidden) continue;
         var row = rows[i].cells;
-        row[0].innerHTML=lots[i-2].id;
-        row[1].innerHTML=lots[i-2].name;
-        row[2].innerHTML=lots[i-2].price;
+        row[0].innerHTML=lots[i].id;
+        row[1].innerHTML=lots[i].name;
+        row[2].innerHTML=lots[i].price;
         if(row[3].children.length!=0)
         row[3].removeChild(row[3].children[0]);
         row[4].innerHTML="";
-        row[3].appendChild(lots[i-2].firstLink);
-        if(lots[i-2].secondLink==="Sold")
+        row[3].appendChild(lots[i].firstLink);
+        if(lots[i].secondLink==="Sold")
         row[4].innerHTML="Sold";
         else
-        row[4].appendChild(lots[i-2].secondLink);
-        rows[i].hidden = !improvedSearch(lots[i-2].name,words);
+        row[4].appendChild(lots[i].secondLink);
+        rows[i].hidden = !improvedSearch(lots[i].name,words);
     }
 }
 function improvedSearch(name,words){

@@ -1,7 +1,7 @@
 <div th:fragment="allLotList">
 <!--    <div style="width: 30%">-->
-<!--        <input name="selectList" value="ch1" id="showLots" type="radio" onclick="changeTable()" checked>Other lots<br>-->
-<!--        <input name="selectList" value="ch2" id="showMyLots" onclick="changeTable()" type="radio">Your sold lots<br>-->
+<!--        <input name="selectList" value="ch1" id="showLots" type="radio" onclick="changeTable()" checked>Other lots</input>-->
+<!--        <input name="selectList" value="ch2" id="showMyLots" onclick="changeTable()" type="radio">Your sold lots</input>-->
 <!--    </div>-->
     <table>
         <tr>
@@ -23,7 +23,7 @@
             <td width="15%"></td>
         </tr>
         <tbody id="lotsTable">
-        <tr th:each="lot: ${lots}">
+        <tr th:each="lot: ${lots}" class="lotRow">
             <td width="28%" th:text="${lot.getID()}"></td>
             <td width="30%" th:text="${lot.getName()}"></td>
             <td width="17%" th:text="${lot.getCurrentPrice()}"></td>
@@ -33,7 +33,7 @@
         </tr>
         </tbody>
         <tbody id="myLotsTable" sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" hidden>
-        <tr th:each="lot: ${myLots}">
+        <tr th:each="lot: ${myLots}" class="lotRow">
             <td width="28%" th:text="${lot.getID()}"></td>
             <td width="30%" th:text="${lot.getName()}"></td>
             <td width="17%" th:text="${lot.getCurrentPrice()}"></td>
