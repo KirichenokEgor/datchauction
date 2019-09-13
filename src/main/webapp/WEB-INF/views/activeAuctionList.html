@@ -4,27 +4,14 @@
     <meta charset="UTF-8">
     <title>Active Auctions</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
-<body>
+<body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Active Auction List</h3>
-<hr>
+<h3 class="w3-center">Active Auction List</h3>
 <div th:text = "${errMessage}"></div><br>
 <header th:replace="components/aucList.html"></header>
-<hr>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/improvedFooter.html" ></div>
 <script th:src="@{/scripts/auctionsSorter.js}"></script>
 </body>

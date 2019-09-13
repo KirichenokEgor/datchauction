@@ -1,19 +1,19 @@
 <div th:fragment="itemList">
-    <table border="1" cellspacing="0" width="60%">
+    <table class="w3-table w3-theme-d2" border="1" cellspacing="0" width="60%">
         <tr>
-            <td width="19%" onclick="sortById()">ID</td>
-            <td width="15%" onclick="sortByName()">Name</td>
-            <td width="46%" onclick="sortByDescription()">Description</td>
-            <td width="5%" onclick="sortByStatus()">Status</td>
-            <td width="15%">Owner</td>
+            <td class="w3-center" style="width:10%" onclick="sortById()">ID</td>
+            <td class="w3-center" style="width:20%" onclick="sortByName()">Name</td>
+            <td class="w3-center" style="width:50%" onclick="sortByDescription()">Description</td>
+            <td class="w3-center" style="width:10%" onclick="sortByStatus()">Status</td>
+            <td class="w3-center" style="width:10%">Owner</td>
         </tr>
         <tbody>
         <tr class="itemRow" th:each="item: ${items}">
-            <td width="19%" th:text="${item.getID()}"></td>
-            <td width="15%" th:text="${item.getName()}"></td>
-            <td width="46%" th:text="${item.getDescription()}"></td>
-            <td width="5%" th:text="${item.getStatus()}"></td>
-            <td width="15%" th:text="${item.getOwner()}"></td>
+            <td class="w3-center" th:text="${item.getID()}"></td>
+            <td class="w3-center" th:text="${item.getName()}"></td>
+            <td class="w3-center" th:text="${item.getDescription()}"></td>
+            <td class="w3-center" th:text="${item.getStatus()}"></td>
+            <td class="w3-center" th:text="${item.getOwner()}"></td>
         </tr>
         </tbody>
     </table>

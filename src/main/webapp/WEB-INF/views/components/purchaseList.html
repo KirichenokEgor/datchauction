@@ -1,19 +1,19 @@
 <div th:fragment="purchaseList">
-    <table border="1" cellspacing="0" width="40%">
+    <table class="w3-table w3-theme-d2" border="1" cellspacing="0" width="40%">
         <tr>
-            <td width="28%">ID</td>
-            <td width="20%">Price</td>
-            <td width="20%">Buyer</td>
-            <td width="20%">Seller</td>
-            <td width="12%"></td>
+            <td class="w3-center" style="width:28%">ID</td>
+            <td class="w3-center" style="width:20%">Price</td>
+            <td class="w3-center" style="width:20%">Buyer</td>
+            <td class="w3-center" style="width:20%">Seller</td>
+            <td class="w3-center" style="width:12%"></td>
         </tr>
         <tbody>
         <tr th:each="lot: ${lots}">
-            <td width="28%" th:text="${lot.getLotId()}"></td>
-            <td width="20%" th:text="${lot.getPrice()}"></td>
-            <td width="20%" th:text="${lot.getBuyerUsername()}"></td>
-            <td width="20%" th:text="${lot.getSellerUsername()}"></td>
-            <td width="12%"><a th:href="@{/confirmDeal/{l_id}(l_id=${lot.getLotId()})}" onclick="alert('Done! Thanks for using our service!')" >confirm</a></td>
+            <td class="w3-center" th:text="${lot.getLotId()}"></td>
+            <td class="w3-center" th:text="${lot.getPrice()}"></td>
+            <td class="w3-center" th:text="${lot.getBuyerUsername()}"></td>
+            <td class="w3-center" th:text="${lot.getSellerUsername()}"></td>
+            <td class="w3-center"><a class="w3-btn w3-block w3-theme-l3" th:href="@{/confirmDeal/{l_id}(l_id=${lot.getLotId()})}" onclick="alert('Done! Thanks for using our service!')" >confirm</a></td>
         </tr>
         </tbody>
     </table>
