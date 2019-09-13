@@ -53,7 +53,7 @@ public class LotController {
         return mv;
     }
 
-    @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.GET)
+    @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.POST)
     public String lotInfo(@PathVariable("a_id") Integer a_id,
                           ModelMap model, HttpServletRequest request){
         String[] parameters = request.getParameterValues("items");
@@ -101,7 +101,7 @@ public class LotController {
         return mv;
     }
 
-    @RequestMapping(value = "/{a_id}/deleteLotPart2", method = RequestMethod.GET)
+    @RequestMapping(value = "/{a_id}/deleteLotPart2", method = RequestMethod.POST)
     public String itemInfo(@PathVariable("a_id") Integer a_id,
                            ModelMap model, ServletRequest request) {
         int num = Integer.parseInt(request.getParameter("lot"));

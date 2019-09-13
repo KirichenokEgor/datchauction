@@ -12,7 +12,7 @@
 <div th:replace="components/improvedHeader.html" ></div>
 <h3 class="w3-center">Choose lot to delete</h3>
 <div th:text = "${errMessage}"></div><br>
-<form id="deleteLotForm" action="#" th:action="@{/{a_id}/deleteLotPart2(a_id=${a_id})}">
+<form id="deleteLotForm" action="#" th:action="@{/{a_id}/deleteLotPart2(a_id=${a_id})}" method="post">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
             <td class="w3-center" style="width=5%">ID</td>

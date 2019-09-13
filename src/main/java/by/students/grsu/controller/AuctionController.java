@@ -106,7 +106,7 @@ public class AuctionController {
         followedAuctionService.deleteFollowedAuctionsById(id);
     }
 
-    @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteAuctionPart2", method = RequestMethod.POST)
     public String auctionInfo(HttpServletRequest request) {
             int num = Integer.parseInt(request.getParameter("auc"));
             deleteAuction(num);

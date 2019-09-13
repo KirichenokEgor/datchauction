@@ -78,7 +78,7 @@ public class ItemController {
         return mv;
     }
 
-    @RequestMapping(value = "/deleteItemPart2", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteItemPart2", method = RequestMethod.POST)
     public String itemInfo(ModelMap model, HttpServletRequest request, SecurityContextHolderAwareRequestWrapper contextHolder) {
             int num = Integer.parseInt(request.getParameter("item"));
             try {
