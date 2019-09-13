@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <meta charset="UTF-8">
     <title>User Manager</title>
@@ -9,19 +10,12 @@
 </head>
 <body class="w3-theme">
 <div th:insert="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<h3 class="w3-center">User Manager</h3>
 <form id="form">
-<table>
+<table class="w3-table">
     <tr>
-        <td width="350px"><input type="search" id="searchWords"/></td>
-        <td><input type="submit" value="Search"></td>
+        <td style="width:90%"><input class="w3-input" type="search" id="searchWords"/></td>
+        <td><input class="w3-btn w3-theme-l3 w3-block" type="submit" value="Search"></td>
 <!--        <td width="100px" ><button type="button" onclick="search()">search</button></td>-->
     </tr>
 </table>
@@ -35,26 +29,25 @@ form.onsubmit = function(e){
 }
 </script>
 <br>
-<table class="usersTable">
+<table class="usersTable w3-theme-d2 w3-table">
     <tr>
-        <td class="usersRow" width="150px">username</td>
-        <td class="usersRow" width="100px">role</td>
-        <td class="usersRow" width="100px"></td>
-        <td class="usersRow" width="100px"></td>
+        <td class="usersRow w3-center" style="width:35%">username</td>
+        <td class="usersRow w3-center" style="width:35%">role</td>
+        <td class="usersRow w3-center" style="width:15%"></td>
+        <td class="usersRow w3-center" style="width:15%"></td>
     </tr>
     <tbody class="usersTable" id="usersList">
 
     </tbody>
 </table>
 <br>
-<table>
+<table class="w3-table">
     <tr>
-        <td width="175px"><button type="button" id="prevPage" onclick="prevPage()">prev</button></td>
-        <td width="100px" align="center" id="pageNumber">1</td>
-        <td width="175px" ><button type="button" id="nextPage" onclick="nextPage()">next</button></td>
+        <td class="w3-btn w3-block w3-theme-l3" style="width:45%"><button type="button" id="prevPage" onclick="prevPage()">prev</button></td>
+        <td class="w3-center" style="width:10%" align="center" id="pageNumber">1</td>
+        <td class="w3-btn w3-block w3-theme-l3" style="width:45%" ><button type="button" id="nextPage" onclick="nextPage()">next</button></td>
     </tr>
 </table>
-<br>
 <div th:insert="components/improvedFooter.html" ></div>
 <script th:src="@{/scripts/userManager.js}"></script>
 </body>

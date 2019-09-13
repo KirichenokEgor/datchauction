@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <meta charset="UTF-8">
     <title>Active Auction</title>
@@ -10,32 +11,32 @@
 <body class="w3-theme" th:onload="'loadBody('+${auction.getID()}+')'">
 <div th:replace="components/improvedHeader.html" ></div>
 
-<h3>Auction Information</h3>
-<table>
+<h3 class="w3-center">Auction Information</h3>
+<table class="w3-table w3-theme-d2">
     <tr>
-        <td width="10%"><b>ID</b></td>
-        <td width="20%"><b>Start_time</b></td>
-        <td width="15%"><b>Duration_in_minutes</b></td>
+        <td class="w3-center" style="width:5%"><b>ID</b></td>
+        <td class="w3-center" style="width:20%"><b>Start_time</b></td>
+        <td class="w3-center" style="width:20%"><b>Duration_in_minutes</b></td>
     </tr>
     <tr>
-        <td width="10%" th:text="${auction.getID()}"></td>
-        <td width="20%" th:text="${auction.getBeginTime()}"></td>
-        <td width="15%" th:text="${auction.getMaxDuration()}"></td>
+        <td class="w3-center" th:text="${auction.getID()}"></td>
+        <td class="w3-center" th:text="${auction.getBeginTime()}"></td>
+        <td class="w3-center" th:text="${auction.getMaxDuration()}"></td>
     </tr>
 </table>
 <hr>
 
 <div class="layer1">
     <div id="lotTable" class="layer2left">
-        <h3>Lot List</h3>
+        <h3 class="w3-center">Lot List</h3>
         <div>
-            <table class="w3-table" id="lotList" border="1" cellspacing="0">
+            <table class="w3-table w3-theme-d2" id="lotList" border="1" cellspacing="0">
                 <tr>
-                    <td width="5%">ID</td>
-                    <td width="15%">Name</td>
-                    <td width="5%">Price</td>
-                    <td width="5%"></td>
-                    <td width="5%"></td>
+                    <td class="w3-center" style="width:10%">ID</td>
+                    <td class="w3-center" style="width:35%">Name</td>
+                    <td class="w3-center" style="width:35%">Price</td>
+                    <td class="w3-center" style="width:10%"></td>
+                    <td class="w3-center" style="width:10%"></td>
                 </tr>
             </table>
         </div>
@@ -43,25 +44,17 @@
     <div id="itemTable" class="layer2right">
         <h3>Items</h3>
         <div>
-            <table class="w3-table" id="itemList" border="1" cellspacing="0">
+            <table class="w3-table w3-theme-d2" id="itemList" border="1" cellspacing="0">
                 <tr>
-                    <td width="5%">ID</td>
-                    <td width="5%">Name</td>
-                    <td width="25%">Description</td>
-                    <td width="10%">Owner</td>
+                    <td style="width:10%">ID</td>
+                    <td style="width:20%">Name</td>
+                    <td style="width:60%">Description</td>
+                    <td style="width:10%">Owner</td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

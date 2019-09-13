@@ -42,12 +42,18 @@ function createLotTable(){
     	var tr = document.createElement('tr');
     	tr.setAttribute("class","lotRow");
     	var td1 = document.createElement('td');
+    	td1.setAttribute("class","w3-center");
     	var td2 = document.createElement('td');
+    	td2.setAttribute("class","w3-center");
     	var td3 = document.createElement('td');
+    	td3.setAttribute("class","w3-center");
     	var td4 = document.createElement('td');
+    	td4.setAttribute("class","w3-center");
     	var td5 = document.createElement('td');
+    	td5.setAttribute("class","w3-center");
     	var itemsButton = document.createElement('button');
     	itemsButton.id = "l "+index;
+    	itemsButton.setAttribute("class","w3-btn w3-block w3-theme-l3");
     	itemsButton.setAttribute("onclick","createItemTable(this)");
     	var text1 = document.createTextNode(lot.ID);
     	var text2 = document.createTextNode(lot.name);
@@ -57,6 +63,7 @@ function createLotTable(){
     	    var buyButton = document.createElement('button');
     	    buyButton.id = "b "+index;
     	    buyButton.setAttribute("onclick","buyLot(this)");
+    	    buyButton.setAttribute("class","w3-btn w3-block w3-theme-l3");
     	    var text5 = document.createTextNode("buy");
     	    buyButton.appendChild(text5);
     	    td5.appendChild(buyButton);
@@ -95,6 +102,10 @@ function createItemTable(button){
      var td2 = document.createElement('td');
      var td3 = document.createElement('td');
      var td4 = document.createElement('td');
+     td1.setAttribute("class","w3-center")
+     td2.setAttribute("class","w3-center")
+     td3.setAttribute("class","w3-center")
+     td4.setAttribute("class","w3-center")
 	 var text1 = document.createTextNode(item.ID);
      var text2 = document.createTextNode(item.name);
      var text3 = document.createTextNode(item.description);

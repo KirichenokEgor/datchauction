@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <title>Login Page</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
@@ -10,12 +11,12 @@
 <div class="w3-theme-d1 w3-center">
 <h3>Login</h3>
 <form action="#" th:action="@{/login}" method="post">
-    <div th:if="${param.error != null}">
+    <div class="w3-theme-l2" th:if="${param.error != null}">
         <p>
             Invalid username and password.
         </p>
     </div>
-    <div th:if="${param.logout != null}">
+    <div class="w3-theme-l2" th:if="${param.logout != null}">
         <p>
             You have been logged out.
         </p>
