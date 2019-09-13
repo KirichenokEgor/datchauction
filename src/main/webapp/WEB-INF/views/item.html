@@ -3,22 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Item Info</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Item Information</h3>
-<table>
+<h3 class="w3-center">Item Information</h3>
+<table class="w3-table w3-theme-d2">
     <tr>
-        <td>ID</td>
+        <td style="width:5%">ID</td>
         <td th:text="${ID}"></td>
     </tr>
     <tr>
@@ -38,13 +31,6 @@
         <td th:text="${owner}"></td>
     </tr>
 </table>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

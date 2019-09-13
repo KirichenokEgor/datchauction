@@ -9,36 +9,29 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Choose lot to delete</h3>
-<hr>
+<h3 class="w3-center">Choose lot to delete</h3>
 <div th:text = "${errMessage}"></div><br>
-<!--<div th:replace="components/lotList.html"></div>-->
 <form id="deleteLotForm" action="#" th:action="@{/{a_id}/deleteLotPart2(a_id=${a_id})}">
-    <table border="1" cellspacing="0">
+    <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
-            <td width="100px">ID</td>
-            <td width="300px">Name</td>
-            <td width="100px">Price</td>
-            <td width="50px">Chose</td>
+            <td class="w3-center" style="width=5%">ID</td>
+            <td class="w3-center" style="width=45%">Name</td>
+            <td class="w3-center" style="width=45%">Price</td>
+            <td class="w3-center" style="width=5%">Chose</td>
         </tr>
         <tbody>
         <tr class="lotRow" th:each="lot: ${auction.getILots()}">
-            <td width="100px" th:text="${lot.getID()}"></td>
-            <td width="300px" th:text="${lot.getName()}"></td>
-            <td width="100px" th:text="${lot.getCurrentPrice()}"></td>
-            <td width="50px">
+            <td class="w3-center" th:text="${lot.getID()}"></td>
+            <td class="w3-center" th:text="${lot.getName()}"></td>
+            <td class="w3-center" th:text="${lot.getCurrentPrice()}"></td>
+            <td class="w3-center" >
                 <input type="radio" th:value="${lot.getID()}" name="lot"/>
             </td>
         </tr>
         </tbody>
     </table>
-    <input type="submit" value="Submit"/>
+    <br>
+    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="Submit"/>
 </form>
 <script type="text/javascript">
 var form = document.getElementById("deleteLotForm");
@@ -52,13 +45,6 @@ form.onsubmit = function(e){
 	}
 }
 </script>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

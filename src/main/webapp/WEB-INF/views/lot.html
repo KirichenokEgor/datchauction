@@ -3,44 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Lot Info</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
+<div th:text = "${errMessage}"></div>
+<div class="">
+<h3 class="w3-center">Lot Information</h3>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Lot Information</h3>
-<div th:text = "${errMessage}"></div><br>
-<table>
+<table class="w3-table w3-theme-d2">
     <tr>
-        <td width="5%" style="font-weight:bold">ID</td>
+        <td style="width:5%">ID</td>
         <td th:text="${ID}"></td>
     </tr>
     <tr>
-        <td width="5%" style="font-weight:bold">Name</td>
+        <td >Name</td>
         <td th:text="${name}"></td>
     </tr>
     <tr>
-        <td width="5%" style="font-weight:bold">Price</td>
+        <td style="">Price</td>
         <td th:text="${price}"></td>
     </tr>
 </table>
+</div>
 <hr>
-<h3>Items</h3>
+<div class="">
+<h3 class="w3-center">Items</h3>
 <div th:replace="components/itemList.html"></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+</div>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

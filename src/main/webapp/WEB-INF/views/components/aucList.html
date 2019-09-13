@@ -17,7 +17,7 @@
                 <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Active'}" th:href="@{/{id}/join(id=${auc.getAuction().getID()})}">Join</a>
                 <a class="w3-theme-l3 w3-block" th:unless="${auc.getAuction().getStringStatus() == 'Active' || auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/makePlanned(id=${auc.getAuction().getID()})}">Make Planned</a>
             </td>
-            <td width="18%">
+            <td class="w3-center">
                 <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned' && !auc.isFollowed()}" th:href="@{/{id}/subscribe(id=${auc.getAuction().getID()})}" >Subscribe</a>
                 <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned' && auc.isFollowed()}" th:href="@{/{id}/unsubscribe(id=${auc.getAuction().getID()})}" >Unsubscribe</a>
             </td>

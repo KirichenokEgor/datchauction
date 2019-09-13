@@ -9,23 +9,10 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Item List</h3>
+<h3 class="w3-center">Item List</h3>
 <div th:text = "${errMessage}"></div><br>
 <div th:replace="components/itemList.html"></div>
 <div th:replace="components/itemListButtons.html"></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/improvedFooter.html" ></div>
 <script th:src="@{/scripts/itemsSorter.js}"></script>
 </body>
