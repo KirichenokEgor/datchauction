@@ -3,34 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Auction List</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
-<body>
+<body class="w3-theme">
     <div th:replace="components/improvedHeader.html" ></div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <h3>Auction List</h3>
-    <hr>
+    <h3 class="w3-center">Auction List</h3>
     <div th:text = "${errMessage}"></div><br>
     <div th:replace="components/aucList.html"></div>
-    <hr>
-    <table sec:authorize="hasRole('ADMIN')">
+    <br>
+    <table sec:authorize="hasRole('ADMIN')" style="w3-table">
         <tr>
-            <td width="100px"><a th:href="@{/addAuction}" >Add auction</a></td>
-            <td width="100px"><a th:href="@{/deleteAuction}" >Delete auction</a></td>
+            <td class="w3-theme-l3" style="width:40%"><a class="w3-btn w3-block" th:href="@{/addAuction}" >Add auction</a></td>
+            <td class="w3-theme-l3" style="width:40%"><a class="w3-btn w3-block" th:href="@{/deleteAuction}" >Delete auction</a></td>
         </tr>
     </table>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
     <div th:replace="components/improvedFooter.html" ></div>
     <script th:src="@{/scripts/auctionsSorter.js}"></script>
 </body>

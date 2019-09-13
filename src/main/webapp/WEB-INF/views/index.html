@@ -3,29 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Auction Dashboard</title>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
-<body>
+<body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/userMenu.html"></div>
-<!-- <div th:replace="components :: userMenu"></div> -->
-<!--<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
-<!--<div sec:authorize="isAuthenticated()">-->
-<!--    Text visible only to authenticated users.-->
-<!--</div>-->
-<!--Authenticated username:-->
-<!--<div sec:authentication="name"></div>-->
-<!--Authenticated user roles:-->
-<!--<div sec:authentication="principal.authorities"></div>-->
-<br>
-<br>
-<br>
 <div class="footr" th:insert="components/footer.html"></div>
 </body>
 </html>

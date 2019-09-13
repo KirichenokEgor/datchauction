@@ -4,30 +4,16 @@
     <meta charset="UTF-8">
     <title>Lot list</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
-<body>
+<body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>All lots</h3>
-<hr>
-<!--<form action="#" th:action="@{/search}">-->
-    <input type="search" id="searchWords" onchange="search()" name="s" minlength="3" placeholder="Search">
-<!--        <input type="submit" value="Search"></p>-->
-<!--</form>-->
-<hr>
+<div class="w3-theme-d3">
+<h3 class="w3-center">All lots</h3>
+    <input class="w3-input" type="search" id="searchWords" onchange="search()" name="s" minlength="3" placeholder="Search">
 <div th:replace="components/allLotList.html"></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+</div>
 <div th:replace="components/improvedFooter.html" ></div>
 <script th:src="@{/scripts/lotsSorter.js}"></script>
 </body>

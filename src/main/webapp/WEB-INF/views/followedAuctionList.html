@@ -4,27 +4,13 @@
     <meta charset="UTF-8">
     <title>Followed Auctions</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
-<body>
+<body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Auction List</h3>
-<hr>
-<!--<div th:text = "${errMessage}"></div><br>-->
+<h3 class="w3-center">Auction List</h3>
 <div th:replace="components/aucList.html"></div>
-<hr>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>

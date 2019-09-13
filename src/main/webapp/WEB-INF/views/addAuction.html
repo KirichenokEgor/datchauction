@@ -4,49 +4,35 @@
     <meta charset="UTF-8">
     <title>Auction Registration</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
-<body>
+<body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Enter auction information</h3>
+<h3 class="w3-center">Enter auction information</h3>
 <form method="post" action="#" th:action="@{/saveAuction}" th:object="${auc}">
-    <table>
+    <table class="w3-table w3-theme-d2">
         <tr>
-            <td><label th:text="Start_time" /></td>
-            <td><input type="text" th:field="*{startTime}" required/></td>
+            <td style="width:10%"><label th:text="Start_time" /></td>
+            <td><input class="w3-input" type="text" th:field="*{startTime}" required/></td>
         </tr>
         <tr>
             <td><label th:text="Max_duration_in_minutes" /></td>
-            <td><input type="number" th:field="*{maxDuration}" required /></td>
+            <td><input class="w3-input" type="number" th:field="*{maxDuration}" required /></td>
         </tr>
         <tr>
             <td><label th:text="Max_lots" /></td>
-            <td><input type="number" th:field="*{maxLots}" required /></td>
+            <td><input class="w3-input" type="number" th:field="*{maxLots}" required /></td>
         </tr>
 
         <tr>
             <td><label th:text="Description" /></td>
-            <td><input type="text" th:field="*{description}" /></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Submit"/>
-            </td>
+            <td><input class="w3-input" type="text" th:field="*{description}" /></td>
         </tr>
     </table>
+    <br>
+    <input class="w3-bnt w3-block w3-theme-l3" type="submit" value="Submit"/>
 </form>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>
