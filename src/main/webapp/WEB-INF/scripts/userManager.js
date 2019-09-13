@@ -65,9 +65,9 @@ function renderList(){
        var tr = document.createElement("tr");
        tr.setAttribute("class","userRow");
        var td1 = document.createElement("td");
-       td1.setAttribute("class","usersRow");
+       td1.setAttribute("class","usersRow w3-center");
        var td2 = document.createElement("td");
-       td2.setAttribute("class","usersRow");
+       td2.setAttribute("class","usersRow w3-center");
        var td3 = document.createElement("td");
        td3.setAttribute("class","usersRow");
        var td4 = document.createElement("td");
@@ -78,12 +78,14 @@ function renderList(){
        changeRoleButton.setAttribute("type","button");
        changeRoleButton.innerHTML = "change role";
        changeRoleButton.setAttribute("onclick","changeRole(this)");
+       changeRoleButton.setAttribute("class","w3-btn w3-block w3-theme-l3");
        var banButton = document.createElement("button");
        banButton.setAttribute("type","button");
        if(user.enabled)
          banButton.innerHTML = "ban";
        else banButton.innerHTML = "unban";
        banButton.setAttribute("onclick","banUser(this)");
+       banButton.setAttribute("class","w3-btn w3-block w3-theme-l3");
        td3.appendChild(changeRoleButton);
        td4.appendChild(banButton);
        tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4);
@@ -101,8 +103,10 @@ function changeRole(button){
         changeRoleButton.setAttribute("type","button");
         changeRoleButton.innerHTML = "change role";
         changeRoleButton.setAttribute("onclick","changeRole(this)");
+        changeRoleButton.setAttribute("class","w3-btn w3-block w3-theme-l3");
         var banButton = document.createElement("button");
         banButton.setAttribute("type","button");
+        banButton.setAttribute("class","w3-btn w3-block w3-theme-l3");
         var user;
         for(var usr of usersList)
            if(usr.username===prevRow.cells[0].innerHTML)user = usr;
@@ -115,6 +119,7 @@ function changeRole(button){
     }
     roleSelect = document.createElement("select");
     roleSelect.setAttribute("id","roleSelect");
+    roleSelect.setAttribute("class","w3-input");
     var option = document.createElement("option");
     option.setAttribute("value","buyer");
     option.innerHTML = "buyer";
@@ -133,6 +138,7 @@ function changeRole(button){
     row.cells[2].appendChild(roleSelect);
     var confirmButton = document.createElement("button");
     confirmButton.setAttribute("type","button");
+    confirmButton.setAttribute("class","w3-btn w3-block w3-theme-l3");
     confirmButton.setAttribute("onclick","confirmRole(this)");
     confirmButton.innerHTML = "change";
     row.cells[3].appendChild(confirmButton);

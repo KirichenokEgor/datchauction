@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <meta charset="UTF-8">
     <title>Lot list</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<div class="w3-theme-d3">
 <h3 class="w3-center">All lots</h3>
-    <input class="w3-input" type="search" id="searchWords" onchange="search()" name="s" minlength="3" placeholder="Search">
+<table class="w3-table">
+    <tr>
+        <td style="width:80%">
+            <input class="w3-input" type="search" id="searchWords" onchange="search()" name="s" minlength="3" placeholder="Search">
+        </td>
+        <td style="width:10%">
+            <input name="selectList" value="ch1" id="showLots" type="radio" onclick="changeTable()" checked>Other lots<br>
+        </td>
+        <td style="width:10%">
+            <input name="selectList" value="ch2" id="showMyLots" onclick="changeTable()" type="radio">Your sold lots<br>
+        </td>
+    </tr>
+</table>
 <div th:replace="components/allLotList.html"></div>
-</div>
 <div th:replace="components/improvedFooter.html" ></div>
 <script th:src="@{/scripts/lotsSorter.js}"></script>
 </body>

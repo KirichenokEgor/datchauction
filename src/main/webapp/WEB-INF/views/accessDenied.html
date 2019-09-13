@@ -1,29 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <meta charset="UTF-8">
     <title>Access Denied</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3.css}" >
     <link rel="stylesheet" type="text/css" th:href="@{/css/w3-theme-blue-grey.css}" >
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h3>Access Denied</h3>
-<p>Sorry, you don't have necessary rights.</p>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="w3-theme-d4">
+<h2 class="w3-center">Access Denied</h2>
+<h3 class="w3-center">Sorry, you don't have necessary rights.</h3>
+</div>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>
 </html>
