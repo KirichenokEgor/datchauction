@@ -1,4 +1,19 @@
 <div th:fragment="allLotList">
+<!--    <div style="width: 30%">-->
+<!--        <input name="selectList" value="ch1" id="showLots" type="radio" onclick="changeTable()" checked>Other lots<br>-->
+<!--        <input name="selectList" value="ch2" id="showMyLots" onclick="changeTable()" type="radio">Your sold lots<br>-->
+<!--    </div>-->
+    <table>
+        <tr>
+            <td>
+                <input name="selectList" value="ch1" id="showLots" type="radio" onclick="changeTable()" checked>Other lots<br>
+            </td>
+            <td>
+                <input name="selectList" value="ch2" id="showMyLots" onclick="changeTable()" type="radio">Your sold lots<br>
+            </td>
+        </tr>
+    </table>
+    <hr>
     <table class="w3-table" border="1" cellspacing="0">
         <tr>
             <td class="w3-center" style="width:18%" onclick="sortById()">ID</td>
@@ -7,7 +22,7 @@
             <td class="w3-center" style="width:10%"></td>
             <td class="w3-center" style="width:15%"></td>
         </tr>
-        <tbody>
+        <tbody id="lotsTable">
         <tr th:each="lot: ${lots}">
             <td class="w3-center" th:text="${lot.getID()}"></td>
             <td class="w3-center" th:text="${lot.getName()}"></td>
@@ -17,5 +32,16 @@
             <td class="w3-center" th:unless="${lot.getAuctionId() != 0}">Sold</td>
         </tr>
         </tbody>
+        <tbody id="myLotsTable" sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" hidden>
+        <tr th:each="lot: ${myLots}">
+            <td width="28%" th:text="${lot.getID()}"></td>
+            <td width="30%" th:text="${lot.getName()}"></td>
+            <td width="17%" th:text="${lot.getCurrentPrice()}"></td>
+            <td width="10%"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a></td>
+            <td width="15%" th:if="${lot.getAuctionId() != 0}"><a th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a></td>
+            <td width="15%" th:unless="${lot.getAuctionId() != 0}">Sold</td>
+        </tr>
+        </tbody>
     </table>
+    <script th:src="@{/scripts/allLotTablesSwitcher.js}"></script>
 </div>

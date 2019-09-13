@@ -126,6 +126,11 @@ public class MySqlLotDao implements LotDao {
         return lotsIndexes;
     }
 
+    @Override
+    public List<Lot> getLotsBySeller(String username) {
+        return template.query("select * from lots inner join soldLots on lots.id = soldlots.lotId where seller = '" + username + "'", lotListWithoutItemsExtractor);
+    }
+
 //    @Override
 //    public List<Lot> getRegisteredLots() {
 //        return template.query("SELECT * FROM lots LEFT OUTER JOIN items ON lots.id=items.lotId WHERE status='registered'", lotListWithItemsExtractor);

@@ -16,4 +16,5 @@ public interface LotService {
     List<Lot> getLotsBySearch(String substr);
     void deleteLot(int lotId);
     void auctionStarted(ActiveAuction auction);
+    List<Lot> getLotsBySeller(String username);
 }
