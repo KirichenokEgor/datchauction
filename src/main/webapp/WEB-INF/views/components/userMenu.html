@@ -1,12 +1,12 @@
 <div class="w3-theme-d4 w3-center" th:fragment="userMenu">
     <h3 >Menu</h3>
     <table class="w3-table">
-        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/auctionList}">Auction list</a></td></tr>
-        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/activeAuctionList}">Active auctions</a></td></tr>
-        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/allLotList}">Lots</a></td></tr>
-        <tr sec:authorize="hasRole('ADMIN') || hasRole('SELLER')"><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/freeItems}">Free items</a></td></tr>
-        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/soldLotList}">Purchase</a></td></tr>
-        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/followedAuctions}">Followed auctions</a></td></tr>
-        <tr sec:authorize="hasRole('ADMIN')"><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/userManager}">User manager</a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/auctionList}" th:text="#{home.auctionList}"></a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/activeAuctionList}" th:text="#{home.activeAuctions}"></a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/allLotList}" th:text="#{home.lots}"></a></td></tr>
+        <tr sec:authorize="hasRole('ADMIN') || hasRole('SELLER')"><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/freeItems}"th:text="#{home.freeItems}"></a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/soldLotList}" th:text="#{home.purchase}"></a></td></tr>
+        <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/followedAuctions}" th:text="#{home.followedAuctions}"></a></td></tr>
+        <tr sec:authorize="hasRole('ADMIN')"><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/userManager}" th:text="#{home.userManager}"></a></td></tr>
     </table>
 </div>
