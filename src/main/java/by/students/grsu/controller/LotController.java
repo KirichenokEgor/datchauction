@@ -8,6 +8,7 @@ import by.students.grsu.entities.services.AuctionException;
 import by.students.grsu.entities.services.interfaces.AuctionService;
 import by.students.grsu.entities.services.interfaces.ItemService;
 import by.students.grsu.entities.services.interfaces.LotService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
@@ -38,7 +40,7 @@ public class LotController {
         System.out.println("LotController: OK");
     }
 
-    @RequestMapping(value = "/{a_id}/addLot", method = RequestMethod.GET)
+    @RequestMapping(value = "/{a_id}/addLot", method = RequestMethod.POST)
     public ModelAndView addLot(@PathVariable("a_id") Integer a_id, SecurityContextHolderAwareRequestWrapper contextHolder, HttpServletRequest request) {
         ModelAndView mv;
         mv = new ModelAndView("addLot");
@@ -54,8 +56,11 @@ public class LotController {
     }
 
     @RequestMapping(value = "/{a_id}/saveLot", method = RequestMethod.POST)
-    public String lotInfo(@PathVariable("a_id") Integer a_id,
+    public ModelAndView lotInfo(@PathVariable("a_id") Integer a_id,
                           ModelMap model, HttpServletRequest request){
+        request.setAttribute(
+                View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+
         String[] parameters = request.getParameterValues("items");
         int[] ids = new int[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
@@ -64,7 +69,7 @@ public class LotController {
 
         try {
             LotInfo newLot = lotService.createLot(a_id, request.getParameter("name"), Double.parseDouble(request.getParameter("price")), Double.parseDouble(request.getParameter("min_price")), ids);
-            return "redirect:/" + a_id + "/" + newLot.getID() + "/lotInfo";
+            return new ModelAndView("redirect:/" + a_id + "/" + newLot.getID() + "/lotInfo");
         } catch (AuctionException e) {
             model.addAttribute("errMessage", "Internal error " + e.getCode() + ". Sorry.");
             System.out.println(e.getMessage() + " controller");
@@ -74,10 +79,10 @@ public class LotController {
             System.out.println(e.getMessage() + " controller");
             //mb return to error page
         }
-        return "redirect:/" + a_id + "/lotList";
+        return new ModelAndView("redirect:/" + a_id + "/lotList");
     }
 
-    @RequestMapping(value = "/{a_id}/{l_id}/lotInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/{a_id}/{l_id}/lotInfo", method = RequestMethod.POST)
     public String lotInfo(ModelMap model, @PathVariable("a_id") Integer a_id, @PathVariable("l_id") Integer l_id) {
         Lot lot = lotService.getLotById(l_id);
         model.addAttribute("ID", lot.getID());
@@ -88,7 +93,7 @@ public class LotController {
         return "lot";
     }
 
-    @RequestMapping(value = "/{a_id}/deleteLot", method = RequestMethod.GET)
+    @RequestMapping(value = "/{a_id}/deleteLot", method = RequestMethod.POST)
     public ModelAndView deleteLot(@PathVariable("a_id") Integer a_id) {
         ModelAndView mv = new ModelAndView("deleteLot");
         try {
@@ -102,8 +107,11 @@ public class LotController {
     }
 
     @RequestMapping(value = "/{a_id}/deleteLotPart2", method = RequestMethod.POST)
-    public String itemInfo(@PathVariable("a_id") Integer a_id,
+    public ModelAndView itemInfo(@PathVariable("a_id") Integer a_id,
                            ModelMap model, ServletRequest request) {
+        request.setAttribute(
+                View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+
         int num = Integer.parseInt(request.getParameter("lot"));
 
         try {
@@ -118,10 +126,10 @@ public class LotController {
             itemService.freeItemsByLot(num);
         }catch (Exception e){
             model.addAttribute("errMessage", "Internal error " + e.getMessage()+ ". Sorry.");
-            return "deleteItem";
+            return new ModelAndView("redirect:/deleteItem");
         }
 
-        return "redirect:/" + a_id + "/lotList";
+        return new ModelAndView("redirect:/" + a_id + "/lotList");
     }
 
     @RequestMapping(value = "/allLotList", method = RequestMethod.GET)

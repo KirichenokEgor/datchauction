@@ -8,6 +8,7 @@ import by.students.grsu.entities.services.interfaces.FollowedAuctionService;
 import by.students.grsu.entities.services.interfaces.ItemService;
 import by.students.grsu.entities.services.interfaces.LotService;
 import by.students.grsu.websocket.UserSessionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -62,10 +64,13 @@ public class AuctionController {
     }
 
     @RequestMapping(value = "/saveAuction", method = RequestMethod.POST)
-    public String auctionInfo(@ModelAttribute("auc") TempAuction auc) {
+    public ModelAndView auctionInfo(@ModelAttribute("auc") TempAuction auc, HttpServletRequest request) {
         AuctionInfo createdAuction = auctionService.getAuctionInfo
                 (auctionService.addAuction(auc.getDescription(), auc.getMaxLots(), auc.getStartTime(), auc.getMaxDuration()));
-        return "redirect:/" + createdAuction.getID() + "/lotList";
+//        return "redirect:/" + createdAuction.getID() + "/lotList";
+        request.setAttribute(
+                View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new ModelAndView("redirect:/" + createdAuction.getID() + "/lotList");
     }
     @RequestMapping(value = "/auctionList", method = RequestMethod.GET)
         public String watchAuctions(ModelMap model, HttpServletRequest request) {
@@ -93,11 +98,11 @@ public class AuctionController {
     @RequestMapping(value = "/deleteAuction", method = RequestMethod.GET)
     public ModelAndView deleteAuction(HttpServletRequest request) {
         ModelAndView mv;
-            mv = new ModelAndView("deleteAuction");
-            List<AuctionInfo> iAuctions = auctionService.getAllAuctions();
-            List<FollowedAuction> auctions = followedAuctionService.auctionsAsFollowed(iAuctions, request.getRemoteUser());
-            mv.addObject("auctions", auctions);
-            mv.addObject("back", "auctionList");
+        mv = new ModelAndView("deleteAuction");
+        List<AuctionInfo> iAuctions = auctionService.getAllAuctions();
+        List<FollowedAuction> auctions = followedAuctionService.auctionsAsFollowed(iAuctions, request.getRemoteUser());
+        mv.addObject("auctions", auctions);
+        mv.addObject("back", "auctionList");
         return mv;
     }
 
@@ -113,9 +118,12 @@ public class AuctionController {
         return "redirect:/auctionList";
     }
 
-    @RequestMapping(value = "/{id}/lotList", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/lotList", method = RequestMethod.POST)
     public String watchLots(ModelMap model, @PathVariable("id") Integer id, HttpServletRequest request) {
         AuctionInfo auc = auctionService.getAuctionWithLots(id);
+        if(!auc.getStringStatus().equals("Active") && !auc.getStringStatus().equals("Planned") && !request.isUserInRole("ADMIN")){
+            return "redirect:/accessDenied";
+        }
         List<AuctionInfo> list = new ArrayList<AuctionInfo>();
         list.add(auc);
         FollowedAuction auction = followedAuctionService.auctionsAsFollowed(list, request.getRemoteUser()).get(0);
@@ -123,7 +131,7 @@ public class AuctionController {
         return "lotList";
     }
 
-    @RequestMapping(value = "/{id}/join", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/join", method = RequestMethod.POST)
     public String joinAuction(@PathVariable("id") Integer id,
                               ModelMap model) {
         return "redirect:/{id}/activeAuction";
@@ -144,29 +152,35 @@ public class AuctionController {
         return "activeAuction";
     }
 
-    @RequestMapping(value = "/{id}/makePlanned", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/makePlanned", method = RequestMethod.POST)
     public String makePlanned(@PathVariable("id") Integer id,
                               ModelMap model, HttpServletRequest request) {
             auctionService.setAuctionPlanned(id);
         return "redirect:/auctionList";
     }
 
-    @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.GET)
-    public String subscribe(@PathVariable("id") Integer id,
+    @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.POST)
+    public ModelAndView subscribe(@PathVariable("id") Integer id,
                             HttpServletRequest request) {
         if(auctionService.getAuctionInfo(id).getStringStatus().equals("Planned"))
             followedAuctionService.addFollowedAuction(request.getRemoteUser(), id);
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        if(!referer.endsWith("/auctionList"))
+            request.setAttribute(
+                    View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new ModelAndView("redirect:" + referer);
     }
 
-    @RequestMapping(value = "/{id}/unsubscribe", method = RequestMethod.GET)
-    public String unsubscribe(@PathVariable("id") Integer id,
+    @RequestMapping(value = "/{id}/unsubscribe", method = RequestMethod.POST)
+    public ModelAndView unsubscribe(@PathVariable("id") Integer id,
                             HttpServletRequest request) {
         if(auctionService.getAuctionInfo(id).getStringStatus().equals("Planned"))
             followedAuctionService.deleteFollowedAuction(request.getRemoteUser(), id);
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        if(!referer.endsWith("/auctionList"))
+            request.setAttribute(
+                    View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new ModelAndView("redirect:" + referer);
     }
 
     @RequestMapping(value = "/followedAuctions", method = RequestMethod.GET)

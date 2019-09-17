@@ -1,8 +1,18 @@
 <div th:fragment="lotListButtons">
     <table class="w3-table" th:if="${auction.getAuction().getStringStatus() == 'Planned'}" width="20%">
         <tr>
-            <td><a class="w3-button w3-block w3-theme-l3" sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/{id}/addLot(id=${auction.getAuction().getID()})}" >Add lot</a></td>
-            <td><a class="w3-button w3-block w3-theme-l3" sec:authorize="hasRole('ADMIN')" th:href="@{/{id}/deleteLot(id=${auction.getAuction().getID()})}" >Delete lot</a></td>
+            <td>
+                <form sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" action="#" th:action="@{/{id}/addLot(id=${auction.getAuction().getID()})}" method="post">
+                    <input class="w3-button w3-block w3-theme-l3" type="submit" value="Add lot"/>
+                </form>
+<!--                <a class="w3-button w3-block w3-theme-l3" sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" th:href="@{/{id}/addLot(id=${auction.getAuction().getID()})}" >Add lot</a>-->
+            </td>
+            <td>
+                <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{/{id}/deleteLot(id=${auction.getAuction().getID()})}" method="post">
+                    <input class="w3-button w3-block w3-theme-l3" type="submit" value="Delete lot"/>
+                </form>
+<!--                <a class="w3-button w3-block w3-theme-l3" sec:authorize="hasRole('ADMIN')" th:href="@{/{id}/deleteLot(id=${auction.getAuction().getID()})}" >Delete lot</a>-->
+            </td>
         </tr>
     </table>
 </div>

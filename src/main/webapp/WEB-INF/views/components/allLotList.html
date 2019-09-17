@@ -25,19 +25,43 @@
             <td class="w3-center" th:text="${lot.getID()}"></td>
             <td class="w3-center" th:text="${lot.getName()}"></td>
             <td class="w3-center" th:text="${lot.getCurrentPrice()}"></td>
-            <td class="w3-center" ><a class="w3-theme-l3 w3-block" th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a></td>
-            <td class="w3-center" th:if="${lot.getAuctionId() != 0}"><a  class="w3-theme-l3 w3-block" th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a></td>
+            <td class="w3-center" >
+                <form action="#" th:action="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="View"/>
+                </form>
+            </td>
+            <td class="w3-center" >
+                <form th:if="${lot.getAuctionId() != 0}" action="#" th:action="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="To the auction"/>
+                </form>
+            </td>
+<!--            <td class="w3-center" >-->
+<!--                <a class="w3-theme-l3 w3-block" th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a>-->
+<!--            </td>-->
+<!--            <td class="w3-center" th:if="${lot.getAuctionId() != 0}">-->
+<!--                <a class="w3-theme-l3 w3-block" th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a>-->
+<!--            </td>-->
             <td class="w3-center" th:unless="${lot.getAuctionId() != 0}">Sold</td>
         </tr>
         </tbody>
         <tbody id="myLotsTable" sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" hidden>
         <tr th:each="lot: ${myLots}" class="lotRow">
-            <td width="28%" th:text="${lot.getID()}"></td>
-            <td width="30%" th:text="${lot.getName()}"></td>
-            <td width="17%" th:text="${lot.getCurrentPrice()}"></td>
-            <td width="10%"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a></td>
-            <td width="15%" th:if="${lot.getAuctionId() != 0}"><a th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a></td>
-            <td width="15%" th:unless="${lot.getAuctionId() != 0}">Sold</td>
+            <td class="w3-center" th:text="${lot.getID()}"></td>
+            <td class="w3-center" th:text="${lot.getName()}"></td>
+            <td class="w3-center" th:text="${lot.getCurrentPrice()}"></td>
+            <td class="w3-center" >
+                <form action="#" th:action="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="View"/>
+                </form>
+            </td>
+            <td class="w3-center" >
+                <form th:if="${lot.getAuctionId() != 0}" action="#" th:action="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="To the auction"/>
+                </form>
+            </td>
+<!--            <td width="10%"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a></td>-->
+<!--            <td width="15%" th:if="${lot.getAuctionId() != 0}"><a th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a></td>-->
+            <td class="w3-center" th:unless="${lot.getAuctionId() != 0}">Sold</td>
         </tr>
         </tbody>
     </table>

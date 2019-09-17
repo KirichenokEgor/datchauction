@@ -11,7 +11,12 @@
             <td class="w3-center" th:text="${lot.getID()}"></td>
             <td class="w3-center" th:text="${lot.getName()}"></td>
             <td class="w3-center" th:text="${lot.getCurrentPrice()}"></td>
-            <td class="w3-center"><a class="w3-button w3-block w3-theme-l3" th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getAuction().getID()}, l_id=${lot.getID()})}" >View</a></td>
+            <td class="w3-center">
+                <form action="#" th:action="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getAuction().getID()}, l_id=${lot.getID()})}" method="post">
+                    <input class="w3-button w3-block w3-theme-l3" type="submit" value="View"/>
+                </form>
+<!--                <a class="w3-button w3-block w3-theme-l3" th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${auction.getAuction().getID()}, l_id=${lot.getID()})}" >View</a>-->
+            </td>
         </tr>
         </tbody>
     </table>
