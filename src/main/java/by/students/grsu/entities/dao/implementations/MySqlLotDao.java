@@ -63,12 +63,15 @@ public class MySqlLotDao implements LotDao {
     @Override
     public synchronized int addLot(String name, double startPrice, double minPrice, String status, int auctionId){
         template.update("INSERT INTO lots VALUES(NULL, '" + name + "', " + startPrice + ", " + minPrice + ", '" + status.toLowerCase() + "', " + auctionId + ")");
+//        template.update("UPDATE auctions SET currentLots = currentLots + 1 WHERE ID=" + auctionId);
         return template.queryForObject("SELECT MAX(id) FROM lots", Integer.class);
     }
 
     @Override
-    public void deleteLot(int id){
+    public /*synchronized*/ void deleteLot(int id){
+//        int auctionId = template.queryForObject("select auctionId from lots where id=" + id, Integer.class);
         template.execute("DELETE FROM lots WHERE id=" + id);
+//        template.update("UPDATE auctions SET currentLots = currentLots - 1 WHERE ID=" + auctionId);
     }
 
 //    @Override

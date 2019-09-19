@@ -115,7 +115,6 @@ public class LotController {
         int num = Integer.parseInt(request.getParameter("lot"));
 
         try {
-            Lot lot = lotService.getLotById(num);
 //            if(!item.getOwner().equals(user.getUsername())){
 //                model.addAttribute("errMessage", "Sorry, you can't delete this item, because it's not yours.");
 //                List<Item> items = itemService.getItemsByOwner(user);
