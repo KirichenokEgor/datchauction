@@ -13,11 +13,19 @@
 <div class="w3-theme-d3">
 <table class="w3-table">
     <tr class="w3-row">
-        <td class="w3-center w3-col" style="width:10%"><b th:text="#{id} + '  ' + ${auction.getAuction().getID()}"></b></td>
-        <td class="w3-center w3-col" style="width:30%"><b th:text="#{addAuc.startTime} + '  ' + ${auction.getAuction().getBeginTime()}"></b></td>
-        <td class="w3-center w3-col" style="width:30%"><b th:text="#{activeAuc.duration} + '  ' + ${auction.getAuction().getMaxDuration()}"></b></td>
-        <td th:if="${auction.isFollowed()}" style="width:30%"><a class="w3-button w3-block w3-theme-l3" th:href="@{/{id}/unsubscribe(id=${auction.getAuction().getID()})}" th:text="#{lotList.unsubscribe}"></a></td>
-        <td th:unless="${auction.isFollowed()}" style="width:30%"><a class="w3-button w3-block w3-theme-l3" th:href="@{/{id}/subscribe(id=${auction.getAuction().getID()})}" th:text="#{lotList.subscribe}"></a></td>
+        <td class="w3-center w3-col"><b th:text="'ID  ' + ${auction.getAuction().getID()}"></b></td>
+        <td class="w3-center w3-col"><b th:text="'Start time  ' + ${auction.getAuction().getBeginTime()}"></b></td>
+        <td class="w3-center w3-col"><b th:text="'Duration (minutes)  ' + ${auction.getAuction().getMaxDuration()}"></b></td>
+        <td>
+<!--            <a class="w3-button w3-block w3-theme-l3" th:href="@{/{id}/unsubscribe(id=${auction.getAuction().getID()})}" >Unsubscribe</a>-->
+            <form th:if="${auction.isFollowed()}" action="#" th:action="@{/{id}/unsubscribe(id=${auction.getAuction().getID()})}" method="post">
+                <input class="w3-button w3-block w3-theme-l3" type="submit" th:value="#{lotList.unsubscribe}"/>
+            </form>
+<!--            <a class="w3-button w3-block w3-theme-l3" th:href="@{/{id}/subscribe(id=${auction.getAuction().getID()})}" >Subscribe</a>-->
+            <form th:unless="${auction.isFollowed()}" action="#" th:action="@{/{id}/subscribe(id=${auction.getAuction().getID()})}" method="post">
+                <input class="w3-button w3-block w3-theme-l3" type="submit" th:value="#{lotList.subscribe}"/>
+            </form>
+        </td>
     </tr>
 </table>
 </div>

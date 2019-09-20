@@ -38,7 +38,7 @@ public class SoldLotController {
         model.addAttribute("lots", slmap);
         return "purchase";
     }
-    @RequestMapping(value = "/confirmDeal/{l_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/confirmDeal/{l_id}", method = RequestMethod.POST)
     public String confirmDeal(ModelMap model, @PathVariable int l_id){
         soldLotService.tradeComplete(l_id);
         return "redirect:/soldLotList";

@@ -8,28 +8,33 @@
             <td class="w3-center" width="18%"></td>
         </tr>
         <tbody>
-<!--<<<<<<< HEAD-->
-<!--        <tr th:each="auc: ${auctions}" class="aucRow">-->
-<!--            <td width="28%" th:text="${auc.getAuction().getID()}"></td>-->
-<!--            <td width="18%" th:text="${auc.getAuction().getBeginTime()}"></td>-->
-<!--            <td width="18%" th:text="${auc.getAuction().getMaxDuration()}"></td>-->
-<!--            <td width="18%">-->
-<!--                <a th:if="${auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/lotList(id=${auc.getAuction().getID()})}" >View</a>-->
-<!--                <a th:if="${auc.getAuction().getStringStatus() == 'Active'}" th:href="@{/{id}/join(id=${auc.getAuction().getID()})}">Join</a>-->
-<!--                <a th:unless="${auc.getAuction().getStringStatus() == 'Active' || auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/makePlanned(id=${auc.getAuction().getID()})}">Make Planned</a>-->
-<!--=======-->
         <tr th:each="auc: ${auctions}" class="aucRow">
             <td class="w3-center"  th:text="${auc.getAuction().getID()}"></td>
             <td class="w3-center"  th:text="${auc.getAuction().getBeginTime()}"></td>
             <td class="w3-center"  th:text="${auc.getAuction().getMaxDuration()}"></td>
             <td class="w3-center">
-                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/lotList(id=${auc.getAuction().getID()})}" th:text="#{allLotList.view}"></a>
-                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Active'}" th:href="@{/{id}/join(id=${auc.getAuction().getID()})}" th:text="#{aucList.join}"></a>
-                <a class="w3-theme-l3 w3-block" th:unless="${auc.getAuction().getStringStatus() == 'Active' || auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/makePlanned(id=${auc.getAuction().getID()})}" th:text="#{aucList.makePlanned}"></a>
+                <form th:if="${auc.getAuction().getStringStatus() == 'Planned'}" action="#" th:action="@{/{id}/lotList(id=${auc.getAuction().getID()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:value="#{allLotList.view}"/>
+                </form>
+                <form th:if="${auc.getAuction().getStringStatus() == 'Active'}" action="#" th:action="@{/{id}/join(id=${auc.getAuction().getID()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:value="#{aucList.join}"/>
+                </form>
+                <form th:unless="${auc.getAuction().getStringStatus() == 'Active' || auc.getAuction().getStringStatus() == 'Planned'}" action="#" th:action="@{/{id}/makePlanned(id=${auc.getAuction().getID()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:value="#{aucList.makePlanned}"/>
+                </form>
+<!--                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/lotList(id=${auc.getAuction().getID()})}" >View</a>-->
+<!--                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Active'}" th:href="@{/{id}/join(id=${auc.getAuction().getID()})}">Join</a>-->
+<!--                <a class="w3-theme-l3 w3-block" th:unless="${auc.getAuction().getStringStatus() == 'Active' || auc.getAuction().getStringStatus() == 'Planned'}" th:href="@{/{id}/makePlanned(id=${auc.getAuction().getID()})}">Make Planned</a>-->
             </td>
             <td class="w3-center">
-                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned' && !auc.isFollowed()}" th:href="@{/{id}/subscribe(id=${auc.getAuction().getID()})}" th:text="#{lotList.subscribe}"></a>
-                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned' && auc.isFollowed()}" th:href="@{/{id}/unsubscribe(id=${auc.getAuction().getID()})}" th:text="#{lotList.unsubscribe}"></a>
+                <form th:if="${auc.getAuction().getStringStatus() == 'Planned' && !auc.isFollowed()}" action="#" th:action="@{/{id}/subscribe(id=${auc.getAuction().getID()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:value="#{lotList.subscribe}"/>
+                </form>
+                <form th:if="${auc.getAuction().getStringStatus() == 'Planned' && auc.isFollowed()}" action="#" th:action="@{/{id}/unsubscribe(id=${auc.getAuction().getID()})}" method="post">
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:value="#{lotList.unsubscribe}"/>
+                </form>
+<!--                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned' && !auc.isFollowed()}" th:href="@{/{id}/subscribe(id=${auc.getAuction().getID()})}" >Subscribe</a>-->
+<!--                <a class="w3-theme-l3 w3-block" th:if="${auc.getAuction().getStringStatus() == 'Planned' && auc.isFollowed()}" th:href="@{/{id}/unsubscribe(id=${auc.getAuction().getID()})}" >Unsubscribe</a>-->
             </td>
         </tr>
         </tbody>

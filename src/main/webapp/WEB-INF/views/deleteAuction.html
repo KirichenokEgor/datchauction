@@ -11,7 +11,7 @@
 <div th:replace="components/improvedHeader.html" ></div>
 <h3 class="w3-center" th:text="#{delAuc.formTitle}"></h3>
 <div th:text = "${errMessage}"></div><br>
-<form id="deleteAuctionForm" action="#" th:action="@{/deleteAuctionPart2}">
+<form id="deleteAuctionForm" action="#" th:action="@{/deleteAuctionPart2}" method="post">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
             <td class="w3-center" style="width:10%" onclick="sortById()" th:text="#{id}"></td>
