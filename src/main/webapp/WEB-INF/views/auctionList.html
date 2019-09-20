@@ -9,14 +9,14 @@
 </head>
 <body class="w3-theme">
     <div th:replace="components/improvedHeader.html" ></div>
-    <h3 class="w3-center">Auction List</h3>
+    <h3 class="w3-center" th:text="#{aucList.formTitle}"></h3>
     <div th:text = "${errMessage}"></div><br>
     <div th:replace="components/aucList.html"></div>
     <br>
     <table sec:authorize="hasRole('ADMIN')" style="w3-table">
         <tr>
-            <td class="w3-theme-l3" style="width:40%"><a class="w3-btn w3-block" th:href="@{/addAuction}" >Add auction</a></td>
-            <td class="w3-theme-l3" style="width:40%"><a class="w3-btn w3-block" th:href="@{/deleteAuction}" >Delete auction</a></td>
+            <td class="w3-theme-l3" style="width:40%"><a class="w3-btn w3-block" th:href="@{/addAuction}" th:text="#{aucList.addAuction}"></a></td>
+            <td class="w3-theme-l3" style="width:40%"><a class="w3-btn w3-block" th:href="@{/deleteAuction}" th:text="#{aucList.deleteAuction}"></a></td>
         </tr>
     </table>
     <div th:replace="components/improvedFooter.html" ></div>

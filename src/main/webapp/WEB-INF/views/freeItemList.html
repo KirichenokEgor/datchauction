@@ -10,7 +10,7 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<h3 class="w3-center">Item List</h3>
+<h3 class="w3-center" th:text="#{activeAuc.itemListTitle}"></h3>
 <div th:text = "${errMessage}"></div><br>
 <div th:replace="components/itemList.html"></div>
 <div th:replace="components/itemListButtons.html"></div>

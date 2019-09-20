@@ -1,11 +1,11 @@
 <div th:fragment="itemList">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0" width="60%">
         <tr>
-            <td class="w3-center" style="width:10%" onclick="sortById()">ID</td>
-            <td class="w3-center" style="width:20%" onclick="sortByName()">Name</td>
-            <td class="w3-center" style="width:50%" onclick="sortByDescription()">Description</td>
-            <td class="w3-center" style="width:10%" onclick="sortByStatus()">Status</td>
-            <td class="w3-center" style="width:10%">Owner</td>
+            <td class="w3-center" style="width:10%" onclick="sortById()" th:text="#{id}"></td>
+            <td class="w3-center" style="width:20%" onclick="sortByName()" th:text="#{name}"></td>
+            <td class="w3-center" style="width:50%" onclick="sortByDescription()" th:text="#{description}"></td>
+            <td class="w3-center" style="width:10%" onclick="sortByStatus()" th:text="#{status}"></td>
+            <td class="w3-center" style="width:10%" th:text="#{owner}"></td>
         </tr>
         <tbody>
         <tr class="itemRow" th:each="item: ${items}">

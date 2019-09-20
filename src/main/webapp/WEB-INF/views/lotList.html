@@ -9,7 +9,7 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<h3 class="w3-center">Auction information</h3>
+<h3 class="w3-center" th:text="#{activeAuc.aucInformation}"></h3>
 <div class="w3-theme-d3">
 <table class="w3-table">
     <tr class="w3-row">
@@ -19,18 +19,18 @@
         <td>
 <!--            <a class="w3-button w3-block w3-theme-l3" th:href="@{/{id}/unsubscribe(id=${auction.getAuction().getID()})}" >Unsubscribe</a>-->
             <form th:if="${auction.isFollowed()}" action="#" th:action="@{/{id}/unsubscribe(id=${auction.getAuction().getID()})}" method="post">
-                <input class="w3-button w3-block w3-theme-l3" type="submit" value="Unsubscribe"/>
+                <input class="w3-button w3-block w3-theme-l3" type="submit" th:value="#{lotList.unsubscribe}"/>
             </form>
 <!--            <a class="w3-button w3-block w3-theme-l3" th:href="@{/{id}/subscribe(id=${auction.getAuction().getID()})}" >Subscribe</a>-->
             <form th:unless="${auction.isFollowed()}" action="#" th:action="@{/{id}/subscribe(id=${auction.getAuction().getID()})}" method="post">
-                <input class="w3-button w3-block w3-theme-l3" type="submit" value="Subscribe"/>
+                <input class="w3-button w3-block w3-theme-l3" type="submit" th:value="#{lotList.subscribe}"/>
             </form>
         </td>
     </tr>
 </table>
 </div>
 <hr>
-<h3 class="w3-center">Lot List</h3>
+<h3 class="w3-center" th:text="#{activeAuc.lotListTitle}"></h3>
 <div th:replace="components/lotList.html"></div>
 <br>
 <div th:replace="components/lotListButtons.html"></div>

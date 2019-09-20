@@ -9,26 +9,26 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<h3 class="w3-center">Item Information</h3>
+<h3 class="w3-center" th:text="#{item.formTitle}"></h3>
 <table class="w3-table w3-theme-d2">
     <tr>
-        <td style="width:5%">ID</td>
+        <td style="width:5%" th:text="#{id}"></td>
         <td th:text="${ID}"></td>
     </tr>
     <tr>
-        <td>Name</td>
+        <td th:text="#{name}"></td>
         <td th:text="${name}"></td>
     </tr>
     <tr>
-        <td>Description</td>
+        <td th:text="#{description}"></td>
         <td th:text="${description}"></td>
     </tr>
     <tr>
-        <td>Status</td>
+        <td th:text="#{status}"></td>
         <td th:text="${status}"></td>
     </tr>
     <tr>
-        <td>Owner</td>
+        <td th:text="#{owner}"></td>
         <td th:text="${owner}"></td>
     </tr>
 </table>
