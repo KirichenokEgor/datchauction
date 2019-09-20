@@ -10,15 +10,15 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<h3 class="w3-center">Enter item information</h3>
+<h3 class="w3-center" th:text="#{addItem.formTitle}"></h3>
 <form method="post" action="#" th:action="@{/saveItem}" th:object="${item}">
     <table class="w3-table">
         <tr>
-            <td style="width:5%"><label th:text="Name" /></td>
+            <td style="width:5%"><label th:text="#{name}" /></td>
             <td><input class="w3-input" type="text" minlength="3" th:field="*{name}" required></td>
         </tr>
         <tr>
-            <td><label th:text="Description" /></td>
+            <td><label th:text="#{description}" /></td>
             <td><input class="w3-input" type="text" th:field="*{description}" /></td>
         </tr>
         <tr>

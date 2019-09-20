@@ -5,9 +5,9 @@
 <!--    </div>-->
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
-            <td class="w3-center" style="width:18%" onclick="sortById()">ID</td>
-            <td class="w3-center" style="width:30%" onclick="sortByName()">Name</td>
-            <td class="w3-center" style="width:27%" onclick="sortByPrice()">Price</td>
+            <td class="w3-center" style="width:18%" onclick="sortById()" th:text="#{id}"></td>
+            <td class="w3-center" style="width:30%" onclick="sortByName()" th:text="#{name}"></td>
+            <td class="w3-center" style="width:27%" onclick="sortByPrice()" th:text="#{price}"></td>
             <td class="w3-center" style="width:10%"></td>
             <td class="w3-center" style="width:15%"></td>
         </tr>
@@ -25,9 +25,9 @@
             <td class="w3-center" th:text="${lot.getID()}"></td>
             <td class="w3-center" th:text="${lot.getName()}"></td>
             <td class="w3-center" th:text="${lot.getCurrentPrice()}"></td>
-            <td class="w3-center" ><a class="w3-theme-l3 w3-block" th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a></td>
-            <td class="w3-center" th:if="${lot.getAuctionId() != 0}"><a  class="w3-theme-l3 w3-block" th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a></td>
-            <td class="w3-center" th:unless="${lot.getAuctionId() != 0}">Sold</td>
+            <td class="w3-center" ><a class="w3-theme-l3 w3-block" th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" th:text="#{allLotList.view}"></a></td>
+            <td class="w3-center" th:if="${lot.getAuctionId() != 0}"><a  class="w3-theme-l3 w3-block" th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" th:text="#{allLotList.toAuc}"></a></td>
+            <td class="w3-center" th:unless="${lot.getAuctionId() != 0}" th:text="#{allLotList.sold}"></td>
         </tr>
         </tbody>
         <tbody id="myLotsTable" sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" hidden>
@@ -35,9 +35,9 @@
             <td width="28%" th:text="${lot.getID()}"></td>
             <td width="30%" th:text="${lot.getName()}"></td>
             <td width="17%" th:text="${lot.getCurrentPrice()}"></td>
-            <td width="10%"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" >View</a></td>
-            <td width="15%" th:if="${lot.getAuctionId() != 0}"><a th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" >To the auction</a></td>
-            <td width="15%" th:unless="${lot.getAuctionId() != 0}">Sold</td>
+            <td width="10%"><a th:href="@{/{a_id}/{l_id}/lotInfo(a_id=${lot.getAuctionId()}, l_id=${lot.getID()})}" th:text="#{allLotList.view}"></a></td>
+            <td width="15%" th:if="${lot.getAuctionId() != 0}"><a th:href="@{/{a_id}/lotList(a_id=${lot.getAuctionId()})}" th:text="#{allLotList.toAuc}"></a></td>
+            <td width="15%" th:unless="${lot.getAuctionId() != 0}" th:text="#{allLotList.sold}"></td>
         </tr>
         </tbody>
     </table>

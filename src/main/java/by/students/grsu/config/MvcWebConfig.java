@@ -192,6 +192,11 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
+        /* Браузер загружает страницу в windows-1252 и кириллица ломается.
+           Если вручную в браузере поставить UTF-8, то всё работает нормально.
+           Вот эта строка заставляет браузер изначально ставить кодировку на UTF-8,
+           но кириллица всё равно не работает!!!     */
+        //resolver.setCharacterEncoding("UTF-8");
         registry.viewResolver(resolver);
     }
 

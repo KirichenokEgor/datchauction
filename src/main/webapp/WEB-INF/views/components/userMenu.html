@@ -1,5 +1,5 @@
 <div class="w3-theme-d4 w3-center" th:fragment="userMenu">
-    <h3 >Menu</h3>
+    <h3 th:text="#{home.menuTitle}"></h3>
     <table class="w3-table">
         <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/auctionList}" th:text="#{home.auctionList}"></a></td></tr>
         <tr><td><a class="w3-button w3-block w3-theme-l3" th:href="@{/activeAuctionList}" th:text="#{home.activeAuctions}"></a></td></tr>

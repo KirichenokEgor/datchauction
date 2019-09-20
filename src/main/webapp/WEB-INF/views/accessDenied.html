@@ -10,8 +10,8 @@
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
 <div class="w3-theme-d4">
-<h2 class="w3-center">Access Denied</h2>
-<h3 class="w3-center">Sorry, you don't have necessary rights.</h3>
+<h2 class="w3-center" th:text="#{denied.title}"></h2>
+<h3 class="w3-center" th:text="#{denied.message}"></h3>
 </div>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>

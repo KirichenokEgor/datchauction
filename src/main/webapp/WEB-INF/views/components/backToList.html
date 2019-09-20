@@ -1,4 +1,4 @@
 <div class="w3-center" th:fragment="backToList">
-    <a class="w3-button w3-block w3-theme-l3" th:if="${back}" th:href="@{/{back}(back=${back})}">Back to list</a>
+    <a class="w3-button w3-block w3-theme-l3" th:if="${back}" th:href="@{/{back}(back=${back})}" th:text="#{footer.backToList}"></a>
     <br>
 </div>

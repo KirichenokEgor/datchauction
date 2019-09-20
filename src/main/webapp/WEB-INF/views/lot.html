@@ -11,26 +11,26 @@
 <div th:replace="components/improvedHeader.html" ></div>
 <div th:text = "${errMessage}"></div>
 <div class="">
-<h3 class="w3-center">Lot Information</h3>
+<h3 class="w3-center" th:text="#{lot.formTitle}"></h3>
 <br>
 <table class="w3-table w3-theme-d2">
     <tr>
-        <td style="width:5%">ID</td>
+        <td style="width:5%" th:text="#{id}"></td>
         <td th:text="${ID}"></td>
     </tr>
     <tr>
-        <td >Name</td>
+        <td th:text="#{name}"></td>
         <td th:text="${name}"></td>
     </tr>
     <tr>
-        <td style="">Price</td>
+        <td th:text="#{price}"></td>
         <td th:text="${price}"></td>
     </tr>
 </table>
 </div>
 <hr>
 <div class="">
-<h3 class="w3-center">Items</h3>
+<h3 class="w3-center" th:text="#{activeAuc.itemListTitle}"></h3>
 <div th:replace="components/itemList.html"></div>
 </div>
 <div th:replace="components/improvedFooter.html" ></div>

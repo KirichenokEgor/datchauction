@@ -10,15 +10,15 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<h3 class="w3-center">Choose lot to delete</h3>
+<h3 class="w3-center" th:text="#{delLot.formTitle}"></h3>
 <div th:text = "${errMessage}"></div><br>
 <form id="deleteLotForm" action="#" th:action="@{/{a_id}/deleteLotPart2(a_id=${a_id})}">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
-            <td class="w3-center" style="width=5%">ID</td>
-            <td class="w3-center" style="width=45%">Name</td>
-            <td class="w3-center" style="width=45%">Price</td>
-            <td class="w3-center" style="width=5%">Chose</td>
+            <td class="w3-center" style="width=5%" th:text="#{id}"></td>
+            <td class="w3-center" style="width=45%" th:text="#{name}"></td>
+            <td class="w3-center" style="width=45%" th:text="#{price}"></td>
+            <td class="w3-center" style="width=5%" th:text="#{choose}"></td>
         </tr>
         <tbody>
         <tr class="lotRow" th:each="lot: ${auction.getILots()}">
@@ -32,7 +32,7 @@
         </tbody>
     </table>
     <br>
-    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="Submit"/>
+    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:value="#{submit}"/>
 </form>
 <script type="text/javascript">
 var form = document.getElementById("deleteLotForm");

@@ -9,17 +9,17 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<h3 class="w3-center">Choose item to delete</h3>
+<h3 class="w3-center" th:text="#{delItem.formTitle}"></h3>
 <div th:text = "${errMessage}"></div><br>
 <form id="deleteItemForm" action="#" th:action="@{/deleteItemPart2}">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
-            <td class="w3-center" style="width:5%" onclick="sortById()">ID</td>
-            <td class="w3-center" style="width:20%" onclick="sortByName()">Name</td>
-            <td class="w3-center" style="width:50%" onclick="sortByDescription()">Description</td>
-            <td class="w3-center" style="width:10%" onclick="sortByStatus()">Status</td>
-            <td class="w3-center" style="width:10%">Owner</td>
-            <td class="w3-center" style="width:5%" >Choose</td>
+            <td class="w3-center" style="width:5%" onclick="sortById()" th:text="#{id}"></td>
+            <td class="w3-center" style="width:20%" onclick="sortByName()" th:text="#{name}"></td>
+            <td class="w3-center" style="width:50%" onclick="sortByDescription()" th:text="#{description}"></td>
+            <td class="w3-center" style="width:10%" onclick="sortByStatus()"  th:text="#{status}"></td>
+            <td class="w3-center" style="width:10%" th:text="#{owner}"></td>
+            <td class="w3-center" style="width:5%" th:text="#{choose}"></td>
         </tr>
         <tbody>
         <tr class="itemRow" th:each="item: ${items}">
@@ -35,7 +35,7 @@
         </tbody>
     </table>
     <br>
-    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="Submit"/>
+    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:value="#{submit}"/>
 </form>
 <script type="text/javascript">
 var form = document.getElementById("deleteItemForm");

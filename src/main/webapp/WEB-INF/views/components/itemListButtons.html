@@ -1,8 +1,8 @@
 <div th:fragment="itemListButtons">
     <table>
         <tr>
-            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a class="w3-btn w3-block w3-theme-l3" th:href="@{/addItem}" >Add item</a></td>
-            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a class="w3-btn w3-block w3-theme-l3" th:href="@{/deleteItem}" >Delete item</a></td>
+            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a class="w3-btn w3-block w3-theme-l3" th:href="@{/addItem}" th:text="#{itemList.addItem}"></a></td>
+            <td sec:authorize="hasRole('ADMIN') || hasRole('SELLER')" width="100px"><a class="w3-btn w3-block w3-theme-l3" th:href="@{/deleteItem}" th:text="#{itemList.delItem}"></a></td>
         </tr>
     </table>
 </div>

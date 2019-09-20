@@ -10,29 +10,29 @@
 </head>
 <body class="w3-theme">
 <div th:replace="components/improvedHeader.html" ></div>
-<h3 class="w3-center">Enter auction information</h3>
+<h3 class="w3-center" th:text="#{addAuc.formTitle}"></h3>
 <form method="post" action="#" th:action="@{/saveAuction}" th:object="${auc}">
     <table class="w3-table w3-theme-d2">
         <tr>
-            <td style="width:10%"><label th:text="Start_time" /></td>
+            <td style="width:10%"><label th:text="#{addAuc.startTime}" /></td>
             <td><input class="w3-input" type="text" th:field="*{startTime}" required/></td>
         </tr>
         <tr>
-            <td><label th:text="Max_duration_in_minutes" /></td>
+            <td><label th:text="#{addAuc.maxDuration}" /></td>
             <td><input class="w3-input" type="number" th:field="*{maxDuration}" required /></td>
         </tr>
         <tr>
-            <td><label th:text="Max_lots" /></td>
+            <td><label th:text="#{addAuc.maxLots}" /></td>
             <td><input class="w3-input" type="number" th:field="*{maxLots}" required /></td>
         </tr>
 
         <tr>
-            <td><label th:text="Description" /></td>
+            <td><label th:text="#{description}" /></td>
             <td><input class="w3-input" type="text" th:field="*{description}" /></td>
         </tr>
     </table>
     <br>
-    <input class="w3-bnt w3-block w3-theme-l3" type="submit" value="Submit"/>
+    <input class="w3-bnt w3-block w3-theme-l3" type="submit" th:value="#{submit}"/>
 </form>
 <div th:replace="components/improvedFooter.html" ></div>
 </body>

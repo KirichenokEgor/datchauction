@@ -9,29 +9,29 @@
 <body class="w3-theme">
 <header class="headr" th:insert="components/header.html"></header>
 <div class="w3-theme-d1 w3-center">
-<h3>Registration</h3>
+<h3 th:text="#{reg.formTitle}"></h3>
 <div class="w3-theme-l2"  th:text = "${registrationMessage}"/><br>
 <form id="form" action="#" th:action="@{/confirmRegistration}" th:object="${tempUser}" method="post">
     <table class="w3-table" style="max-width:600px;margin:auto;">
         <tr>
-            <td style="width:20%"><label th:text="Username" /></td>
-            <td style="width:80%"><input class="w3-input" type="text" minlength="4" placeholder="Username" th:field="*{username}" required></td>
+            <td style="width:20%"><label th:text="#{login.username}" /></td>
+            <td style="width:80%"><input class="w3-input" type="text" minlength="4" th:placeholder="#{login.username}" th:field="*{username}" required></td>
         </tr>
         <tr>
-            <td><label th:text="Email" /></td>
-            <td><input class="w3-input" type="email" minlength="6" placeholder="Email" th:field="*{email}" required></td>
+            <td><label th:text="#{reg.email"} /></td>
+            <td><input class="w3-input" type="email" minlength="6" th:placeholder="#{reg.email}" th:field="*{email}" required></td>
         </tr>
         <tr>
-            <td><label th:text="Password" /></td>
-            <td><input class="w3-input" type="password" minlength="4" placeholder="Password" th:field="*{password}" required></td>
+            <td><label th:text="#{login.password}" /></td>
+            <td><input class="w3-input" type="password" minlength="4" th:placeholder="#{login.password}" th:field="*{password}" required></td>
         </tr>
         <tr>
-            <td><label th:text="Confirm_Password" /></td>
-            <td><input class="w3-input" type="password" minlength="4" placeholder="Password" th:field="*{confirmPassword}" required></td>
+            <td><label th:text="#{reg.confirmPassword}" /></td>
+            <td><input class="w3-input" type="password" minlength="4" th:placeholder="#{login.password}" th:field="*{confirmPassword}" required></td>
         </tr>
         <tr>
             <td colspan="2">
-                <input class="w3-btn w3-theme-l3 w3-block" type="submit" value="Confirm"/>
+                <input class="w3-btn w3-theme-l3 w3-block" type="submit" th:value="#{confirm}"/>
             </td>
         </tr>
     </table>
