@@ -148,7 +148,7 @@ public class AuctionController {
             e.printStackTrace();
         }
         model.addAttribute("auction", auc);
-        model.addAttribute("back", "activeAuctionList");
+        //model.addAttribute("back", "activeAuctionList");
         return "activeAuction";
     }
 

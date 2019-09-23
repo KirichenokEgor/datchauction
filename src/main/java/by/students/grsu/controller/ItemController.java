@@ -36,7 +36,7 @@ public class ItemController {
         ModelAndView mv;
             mv = new ModelAndView("addItem");
             mv.addObject("item", new TempItem());
-            mv.addObject("back", "freeItems");
+            //mv.addObject("back", "freeItems");
         return mv;
     }
 
@@ -57,7 +57,7 @@ public class ItemController {
             System.out.println(e.getMessage());
             /////////////return?
         }
-        model.addAttribute("back", "freeItems");
+        //model.addAttribute("back", "freeItems");
         return "item";
     }
 
@@ -74,7 +74,7 @@ public class ItemController {
             } catch (Exception e) {
                 mv.addObject("errMessage", "Internal error " + e.getMessage() + ". Sorry.");
             }
-            mv.addObject("back", "freeItems");
+            //mv.addObject("back", "freeItems");
         return mv;
     }
 

@@ -14,12 +14,12 @@ public class MySqlSoldLotDao implements SoldLotDao {
     private ResultSetExtractor<List<SoldLot>> soldLotListExtractor = rs -> {
         List<SoldLot> lotList = new ArrayList<>();
         while(rs.next()) {
-            lotList.add(new SoldLot(rs.getNString("buyer"), rs.getNString("seller"), rs.getInt("lotId"), rs.getDouble("price")));
+            lotList.add(new SoldLot(rs.getNString("buyer"), rs.getNString("seller"), rs.getInt("lot_id"), rs.getDouble("price")));
         }
         return lotList;
     };
     private ResultSetExtractor<SoldLot> soldLotExtractor = rs -> {
-        return rs.next() ? new SoldLot(rs.getString("buyer"), rs.getNString("seller"), rs.getInt("lotId"), rs.getDouble("price")) : null;
+        return rs.next() ? new SoldLot(rs.getString("buyer"), rs.getNString("seller"), rs.getInt("lot_id"), rs.getDouble("price")) : null;
     };
 
     public MySqlSoldLotDao(JdbcTemplate template) {
@@ -28,22 +28,22 @@ public class MySqlSoldLotDao implements SoldLotDao {
 
     @Override
     public void addSoldLot(int lotId, String buyerUsername, String sellerUsername, double price) {
-        template.execute("INSERT INTO soldLots VALUES(" + lotId + ", '" + buyerUsername + "', " + price + ",'" + sellerUsername + "')");
+        template.execute("INSERT INTO sold_lot VALUES(" + lotId + ", '" + buyerUsername + "', " + price + ",'" + sellerUsername + "')");
     }
 
     @Override
     public void deleteSoldLot(int lotId) {
-        template.execute("DELETE FROM soldLots WHERE lotId=" + lotId);
+        template.execute("DELETE FROM sold_lot WHERE lot_id=" + lotId);
     }
 
     @Override
     public List<SoldLot> getSoldLotsByUser(String username){
-        return template.query("SELECT * FROM soldLots WHERE buyer='" + username + "'", soldLotListExtractor);
+        return template.query("SELECT * FROM sold_lot WHERE buyer='" + username + "'", soldLotListExtractor);
     }
 
     @Override
     public SoldLot getSoldLotById(int lotId) throws Exception {
-        SoldLot soldLot = template.query("SELECT * FROM soldLots WHERE lotId=" + lotId, soldLotExtractor);
+        SoldLot soldLot = template.query("SELECT * FROM sold_lot WHERE lot_id=" + lotId, soldLotExtractor);
         if (soldLot != null) {
             return soldLot;
         } else {

@@ -23,36 +23,36 @@ public class MySqlAuctionDao implements AuctionDao {
         Lot newLot = null;
         ArrayList items = null;
         while(rs.next()) {
-            if (rs.getInt("lots.id") != lotId) {
+            if (rs.getInt("lot.id") != lotId) {
                 if (newLot != null) {
                     newLot.setItems(items);
                     lots.add(newLot);
                 }
                 try {
-                    newLot = new Lot(rs.getInt("lots.id"), rs.getString("lotName"),
-                            rs.getDouble("startPrice"), rs.getDouble("minPrice"),
-                            rs.getString("lots.status"), rs.getInt("auctionId"));
+                    newLot = new Lot(rs.getInt("lot.id"), rs.getString("lot_name"),
+                            rs.getDouble("start_price"), rs.getDouble("min_price"),
+                            rs.getString("lot.status"), rs.getInt("auction_id"));
                 } catch (NullPointerException e) {
-                    auction = new Auction(rs.getInt("auctions.id"),
-                            rs.getString("auctions.description"),
-                            rs.getInt("maxLots"), rs.getTime("beginTime").toLocalTime(),
-                            rs.getInt("maxDuration"), rs.getString("auctions.status"), lots);
+                    auction = new Auction(rs.getInt("auction.id"),
+                            rs.getString("auction.description"),
+                            rs.getInt("max_lots"), rs.getTime("begin_time").toLocalTime(),
+                            rs.getInt("max_duration"), rs.getString("auction.status"), lots);
                     break;
                 }
 
                 items = new ArrayList();
-                lotId = rs.getInt("lots.id");
+                lotId = rs.getInt("lot.id");
             }
 
             try {
-                items.add(new Item(rs.getInt("items.id"), rs.getString("name"), rs.getString("items.description"), rs.getString("owner"), rs.getInt("lotId")));
+                items.add(new Item(rs.getInt("item.id"), rs.getString("name"), rs.getString("item.description"), rs.getString("owner"), rs.getInt("lot_id")));
             } catch (NullPointerException e) {
-                auction = new Auction(rs.getInt("auctions.id"), rs.getString("auctions.description"), rs.getInt("maxLots"), rs.getTime("beginTime").toLocalTime(), rs.getInt("maxDuration"), rs.getString("auctions.status"), lots);
+                auction = new Auction(rs.getInt("auction.id"), rs.getString("auction.description"), rs.getInt("max_lots"), rs.getTime("begin_time").toLocalTime(), rs.getInt("max_duration"), rs.getString("auction.status"), lots);
                 break;
             }
 
             if (auction == null) {
-                auction = new Auction(rs.getInt("auctions.id"), rs.getString("auctions.description"), rs.getInt("maxLots"), rs.getTime("beginTime").toLocalTime(), rs.getInt("maxDuration"), rs.getString("auctions.status"), lots);
+                auction = new Auction(rs.getInt("auction.id"), rs.getString("auction.description"), rs.getInt("max_lots"), rs.getTime("begin_time").toLocalTime(), rs.getInt("max_duration"), rs.getString("auction.status"), lots);
             }
         }
 
@@ -66,21 +66,21 @@ public class MySqlAuctionDao implements AuctionDao {
     private ResultSetExtractor<List<Auction>> auctionListExtractor = (rs) -> {
         List<Auction> auctionList = new ArrayList<>();
         while(rs.next()) {
-            Auction auction = new Auction(rs.getInt("ID"), rs.getString("description"),
-                    rs.getInt("maxLots"), rs.getTime("beginTime").toLocalTime(),
-                    rs.getInt("maxDuration"), rs.getString("status"),
-                    rs.getInt("currentLots"));
+            Auction auction = new Auction(rs.getInt("id"), rs.getString("description"),
+                    rs.getInt("max_lots"), rs.getTime("begin_time").toLocalTime(),
+                    rs.getInt("max_duration"), rs.getString("status"),
+                    rs.getInt("current_lots"));
             auctionList.add(auction);
         }
         return auctionList;
     };
     private ResultSetExtractor<Auction> auctionExtractor = (rs) -> {
-        return rs.next() ? new Auction(rs.getInt("ID"), rs.getString("description"), rs.getInt("maxLots"), rs.getTime("beginTime").toLocalTime(), rs.getInt("maxDuration"), rs.getString("status"), rs.getInt("currentLots")) : null;
+        return rs.next() ? new Auction(rs.getInt("id"), rs.getString("description"), rs.getInt("max_lots"), rs.getTime("begin_time").toLocalTime(), rs.getInt("max_duration"), rs.getString("status"), rs.getInt("current_lots")) : null;
     };
     private ResultSetExtractor<Queue<AuctionStartTime>> auctionQueueExtractor = (rs) -> {
         LinkedList queue = new LinkedList();
         while(rs.next()) {
-            queue.add(new AuctionStartTime(rs.getInt("ID"), rs.getTime("beginTime").toLocalTime()));
+            queue.add(new AuctionStartTime(rs.getInt("id"), rs.getTime("begin_time").toLocalTime()));
         }
         return queue;
     };
@@ -90,8 +90,8 @@ public class MySqlAuctionDao implements AuctionDao {
     }
 
     @Override
-    public Auction getAuctionById(int ID) throws Exception {
-        Auction auction = (Auction)this.template.query("SELECT * FROM auctions WHERE ID=" + ID, auctionExtractor);
+    public Auction getAuctionById(int id) throws Exception {
+        Auction auction = this.template.query("SELECT * FROM auction WHERE id=" + id, auctionExtractor);
         if (auction == null) {
             throw new Exception("Auction not found");
         } else {
@@ -101,34 +101,34 @@ public class MySqlAuctionDao implements AuctionDao {
 
     @Override
     public synchronized int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration){
-            template.update("INSERT INTO auctions VALUES (NULL, \'" + description + "\', "
+            template.update("INSERT INTO auction VALUES (NULL, \'" + description + "\', "
                 + maxLots + ", \'" + beginTime + "\', " + maxDuration
                 + ", \'disabled\', 0)");
-            int id = template.queryForObject("SELECT MAX(ID) FROM auctions", Integer.class);
+            int id = template.queryForObject("SELECT MAX(id) FROM auction", Integer.class);
         return id;
     }
 
     @Override
     public List<Auction> getAuctions(){
-        return template.query("SELECT * FROM auctions ORDER BY ID", auctionListExtractor);
+        return template.query("SELECT * FROM auction ORDER BY id", auctionListExtractor);
     }
 
     @Override
-    public void deleteAuction(int ID){
-        template.update("DELETE FROM auctions WHERE ID=" + ID);
+    public void deleteAuction(int id){
+        template.update("DELETE FROM auction WHERE id=" + id);
     }
 
     @Override
-    public void addLotToAuction(int ID, boolean delete){
-        template.update("UPDATE auctions SET currentLots = currentLots" + (delete ? "-" : "+") + "1 WHERE ID=" + ID);
+    public void addLotToAuction(int id, boolean delete){
+        template.update("UPDATE auction SET current_lots = current_lots" + (delete ? "-" : "+") + "1 WHERE id=" + id);
     }
 
     @Override
-    public void setStatus(int ID, String newStatus) throws Exception {
+    public void setStatus(int id, String newStatus) throws Exception {
         newStatus = newStatus.toLowerCase();
         if (!newStatus.equals("disabled") && !newStatus.equals("active") && !newStatus.equals("planned") && !newStatus.equals("done")) {
             throw new Exception("Wrong status word");
-        } else if (template.update("UPDATE auctions SET status='" + newStatus + "',currentLots=0 WHERE ID=" + ID) == 0) {
+        } else if (template.update("UPDATE auction SET status='" + newStatus + "',current_lots=0 WHERE id=" + id) == 0) {
             throw new Exception("Auction not found");
         }
     }
@@ -139,13 +139,13 @@ public class MySqlAuctionDao implements AuctionDao {
         if (!status.equals("disabled") && !status.equals("active") && !status.equals("planned") && !status.equals("done")) {
             throw new Exception("Wrong status word");
         } else {
-            return template.query("SELECT * FROM auctions WHERE status = '" + status + "'", this.auctionListExtractor);
+            return template.query("SELECT * FROM auction WHERE status = '" + status + "'", this.auctionListExtractor);
         }
     }
 
     @Override
     public Auction getAuctionWithLots(int id) throws Exception {
-        Auction auction = (Auction)this.template.query("SELECT * FROM auctions LEFT OUTER JOIN lots ON auctions.id=lots.auctionId LEFT OUTER JOIN items ON lots.id=items.lotId WHERE auctions.id=" + id + " ORDER BY lots.id", this.auctionWithLotsExtractor);
+        Auction auction = (Auction)this.template.query("SELECT * FROM auction LEFT OUTER JOIN lot ON auction.id=lot.auction_id LEFT OUTER JOIN item ON lot.id=item.lot_id WHERE auction.id=" + id + " ORDER BY lot.id", this.auctionWithLotsExtractor);
         if (auction == null) {
             throw new Exception("Auction not found");
         } else {
@@ -155,11 +155,11 @@ public class MySqlAuctionDao implements AuctionDao {
 
     @Override
     public Queue<AuctionStartTime> getAuctionsQueue(){
-        return template.query("SELECT ID,beginTime FROM auctions WHERE status='planned' OR status='active' ORDER BY beginTime", this.auctionQueueExtractor);
+        return template.query("SELECT id,begin_time FROM auction WHERE status='planned' OR status='active' ORDER BY begin_time", this.auctionQueueExtractor);
     }
 
     @Override
     public void updateDoneAuctions() {
-        this.template.execute("UPDATE auctions SET status='planned' WHERE status='done'");
+        this.template.execute("UPDATE auction SET status='planned' WHERE status='done'");
     }
 }

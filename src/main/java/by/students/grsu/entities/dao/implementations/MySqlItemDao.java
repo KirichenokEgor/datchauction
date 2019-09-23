@@ -15,48 +15,48 @@ public class MySqlItemDao implements ItemDao {
 
     @Override
     public synchronized int addItem(String name, String description, String ownerName){
-        jdbcTemplate.update("INSERT INTO items VALUES (NULL, \'" + name + "\', \'" + description + "\', \'"
+        jdbcTemplate.update("INSERT INTO item VALUES (NULL, \'" + name + "\', \'" + description + "\', \'"
                 + ownerName + "\', 0)");
-        return jdbcTemplate.queryForObject("SELECT MAX(id) FROM items", Integer.class);
+        return jdbcTemplate.queryForObject("SELECT MAX(id) FROM item", Integer.class);
     }
 
     @Override
     public Item getItemById(int id){
-        return jdbcTemplate.queryForObject("SELECT * FROM items WHERE id=" + id, new ItemRowMapper());
+        return jdbcTemplate.queryForObject("SELECT * FROM item WHERE id=" + id, new ItemRowMapper());
     }
 
     @Override
     public List<Item> getItemsByOwner(String ownerName){
-        return jdbcTemplate.query("SELECT * FROM items WHERE owner=\'"+ownerName+"\'", new ItemRowMapper());
+        return jdbcTemplate.query("SELECT * FROM item WHERE owner=\'"+ownerName+"\'", new ItemRowMapper());
     }
 
     @Override
     public void deleteItemById(int id){
-        jdbcTemplate.execute("DELETE FROM items WHERE id=" + id);
+        jdbcTemplate.execute("DELETE FROM item WHERE id=" + id);
     }
 
     @Override
     public void deleteItemsByLotId(int lotId){
-        jdbcTemplate.execute("DELETE FROM items WHERE lotID=" + lotId);
+        jdbcTemplate.execute("DELETE FROM item WHERE lot_id=" + lotId);
     }
 
     @Override
     public List<Item> getItemsByLot(int lotId){
-        return jdbcTemplate.query("SELECT * FROM items WHERE lotID="+lotId, new ItemRowMapper());
+        return jdbcTemplate.query("SELECT * FROM item WHERE lot_id="+lotId, new ItemRowMapper());
     }
 
     @Override
     public void setItemOnLot(int itemId,int lotId){
-        jdbcTemplate.update("UPDATE items SET lotID=" + lotId + " WHERE id=" + itemId);
+        jdbcTemplate.update("UPDATE item SET lot_id=" + lotId + " WHERE id=" + itemId);
     }
 
     @Override
     public void freeItemsByLot(int lotId){
-        jdbcTemplate.update("UPDATE items SET lotID=0 WHERE lotID=" + lotId);
+        jdbcTemplate.update("UPDATE item SET lot_id=0 WHERE lot_id=" + lotId);
     }
 
     @Override
     public List<Item> getAllFreeItems(){
-        return jdbcTemplate.query("SELECT * FROM items WHERE lotID=0", new ItemRowMapper());
+        return jdbcTemplate.query("SELECT * FROM item WHERE lot_id=0", new ItemRowMapper());
     }
 }
