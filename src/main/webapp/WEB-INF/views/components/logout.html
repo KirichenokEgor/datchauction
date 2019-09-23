@@ -1,5 +1,5 @@
 <div th:fragment="logout">
     <form action="#" th:action="@{/logout}" method="post">
-        <input class="w3-btn w3-theme-l3" type="submit" value="Log out"/>
+        <input class="w3-btn w3-theme-l3" type="submit" th:value="#{header.logOut}"/>
     </form>
 </div>
