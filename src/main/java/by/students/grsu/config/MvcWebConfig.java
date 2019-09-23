@@ -44,7 +44,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
        // slr.setDefaultLocale(Locale.ENGLISH);
-        slr.setDefaultLocale(new Locale("en"));
+        slr.setDefaultLocale(new Locale("ru"));
         return slr;
     }
     @Bean
@@ -61,6 +61,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public MessageSource messageSource(){
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
         ms.setBasename("messages");
+        ms.setDefaultEncoding("UTF-8");
         return ms;
     }
     /*
@@ -72,6 +73,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
     @Override
@@ -196,7 +198,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
            Если вручную в браузере поставить UTF-8, то всё работает нормально.
            Вот эта строка заставляет браузер изначально ставить кодировку на UTF-8,
            но кириллица всё равно не работает!!!     */
-        //resolver.setCharacterEncoding("UTF-8");
+        resolver.setCharacterEncoding("UTF-8");
         registry.viewResolver(resolver);
     }
 
