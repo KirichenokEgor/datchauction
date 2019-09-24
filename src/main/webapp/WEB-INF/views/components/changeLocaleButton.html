@@ -1,0 +1,15 @@
+<div th:fragment="changeLocaleButton">
+    <form action="#" th:action="@{/changeLocale}" method="post">
+        <input type="hidden" name="lang" th:value="#{changeLocale}" />
+        <table>
+            <tr>
+                <td>
+                    <input class="w3-button w3-block w3-theme-l3" type="submit" th:value="#{changeLocale}" style="width: 50px"/>
+                </td>
+                <td>
+                    <label class="w3-button w3-block w3-theme-d4 w3-disabled" th:text="#{currentLocale}" style="width: 50px"></label>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

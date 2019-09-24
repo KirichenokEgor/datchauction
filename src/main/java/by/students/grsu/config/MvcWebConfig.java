@@ -13,7 +13,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.AbstractResourceBasedMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -100,10 +99,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public LotService lotService(LotDao lotDao, AuctionService auctionService, ItemService itemService){
         return new DefaultLotService(lotDao,auctionService,itemService);
     }
-//    @Bean
-//    public AuctionConfiguration auctionConfiguration(){
-//        return new AuctionConfiguration();
-//    }
     @Bean
     public UserService userService(UserDao userDao){
         return new DefaultUserService(userDao);
@@ -123,20 +118,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
 
     /*DAOS*/
 
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)///////////////////////////////////////////////////////////////
-//    public Statement statement(AuctionConfiguration configuration) throws Exception {
-//        try {
-//            DriverManager.registerDriver(new Driver());
-//            Statement statement =
-//                    DriverManager.getConnection("jdbc:mysql://"+configuration.getDaoLocation(),configuration.getDaoUser(),configuration.getDaoPassword()).createStatement();
-//            //statement.execute("use datchauction");
-//            return statement;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        throw new Exception("Connection with database failed");
-//    }
     @Bean
     public AuctionDao auctionDao(JdbcTemplate jdbcTemplate){
         return new MySqlAuctionDao(jdbcTemplate);

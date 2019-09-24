@@ -3,7 +3,12 @@
         <tr>
             <td width="150px" th:text="#{header.loggedAs}"></td>
             <td width="300px" th:text="${#httpServletRequest.remoteUser}"></td>
-            <td class="w3-display-right"><div th:replace="components/logout.html" ></div></td>
+            <td class="w3-display-right" style="right: 120px">
+                <div th:replace="components/changeLocaleButton.html" ></div>
+            </td>
+            <td class="w3-display-right" style="width: 110px">
+                <div th:replace="components/logout.html" ></div>
+            </td>
         </tr>
     </table>
 </div>
