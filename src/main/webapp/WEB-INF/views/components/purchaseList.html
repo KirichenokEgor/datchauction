@@ -16,7 +16,7 @@
             <td class="w3-center" th:text="${lots.get(lot)}"></td>
             <td class="w3-center">
                 <form action="#" th:action="@{/confirmDeal/{l_id}(l_id=${lot.getLotId()})}" method="post">
-                    <input class="w3-btn w3-block w3-theme-l3" type="submit" value="confirm" th:onclick="alert('+ #{purchase.thanksAlert} +')" th:text="#{confirm}"/>
+                    <input class="w3-btn w3-block w3-theme-l3" type="submit" th:onclick="'alert('+ #{purchase.thanksAlert} +')'" th:value="#{confirm}"/>
                 </form>
 <!--                <a class="w3-btn w3-block w3-theme-l3" th:href="@{/confirmDeal/{l_id}(l_id=${lot.getLotId()})}" onclick="alert('Done! Thanks for using our service!')" >confirm</a>-->
             </td>

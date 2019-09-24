@@ -28,22 +28,24 @@ public class MySqlSoldLotDao implements SoldLotDao {
 
     @Override
     public void addSoldLot(int lotId, String buyerUsername, String sellerUsername, double price) {
-        template.execute("INSERT INTO sold_lot VALUES(" + lotId + ", '" + buyerUsername + "', " + price + ",'" + sellerUsername + "')");
+//        template.execute("INSERT INTO sold_lot VALUES(" + lotId + ", '" + buyerUsername + "', " + price + ",'" + sellerUsername + "')");
+        template.update("INSERT INTO sold_lot VALUES(?,?,?,?)",lotId,buyerUsername,price,sellerUsername);
     }
 
     @Override
     public void deleteSoldLot(int lotId) {
-        template.execute("DELETE FROM sold_lot WHERE lot_id=" + lotId);
+        template.update("DELETE FROM sold_lot WHERE lot_id= ?", lotId);
     }
 
     @Override
     public List<SoldLot> getSoldLotsByUser(String username){
-        return template.query("SELECT * FROM sold_lot WHERE buyer='" + username + "'", soldLotListExtractor);
+        return template.query("SELECT * FROM sold_lot WHERE buyer= ?",ps -> {ps.setString(1,username);}, soldLotListExtractor);
     }
 
     @Override
     public SoldLot getSoldLotById(int lotId) throws Exception {
-        SoldLot soldLot = template.query("SELECT * FROM sold_lot WHERE lot_id=" + lotId, soldLotExtractor);
+//        SoldLot soldLot = template.query("SELECT * FROM sold_lot WHERE lot_id=" + lotId, soldLotExtractor);
+        SoldLot soldLot = template.query("SELECT * FROM sold_lot WHERE lot_id= ?",ps -> {ps.setInt(1,lotId);}, soldLotExtractor);
         if (soldLot != null) {
             return soldLot;
         } else {
