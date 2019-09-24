@@ -62,7 +62,8 @@ public class MySqlLotDao implements LotDao {
 
     @Override
     public synchronized int addLot(String name, double startPrice, double minPrice, String status, int auctionId){
-        template.update("INSERT INTO lot VALUES(NULL, '" + name + "', " + startPrice + ", " + minPrice + ", '" + status.toLowerCase() + "', " + auctionId + ")");
+//        template.update("INSERT INTO lot VALUES(NULL, '" + name + "', " + startPrice + ", " + minPrice + ", '" + status.toLowerCase() + "', " + auctionId + ")");
+        template.update("INSERT INTO lot VALUES(NULL,? ,? ,? ,? ,?)",name,startPrice,minPrice,status.toLowerCase(),auctionId);
 //        template.update("UPDATE auction SET current_lots = current_lots + 1 WHERE ID=" + auction_id);
         return template.queryForObject("SELECT MAX(id) FROM lot", Integer.class);
     }
@@ -70,7 +71,8 @@ public class MySqlLotDao implements LotDao {
     @Override
     public /*synchronized*/ void deleteLot(int id){
 //        int auctionId = template.queryForObject("select auction_id from lot where id=" + id, Integer.class);
-        template.execute("DELETE FROM lot WHERE id=" + id);
+//        template.execute("DELETE FROM lot WHERE id=" + id);
+        template.update("DELETE FROM lot WHERE id= ?", id);
 //        template.update("UPDATE auctions SET current_lots = current_lots - 1 WHERE ID=" + auction_id);
     }
 
@@ -81,19 +83,22 @@ public class MySqlLotDao implements LotDao {
 
     @Override
     public void setStatusByLotId(int id, String status) throws Exception {
-        if (template.update("UPDATE lot SET status='" + status + "', auction_id=0 WHERE id=" + id) == 0) {
+//        if (template.update("UPDATE lot SET status='" + status + "', auction_id=0 WHERE id=" + id) == 0) {
+        if (template.update("UPDATE lot SET status= ?, auction_id=0 WHERE id= ?",status, id) == 0) {
             throw new Exception("Lot not found");
         }
     }
 
     @Override
     public void setEndByAuctionId(int auctionId) {
-        template.update("UPDATE lot SET status='end' WHERE auction_id=" + auctionId + " and status='registered'");
+//        template.update("UPDATE lot SET status='end' WHERE auction_id=" + auctionId + " and status='registered'");
+        template.update("UPDATE lot SET status='end' WHERE auction_id= ? and status='registered'",auctionId);
     }
 
     @Override
     public Lot getLotById(int id) throws Exception {
-        Lot lot = template.query("SELECT * FROM lot WHERE id=" + id, lotWithoutItemsExtractor);
+//        Lot lot = template.query("SELECT * FROM lot WHERE id=" + id, lotWithoutItemsExtractor);
+        Lot lot = template.query("SELECT * FROM lot WHERE id= ?", new Object[]{id}, lotWithoutItemsExtractor);
         if (lot == null) {
             throw new Exception("Lot not found");
         } else {
@@ -103,7 +108,8 @@ public class MySqlLotDao implements LotDao {
 
     @Override
     public List<Lot> getLotsByAuctionId(int auctionId) {
-        return template.query("SELECT * FROM lot LEFT OUTER JOIN item ON lot.id=item.lot_id WHERE auction_id=" + auctionId, lotListWithItemsExtractor);
+//        return template.query("SELECT * FROM lot LEFT OUTER JOIN item ON lot.id=item.lot_id WHERE auction_id=" + auctionId, lotListWithItemsExtractor);
+        return template.query("SELECT * FROM lot LEFT OUTER JOIN item ON lot.id=item.lot_id WHERE auction_id= ?", ps -> {ps.setInt(1,auctionId);}, lotListWithItemsExtractor);
     }
 
     @Override
@@ -119,7 +125,8 @@ public class MySqlLotDao implements LotDao {
     @Override
     public List<Lot> getLotsBySearch(String substr) {
         //return template.query("SELECT * FROM lot LEFT OUTER JOIN items ON lot.id=items.lotId WHERE MATCH (lot_name) AGAINST ('" + substr + "') ORDER BY id", lotListWithItemsExtractor);
-        return template.query("SELECT * FROM lot WHERE MATCH (lot_name) AGAINST ('" + substr + "') ORDER BY id", lotListWithoutItemsExtractor);
+//        return template.query("SELECT * FROM lot WHERE MATCH (lot_name) AGAINST ('" + substr + "') ORDER BY id", lotListWithoutItemsExtractor);
+        return template.query("SELECT * FROM lot WHERE MATCH (lot_name) AGAINST ( ? ) ORDER BY id",ps -> {ps.setString(1,substr);}, lotListWithoutItemsExtractor);
     }
 
     @Override
@@ -131,7 +138,8 @@ public class MySqlLotDao implements LotDao {
 
     @Override
     public List<Lot> getLotsBySeller(String username) {
-        return template.query("select * from lot inner join sold_lot on lot.id = sold_lot.lot_id where seller = '" + username + "'", lotListWithoutItemsExtractor);
+//        return template.query("select * from lot inner join sold_lot on lot.id = sold_lot.lot_id where seller = '" + username + "'", lotListWithoutItemsExtractor);
+        return template.query("select * from lot inner join sold_lot on lot.id = sold_lot.lot_id where seller = ?",ps -> {ps.setString(1,username);}, lotListWithoutItemsExtractor);
     }
 
 //    @Override
