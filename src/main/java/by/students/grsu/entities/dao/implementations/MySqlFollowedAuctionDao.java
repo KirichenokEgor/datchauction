@@ -18,7 +18,8 @@ public class MySqlFollowedAuctionDao implements FollowedAuctionDao {
     @Override
     public boolean contains(String username, int aucId){
         try {
-            jdbcTemplate.queryForObject("SELECT auction_id FROM followed_auction WHERE auction_id=" + aucId + " and username=\'" + username + "\'", Integer.class);
+//            jdbcTemplate.queryForObject("SELECT auction_id FROM followed_auction WHERE auction_id=" + aucId + " and username=\'" + username + "\'", Integer.class);
+            jdbcTemplate.queryForObject("SELECT auction_id FROM followed_auction WHERE auction_id= ? and username= ? ",new Object[]{aucId,username},Integer.class);
             return true;
         }catch (EmptyResultDataAccessException e){
             return false;
@@ -28,31 +29,38 @@ public class MySqlFollowedAuctionDao implements FollowedAuctionDao {
     @Override
     public void addFollowedAuction(String username, int aucId){
             if (!contains(username, aucId))
-                jdbcTemplate.execute("INSERT INTO followed_auction VALUES(\'" + username + "\', " + aucId + ")");
+//                jdbcTemplate.execute("INSERT INTO followed_auction VALUES(\'" + username + "\', " + aucId + ")");
+                jdbcTemplate.update("INSERT INTO followed_auction VALUES(?,?)", username,aucId);
     }
 
     @Override
     public void deleteFollowedAuction(String username, int aucId){
             if (contains(username, aucId))
-                jdbcTemplate.execute("DELETE FROM followed_auction WHERE auction_id=" + aucId + " and username=\'" + username + "\'");
+//                jdbcTemplate.execute("DELETE FROM followed_auction WHERE auction_id=" + aucId + " and username=\'" + username + "\'");
+                jdbcTemplate.update("DELETE FROM followed_auction WHERE auction_id= ? and username= ?",aucId,username);
     }
 
     @Override
     public void deleteFollowedAuctionsById(int aucId){
-        jdbcTemplate.execute("DELETE FROM followed_auction WHERE auction_id=" + aucId);
+//        jdbcTemplate.update("DELETE FROM followed_auction WHERE auction_id=" + aucId);
+        jdbcTemplate.update("DELETE FROM followed_auction WHERE auction_id= ?", aucId);
     }
 
     @Override
     public List<FollowedAuction> getFollowedAuctionsByUser(String username){
-        List<FollowedAuction> aucList = jdbcTemplate.query("select * from followed_auction right outer join auction" +
-                " on followed_auction.auction_id = auction.id where followed_auction.username =\'" +
-                username + "\'", new FollowedAuctionRowMapper());
+//        List<FollowedAuction> aucList = jdbcTemplate.query("select * from followed_auction right outer join auction" +
+//                " on followed_auction.auction_id = auction.id where followed_auction.username =\'" +
+//                username + "\'", new FollowedAuctionRowMapper());
+        List<FollowedAuction> aucList = jdbcTemplate.query("SELECT * FROM followed_auction RIGHT OUTER JOIN auction" +
+                " ON followed_auction.auction_id = auction.id WHERE followed_auction.username = ?",
+                ps ->{ ps.setString(1,username);},
+                new FollowedAuctionRowMapper());
         //todo mb check
         return aucList;
     }
 
     @Override
     public void deleteFollowedAuctionByUser(String username){
-        jdbcTemplate.execute("DELETE FROM followed_auction WHERE username=\'" + username + "\'");
+        jdbcTemplate.update("DELETE FROM followed_auction WHERE username= ?",username);
     }
 }

@@ -183,7 +183,7 @@ public class AuctionController {
         return new ModelAndView("redirect:" + referer);
     }
 
-    @RequestMapping(value = "/followedAuctions", method = RequestMethod.GET)
+    @RequestMapping(value = "/followedAuctions", method = {RequestMethod.GET,RequestMethod.POST})
     public String watchFollowedAuctions(ModelMap model, HttpServletRequest request) {
         List<FollowedAuction> auctions = followedAuctionService.getFollowedAuctionsByUser(request.getRemoteUser());
         model.addAttribute("auctions", auctions);
