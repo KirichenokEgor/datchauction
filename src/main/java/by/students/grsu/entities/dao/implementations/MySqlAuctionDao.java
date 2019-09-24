@@ -6,8 +6,11 @@ import by.students.grsu.entities.dao.interfaces.AuctionDao;
 import by.students.grsu.entities.item.Item;
 import by.students.grsu.entities.lot.Lot;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -91,7 +94,7 @@ public class MySqlAuctionDao implements AuctionDao {
 
     @Override
     public Auction getAuctionById(int id) throws Exception {
-        Auction auction = this.template.query("SELECT * FROM auction WHERE id=" + id, auctionExtractor);
+        Auction auction = template.query("SELECT * FROM auction WHERE id= ? ",ps -> {ps.setInt(1,id);}, auctionExtractor);
         if (auction == null) {
             throw new Exception("Auction not found");
         } else {
@@ -101,9 +104,7 @@ public class MySqlAuctionDao implements AuctionDao {
 
     @Override
     public synchronized int addAuction(String description, int maxLots, LocalTime beginTime, int maxDuration){
-            template.update("INSERT INTO auction VALUES (NULL, \'" + description + "\', "
-                + maxLots + ", \'" + beginTime + "\', " + maxDuration
-                + ", \'disabled\', 0)");
+        template.update("INSERT INTO auction VALUES (NULL, ?, ?, ?, ?, \'disabled\', 0)",description,maxLots,beginTime,maxDuration);
             int id = template.queryForObject("SELECT MAX(id) FROM auction", Integer.class);
         return id;
     }
@@ -115,12 +116,12 @@ public class MySqlAuctionDao implements AuctionDao {
 
     @Override
     public void deleteAuction(int id){
-        template.update("DELETE FROM auction WHERE id=" + id);
+        template.update("DELETE FROM auction WHERE id= ?",id);
     }
 
     @Override
     public void addLotToAuction(int id, boolean delete){
-        template.update("UPDATE auction SET current_lots = current_lots" + (delete ? "-" : "+") + "1 WHERE id=" + id);
+        template.update("UPDATE auction SET current_lots = current_lots" + (delete ? "-" : "+") + "1 WHERE id= ?",id);
     }
 
     @Override
@@ -128,24 +129,26 @@ public class MySqlAuctionDao implements AuctionDao {
         newStatus = newStatus.toLowerCase();
         if (!newStatus.equals("disabled") && !newStatus.equals("active") && !newStatus.equals("planned") && !newStatus.equals("done")) {
             throw new Exception("Wrong status word");
-        } else if (template.update("UPDATE auction SET status='" + newStatus + "',current_lots=0 WHERE id=" + id) == 0) {
+        } else if (template.update("UPDATE auction SET status= ? ,current_lots=0 WHERE id= ?",newStatus,id) == 0) {
             throw new Exception("Auction not found");
         }
     }
 
     @Override
     public List<Auction> getAuctionsByStatus(String status) throws Exception {
-        status = status.toLowerCase();
+        String finalStatus = status.toLowerCase();
         if (!status.equals("disabled") && !status.equals("active") && !status.equals("planned") && !status.equals("done")) {
             throw new Exception("Wrong status word");
         } else {
-            return template.query("SELECT * FROM auction WHERE status = '" + status + "'", this.auctionListExtractor);
+             return template.query("SELECT * FROM auction WHERE status = ?", ps -> ps.setString(1,finalStatus), this.auctionListExtractor);
         }
     }
 
     @Override
     public Auction getAuctionWithLots(int id) throws Exception {
-        Auction auction = (Auction)this.template.query("SELECT * FROM auction LEFT OUTER JOIN lot ON auction.id=lot.auction_id LEFT OUTER JOIN item ON lot.id=item.lot_id WHERE auction.id=" + id + " ORDER BY lot.id", this.auctionWithLotsExtractor);
+        Auction auction = (Auction)this.template.query("SELECT * FROM auction LEFT OUTER JOIN lot " +
+                "ON auction.id=lot.auction_id LEFT OUTER JOIN item ON lot.id=item.lot_id " +
+                "WHERE auction.id= ? ORDER BY lot.id",ps -> {ps.setInt(1,id);}, this.auctionWithLotsExtractor);
         if (auction == null) {
             throw new Exception("Auction not found");
         } else {
