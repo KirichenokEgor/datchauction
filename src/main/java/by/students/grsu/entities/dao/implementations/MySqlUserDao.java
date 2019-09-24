@@ -28,20 +28,17 @@ public class MySqlUserDao implements UserDao {
 
     @Override
     public void setEmail(String username, String email) throws Exception {
-//        if(template.update("update users set email = '" + email + "' where username = '" + username + "'") == 0)
         if(template.update("update users set email = ? where username = ?",email,username) == 0)
             throw new Exception("User not found");
     }
 
     @Override
     public String getEmail(String username) {
-//        return template.queryForObject("select email from users where username = '" + username + "'", String.class);
         return template.queryForObject("select email from users where username = ?",new Object[]{username}, String.class);
     }
 
     @Override
     public void setRole(String username, String newRole) throws Exception {
-//        if (template.update("UPDATE authorities SET authority = 'ROLE_" + newRole.toUpperCase() + "' where username = '" + username + "'") == 0) {
         if (template.update("UPDATE authorities SET authority = ? where username = ?","ROLE_"+newRole.toUpperCase(),username) == 0) {
             throw new Exception("User not found");
         }
@@ -49,7 +46,6 @@ public class MySqlUserDao implements UserDao {
 
     @Override
     public void banUser(String username) throws Exception {
-//        if (template.update("UPDATE users SET enabled=0 WHERE username='" + username + "'") == 0) {
         if (template.update("UPDATE users SET enabled=0 WHERE username= ?",username) == 0) {
             throw new Exception("User not found");
         }
@@ -57,7 +53,6 @@ public class MySqlUserDao implements UserDao {
 
     @Override
     public void unbanUser(String username) throws Exception {
-//        if (template.update("UPDATE users SET enabled=1 WHERE username='" + username + "'") == 0) {
         if (template.update("UPDATE users SET enabled=1 WHERE username= ?",username) == 0) {
             throw new Exception("User not found");
         }
@@ -65,36 +60,13 @@ public class MySqlUserDao implements UserDao {
 
     @Override
     public List<User> searchUsers(String... words) {
-        //return template.query(buildSql(words), userListExtractor);
         if(words.length == 0) return template.query("SELECT * FROM authorities", userListExtractor);
         StringBuilder substr = new StringBuilder();
         for(int i = 0; i < words.length; i++) substr.append(words[i]).append(" ");
-//        return template.query("SELECT * FROM authorities WHERE MATCH (username) AGAINST ('" + substr.toString() + "')", userListExtractor);
         return template.query("SELECT * FROM authorities WHERE MATCH (username) AGAINST (?)",ps -> {ps.setString(1,substr.toString());}, userListExtractor);
     }
 
-//    private String buildSql(String[] words) {
-//
-//
-//        StringBuilder sql = new StringBuilder("SELECT * FROM authorities");
-//        if (words.length > 0) {
-//            sql.append(" WHERE ");
-//        }
-//
-//        for(int i = 0; i < words.length; ++i) {
-//            if (i != 0) {
-//                sql.append(" OR ");
-//            }
-//
-//            sql.append("username LIKE \"%").append(words[i]).append("%\"");
-//        }
-//
-//        sql.append(" ORDER BY username;");
-//        return sql.toString();
-//    }
-
     private boolean isBanned(String username) {
-//        Integer enabled = template.queryForObject("SELECT enabled FROM users WHERE username='" + username + "'", Integer.class);
         Integer enabled = template.queryForObject("SELECT enabled FROM users WHERE username= ?",new Object[]{username}, Integer.class);
         return enabled != 1;
     }

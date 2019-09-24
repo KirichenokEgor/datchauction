@@ -28,7 +28,6 @@ public class MySqlSoldLotDao implements SoldLotDao {
 
     @Override
     public void addSoldLot(int lotId, String buyerUsername, String sellerUsername, double price) {
-//        template.execute("INSERT INTO sold_lot VALUES(" + lotId + ", '" + buyerUsername + "', " + price + ",'" + sellerUsername + "')");
         template.update("INSERT INTO sold_lot VALUES(?,?,?,?)",lotId,buyerUsername,price,sellerUsername);
     }
 
@@ -44,7 +43,6 @@ public class MySqlSoldLotDao implements SoldLotDao {
 
     @Override
     public SoldLot getSoldLotById(int lotId) throws Exception {
-//        SoldLot soldLot = template.query("SELECT * FROM sold_lot WHERE lot_id=" + lotId, soldLotExtractor);
         SoldLot soldLot = template.query("SELECT * FROM sold_lot WHERE lot_id= ?",ps -> {ps.setInt(1,lotId);}, soldLotExtractor);
         if (soldLot != null) {
             return soldLot;
