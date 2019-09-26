@@ -96,6 +96,11 @@
           <artifactId>javaee-api</artifactId>
           <version>8.0.1</version>
       </dependency>
+      <dependency>
+          <groupId>org.liquibase</groupId>
+          <artifactId>liquibase-core</artifactId>
+          <version>3.4.1</version>
+      </dependency>
   </dependencies>
 
   <build>
@@ -139,6 +144,14 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+        <plugin>
+           <groupId>org.liquibase</groupId>
+           <artifactId>liquibase-maven-plugin</artifactId>
+           <version>3.4.1</version>
+           <configuration>
+               <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

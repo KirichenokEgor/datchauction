@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="" id="1569495928632-1">
+        <preConditions onFail="CONTINUE">
+            <not>
+            <tableExists tableName="auction"/>
+            </not>
+        </preConditions>
+        <createTable tableName="auction">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="CHAR(255)"/>
+            <column name="max_lots" type="INT"/>
+            <column name="begin_time" type="time"/>
+            <column name="max_duration" type="INT"/>
+            <column name="status" type="CHAR(20)"/>
+            <column name="current_lots" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="" id="1569495928632-2">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="authorities"/>
+            </not>
+        </preConditions>
+        <createTable tableName="authorities">
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="authorities_ix_username" tableName="authorities">
+            <column name="username"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="" id="1569495928632-3">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="followed_auction"/>
+            </not>
+        </preConditions>
+        <createTable tableName="followed_auction">
+            <column name="username" type="VARCHAR(50)"/>
+            <column name="auction_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="" id="1569495928632-4">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="item"/>
+            </not>
+        </preConditions>
+        <createTable tableName="item">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="CHAR(50)"/>
+            <column name="description" type="CHAR(255)"/>
+            <column name="owner" type="CHAR(255)"/>
+            <column name="lot_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="" id="1569495928632-5">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="lot"/>
+            </not>
+        </preConditions>
+        <createTable tableName="lot">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="lot_name" type="CHAR(255)"/>
+            <column name="start_price" type="FLOAT(12)"/>
+            <column name="min_price" type="FLOAT(12)"/>
+            <column name="status" type="CHAR(20)"/>
+            <column name="auction_id" type="INT"/>
+        </createTable>
+        <createIndex indexName="lot_ix_lot_name" tableName="lot">
+            <column name="lot_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="" id="1569495928632-6">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="sold_lot"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sold_lot">
+            <column name="lot_id" type="INT"/>
+            <column name="buyer" type="CHAR(50)"/>
+            <column name="price" type="FLOAT(12)"/>
+            <column name="seller" type="CHAR(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="" id="1569495928632-7">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(50)"/>
+        </createTable>
+        <sql>
+        INSERT INTO users VALUES('admin','{bcrypt}$2a$10$QllB9OVHY7h8vEVU0.uhMukxITUV05SITdSF50o0E6hLQm9gS55Ou',1,'admin@gmail.com');
+        INSERT INTO authorities VALUES('admin','ROLE_ADMIN');
+        </sql>
+        <addPrimaryKey columnNames="username" constraintName="PRIMARY" tableName="users"/>
+    </changeSet>
+</databaseChangeLog>
