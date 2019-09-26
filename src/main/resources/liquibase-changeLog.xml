@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet author="Aliaksei_Kunets (generated)" id="1569495928632-1">
+    <changeSet author="" id="1569495928632-1">
         <preConditions onFail="CONTINUE">
             <not>
             <tableExists tableName="auction"/>
@@ -18,7 +18,7 @@
             <column name="current_lots" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Aliaksei_Kunets (generated)" id="1569495928632-2">
+    <changeSet author="" id="1569495928632-2">
         <preConditions onFail="CONTINUE">
             <not>
                 <tableExists tableName="authorities"/>
@@ -36,7 +36,7 @@
             <column name="username"/>
         </createIndex>
     </changeSet>
-    <changeSet author="Aliaksei_Kunets (generated)" id="1569495928632-3">
+    <changeSet author="" id="1569495928632-3">
         <preConditions onFail="CONTINUE">
             <not>
                 <tableExists tableName="followed_auction"/>
@@ -47,7 +47,7 @@
             <column name="auction_id" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Aliaksei_Kunets (generated)" id="1569495928632-4">
+    <changeSet author="" id="1569495928632-4">
         <preConditions onFail="CONTINUE">
             <not>
                 <tableExists tableName="item"/>
@@ -63,7 +63,7 @@
             <column name="lot_id" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Aliaksei_Kunets (generated)" id="1569495928632-5">
+    <changeSet author="" id="1569495928632-5">
         <preConditions onFail="CONTINUE">
             <not>
                 <tableExists tableName="lot"/>
@@ -83,7 +83,7 @@
             <column name="lot_name"/>
         </createIndex>
     </changeSet>
-    <changeSet author="Aliaksei_Kunets (generated)" id="1569495928632-6">
+    <changeSet author="" id="1569495928632-6">
         <preConditions onFail="CONTINUE">
             <not>
                 <tableExists tableName="sold_lot"/>
@@ -96,7 +96,7 @@
             <column name="seller" type="CHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Aliaksei_Kunets (generated)" id="1569495928632-7">
+    <changeSet author="" id="1569495928632-7">
         <preConditions onFail="CONTINUE">
             <not>
                 <tableExists tableName="users"/>
