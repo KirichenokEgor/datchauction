@@ -7,6 +7,7 @@ import by.students.grsu.entities.services.interfaces.*;
 import by.students.grsu.entities.services.interfaces.followersAndObservers.DealsFollower;
 import by.students.grsu.websocket.ActiveAuctionWebSocketHandler;
 import by.students.grsu.websocket.UserSessionService;
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
@@ -42,7 +43,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-       // slr.setDefaultLocale(Locale.ENGLISH);
         slr.setDefaultLocale(new Locale("ru"));
         return slr;
     }
@@ -80,7 +80,13 @@ public class MvcWebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/scripts/**","/css/**")
                 .addResourceLocations("/WEB-INF/scripts/","/WEB-INF/css/");
     }
-
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
+        liquibase.setDataSource(mysqlDataSource());
+        return liquibase;
+    }
     /*SERVICES*/
 
     @Bean
@@ -145,7 +151,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public DataSource mysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");//"com.mysql.jdbc.Driver"
-        dataSource.setUrl("jdbc:mysql://localhost/dutchAuction");
+        dataSource.setUrl("jdbc:mysql://localhost/dutchauction");
         dataSource.setUsername("defaultDao");
         dataSource.setPassword("1111");
         return dataSource;
@@ -175,12 +181,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
-        /* Браузер загружает страницу в windows-1252 и кириллица ломается.
-           Если вручную в браузере поставить UTF-8, то всё работает нормально.
-           Вот эта строка заставляет браузер изначально ставить кодировку на UTF-8,
-           но кириллица всё равно не работает!!!     */
         resolver.setCharacterEncoding("UTF-8");
         registry.viewResolver(resolver);
     }
-
 }
