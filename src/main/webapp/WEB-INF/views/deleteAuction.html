@@ -14,9 +14,9 @@
 <form id="deleteAuctionForm" action="#" th:action="@{/deleteAuctionPart2}" method="post">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
-            <td class="w3-center" style="width:10%" onclick="sortById()" th:text="#{id}"></td>
-            <td class="w3-center" style="width:40%" onclick="sortByTime()" th:text="#{addAuc.startTime}"></td>
-            <td class="w3-center" style="width:40%" onclick="sortByDuration()" th:text="#{activeAuc.duration}"></td>
+            <td class="w3-center" style="width:10%" id="sortId" th:text="#{id}"></td>
+            <td class="w3-center" style="width:40%" id="sortTime" th:text="#{addAuc.startTime}"></td>
+            <td class="w3-center" style="width:40%" id="sortDuration" th:text="#{activeAuc.duration}"></td>
             <td class="w3-center" style="width:10%" th:text="#{choose}"></td>
         </tr>
         <tbody>

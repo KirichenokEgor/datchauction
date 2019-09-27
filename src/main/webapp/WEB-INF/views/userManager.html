@@ -16,7 +16,6 @@
     <tr>
         <td style="width:90%"><input class="w3-input" type="search" id="searchWords"/></td>
         <td><input class="w3-btn w3-theme-l3 w3-block" type="submit" value="Search"></td>
-<!--        <td width="100px" ><button type="button" onclick="search()">search</button></td>-->
     </tr>
 </table>
 </form>
@@ -43,9 +42,9 @@ form.onsubmit = function(e){
 <br>
 <table class="w3-table">
     <tr>
-        <td class="w3-btn w3-block w3-theme-l3" style="width:45%"><button type="button" id="prevPage" onclick="prevPage()" th:text="#{userManager.prev}"></button></td>
+        <td class="w3-btn w3-block w3-theme-l3" style="width:45%"><button type="button" id="prevPage" th:text="#{userManager.prev}"></button></td>
         <td class="w3-center" style="width:10%" align="center" id="pageNumber">1</td>
-        <td class="w3-btn w3-block w3-theme-l3" style="width:45%" ><button type="button" id="nextPage" onclick="nextPage()" th:text="#{userManager.next}"></button></td>
+        <td class="w3-btn w3-block w3-theme-l3" style="width:45%" ><button type="button" id="nextPage" th:text="#{userManager.next}"></button></td>
     </tr>
 </table>
 <div th:insert="components/improvedFooter.html" ></div>

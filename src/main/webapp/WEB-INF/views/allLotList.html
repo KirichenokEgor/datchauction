@@ -13,18 +13,19 @@
 <table class="w3-table">
     <tr>
         <td style="width:80%">
-            <input class="w3-input" type="search" id="searchWords" onchange="search()" name="s" minlength="3" th:placeholder="#{allLots.searchPlace}">
+            <input class="w3-input" type="search" id="searchWords" name="s" minlength="3" th:placeholder="#{allLots.searchPlace}">
         </td>
         <td style="width:10%">
-            <input name="selectList" value="ch1" id="showLots" type="radio" onclick="changeTable()" checked th:text="#{allLots.otherLots}"><br>
+            <input name="selectList" value="ch1" id="showLots" type="radio" checked th:text="#{allLots.otherLots}"><br>
         </td>
         <td style="width:10%">
-            <input name="selectList" value="ch2" id="showMyLots" onclick="changeTable()" type="radio" th:text="#{allLots.yourSoldLots}"><br>
+            <input name="selectList" value="ch2" id="showMyLots" type="radio" th:text="#{allLots.yourSoldLots}"><br>
         </td>
     </tr>
 </table>
 <div th:replace="components/allLotList.html"></div>
 <div th:replace="components/improvedFooter.html" ></div>
 <script th:src="@{/scripts/lotsSorter.js}"></script>
+<!--<script src="epbygrow0422:8080/app/scripts/lotsSorter.js"></script>-->
 </body>
 </html>

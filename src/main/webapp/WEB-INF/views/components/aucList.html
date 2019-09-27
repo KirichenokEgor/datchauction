@@ -1,9 +1,9 @@
 <div class="w3-theme-d2" th:fragment="aucList">
     <table class="w3-table" border="1" cellspacing="0" width="40%">
         <tr>
-            <td class="w3-center" width="18%" onclick="sortById()" th:text="#{id}"></td>
-            <td class="w3-center" width="28%" onclick="sortByTime()" th:text="#{addAuc.startTime}"></td>
-            <td class="w3-center" width="18%" onclick="sortByDuration()" th:text="#{activeAuc.duration}"></td>
+            <td class="w3-center" width="18%" id="sortId" th:text="#{id}"></td>
+            <td class="w3-center" width="28%" id="sortTime" th:text="#{addAuc.startTime}"></td>
+            <td class="w3-center" width="18%" id="sortDuration" th:text="#{activeAuc.duration}"></td>
             <td class="w3-center" width="18%"></td>
             <td class="w3-center" width="18%"></td>
         </tr>

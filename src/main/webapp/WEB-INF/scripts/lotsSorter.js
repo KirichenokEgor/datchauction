@@ -24,6 +24,16 @@ for(var i=0;i<rows2.length;i++){
 var rows = rows1;
 var lots = lots1;
 
+var sortID = document.getElementById("sortID");
+var sortName = document.getElementById("sortName");
+var sortPrice = document.getElementById("sortPrice");
+var searchWords = document.getElementById("searchWords");
+
+sortID.onclick = sortById;
+sortName.onclick = sortByName;
+sortPrice.onclick = sortByPrice;
+searchWords.onchange = search;
+
 function sortById(){
     lots.sort(function(a,b){return Number(a.id)-Number(b.id)});
     if(lastSort==1){lots.reverse(); lastSort=0}

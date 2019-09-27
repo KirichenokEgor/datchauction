@@ -74,7 +74,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .permitAll()
                     .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+                .and()
+                .headers()
+                .contentSecurityPolicy("script-src 'self'");
+
     }
 
     @Bean

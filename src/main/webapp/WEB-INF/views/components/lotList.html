@@ -1,9 +1,9 @@
 <div th:fragment="lotList">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0">
         <tr>
-            <td style="width:10%" class="w3-center" th:text="#{id}"></td>
-            <td style="width:35%" class="w3-center" th:text="#{name}"></td>
-            <td style="width:35%" class="w3-center" th:text="#{price}"></td>
+            <td style="width:10%" class="w3-center" id="sortId" th:text="#{id}"></td>
+            <td style="width:35%" class="w3-center" id="sortName" th:text="#{name}"></td>
+            <td style="width:35%" class="w3-center" id="sortPrice" th:text="#{price}"></td>
             <td style="width:20%"></td>
         </tr>
         <tbody>

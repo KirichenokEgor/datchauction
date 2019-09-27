@@ -1,10 +1,10 @@
 <div th:fragment="itemList">
     <table class="w3-table w3-theme-d2" border="1" cellspacing="0" width="60%">
         <tr>
-            <td class="w3-center" style="width:10%" onclick="sortById()" th:text="#{id}"></td>
-            <td class="w3-center" style="width:20%" onclick="sortByName()" th:text="#{name}"></td>
-            <td class="w3-center" style="width:50%" onclick="sortByDescription()" th:text="#{description}"></td>
-            <td class="w3-center" style="width:10%" onclick="sortByStatus()" th:text="#{status}"></td>
+            <td class="w3-center" style="width:10%" id="sortId" th:text="#{id}"></td>
+            <td class="w3-center" style="width:20%" id="sortName" th:text="#{name}"></td>
+            <td class="w3-center" style="width:50%" id="sortDescription" th:text="#{description}"></td>
+            <td class="w3-center" style="width:10%" id="sortStatus" th:text="#{status}"></td>
             <td class="w3-center" style="width:10%" th:text="#{owner}"></td>
         </tr>
         <tbody>

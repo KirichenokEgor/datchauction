@@ -17,6 +17,14 @@ for(var i=0;i<rows.length;i++){
          items[i]=new Item(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,row[3].innerHTML,row[4].innerHTML);
     else items[i]=new Item(row[0].innerHTML,row[1].innerHTML,row[2].innerHTML,null,null);
 }
+var sortId = document.getElementById("sortId");
+var sortName = document.getElementById("sortName");
+var sortDescription = document.getElementById("sortDescription");
+var sortStatus = document.getElementById("sortStatus");
+sortId.onclick = sortById;
+sortName.onclick = sortByName;
+sortDescription.onclick = sortByDescription;
+sortStatus.onclick = sortByStatus;
 function sortById(){
     items.sort(function(a,b){return Number(a.id)-Number(b.id)});
     if(lastSort==1){items.reverse(); lastSort=0}

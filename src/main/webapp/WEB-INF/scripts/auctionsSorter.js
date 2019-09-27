@@ -18,6 +18,13 @@ for(var i=0;i<rows.length;i++){
         row[3].children.length!=0?row[3].children[0]:row[3].innerHTML,
         row[4].children.length!=0?row[4].children[0]:row[4].innerHTML)
 }
+var sortId = document.getElementById("sortId");
+var sortTime = document.getElementById("sortTime");
+var sortDuration = document.getElementById("sortDuration");
+sortId.onclick = sortById;
+sortTime.onclick = sortByTime;
+sortDuration.onclick = sortByDuration;
+
 function sortById(){
     auctions.sort(function(a,b){return Number(a.id)-Number(b.id)});
     if(lastSort==1){auctions.reverse(); lastSort=0}
