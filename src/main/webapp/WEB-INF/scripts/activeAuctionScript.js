@@ -1,7 +1,7 @@
 var auction;
 var auctionId;
 var lotTable;
-var socketConn = new WebSocket('ws://'+window.location.host+'/app/activeAuction');
+var socketConn = new WebSocket('ws://' + window.location.host + '/' + window.location.pathname.split('/')[1] + '/activeAuction');
 socketConn.onmessage = function(event) {
     var command = event.data.slice(0,2);
     if(command==="RA"){     //RA - Render Auction
